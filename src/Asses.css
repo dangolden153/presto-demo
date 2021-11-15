@@ -1,0 +1,17 @@
+/* text-colors gray1*/
+p {
+  color: #999999;
+}
+
+/* text-colors gray2*/
+p {
+  color: #666666;
+}
+
+div {
+  background-color: #0084f4;
+}
+
+div {
+  border-color: #e8e6ea;
+}
