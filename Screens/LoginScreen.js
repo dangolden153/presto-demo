@@ -86,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
               borderRadius: 10,
             }}
             title="Login"
-            raised
+            // raised
             // loading={loading}
             onPress={() => navigation.navigate("CheckVerification")}
           />

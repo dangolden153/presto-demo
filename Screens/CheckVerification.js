@@ -8,7 +8,9 @@ const CheckVerification = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={pics}
+        source={{
+          uri: "https://www.collinsdictionary.com/images/thumb/envelope_107579642_250.jpg",
+        }}
         style={{ height: 170, width: 170, resizeMode: "cover" }}
       />
       <Text style={styles.text}>check your email for verification link</Text>
@@ -37,6 +39,7 @@ const styles = StyleSheet.create({
   },
   link: {
     color: "#0084F4",
+    marginTop: 10,
   },
   //   header_container: {
   //     alignItems: "flex-start",

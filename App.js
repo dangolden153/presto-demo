@@ -12,6 +12,9 @@ import CheckVerification from "./Screens/CheckVerification";
 import VerifiedScreen from "./Screens/VerifiedScreen";
 import CreatePin from "./Screens/CreatePin";
 import HomeScreen from "./Screens/HomeScreen";
+import OnboardingScreen from "./Screens/OnboardingScreen";
+import SecondOnboardingScreen from "./Screens/SecondOnboardingScreen";
+import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
 export default function App() {
   const Stack = createStackNavigator();
 
@@ -19,6 +22,21 @@ export default function App() {
     <NavigationContainer>
       <SafeAreaProvider>
         <Stack.Navigator>
+          <Stack.Screen
+            name="OnboardingScreen"
+            component={OnboardingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SecondOnboardingScreen"
+            component={SecondOnboardingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ThirdOnboardingScreen"
+            component={ThirdOnboardingScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}

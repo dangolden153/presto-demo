@@ -11,8 +11,10 @@ const VerifiedScreen = ({ navigation }) => {
       <Text style={styles.header}>HURRAY!!!</Text>
 
       <Image
-        source={pics}
-        style={{ height: 170, width: 170, resizeMode: "cover" }}
+        source={{
+          uri: "https://i.pinimg.com/236x/ed/6a/aa/ed6aaa685737ad811ef42881507af4c1.jpg",
+        }}
+        style={{ height: 240, width: 240, resizeMode: "cover" }}
       />
 
       <View
@@ -25,7 +27,7 @@ const VerifiedScreen = ({ navigation }) => {
         }}
       >
         <Text style={styles.text}>
-          you have sucessfully validate your account
+          You have sucessfully validate your account
         </Text>
 
         <Button
