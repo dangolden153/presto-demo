@@ -20,7 +20,7 @@ const CreatePin = ({ navigation }) => {
   const handlePin = () => {
     console.log("code", code);
     if (code.length === 4) {
-      navigation.navigate("OnboardingScreen");
+      navigation.navigate("Dashboard");
     } else {
       setError("please insert a valid pin");
     }

@@ -3,15 +3,13 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
-import pics from "../images/shoe.jpg";
+import pics from "../images/envelop.png";
 const CheckVerification = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{
-          uri: "https://www.collinsdictionary.com/images/thumb/envelope_107579642_250.jpg",
-        }}
-        style={{ height: 170, width: 170, resizeMode: "cover" }}
+        source={pics}
+        style={{ height: 250, width: 250, resizeMode: "cover" }}
       />
       <Text style={styles.text}>check your email for verification link</Text>
       <TouchableOpacity onPress={() => navigation.navigate("VerifiedScreen")}>

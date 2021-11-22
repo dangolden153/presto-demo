@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
-import pics from "../images/shoe.jpg";
+import pics from "../images/Memoji.png";
 
 const VerifiedScreen = ({ navigation }) => {
   return (
@@ -11,9 +11,7 @@ const VerifiedScreen = ({ navigation }) => {
       <Text style={styles.header}>HURRAY!!!</Text>
 
       <Image
-        source={{
-          uri: "https://i.pinimg.com/236x/ed/6a/aa/ed6aaa685737ad811ef42881507af4c1.jpg",
-        }}
+        source={pics}
         style={{ height: 240, width: 240, resizeMode: "cover" }}
       />
 

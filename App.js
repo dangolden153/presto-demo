@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -15,6 +14,10 @@ import HomeScreen from "./Screens/HomeScreen";
 import OnboardingScreen from "./Screens/OnboardingScreen";
 import SecondOnboardingScreen from "./Screens/SecondOnboardingScreen";
 import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
+import Dashboard from "./components/Dashboard";
+// import SellGiftCard from "./Screens/SellGiftCard";
+import ButtomTab from "./Screens/ButtomTab";
+
 export default function App() {
   const Stack = createStackNavigator();
 
@@ -68,8 +71,18 @@ export default function App() {
           />
 
           <Stack.Screen
+            name="Dashboard"
+            component={Dashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="HomeScreen"
             component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ButtomTab"
+            component={ButtomTab}
             options={{ headerShown: false }}
           />
 

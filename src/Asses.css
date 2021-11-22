@@ -10,8 +10,15 @@ p {
 
 div {
   background-color: #0084f4;
+  background: #fbddc3;
+}
+
+div {
+  background-color: #0082f479;
+  background: #ffcbd3;
 }
 
 div {
   border-color: #e8e6ea;
+  background-color: #ddd6ed;
 }

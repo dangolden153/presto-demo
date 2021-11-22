@@ -33,7 +33,7 @@ const OnboardingScreen = ({ navigation }) => {
           title="Next"
           // raised
           // loading={loading}
-          onPress={() => navigation.navigate("SecondOnboardingScreen")}
+          onPress={() => navigation.navigate("ButtomTab")}
         />
 
         <View style={styles.dots}>
