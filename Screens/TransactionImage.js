@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 
-const Transaction = ({ navigation }) => {
+const TransactionImage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -35,9 +35,9 @@ const Transaction = ({ navigation }) => {
             <View style={styles.img_title}>
               <Image
                 source={{
-                  uri: "https://www-konga-com-res.cloudinary.com/w_auto,f_auto,fl_lossy,dpr_auto,q_auto/media/catalog/product/Q/B/56261_1561559385.jpg",
+                  uri: "https://store-cdn-upxatwuc0q61qf.netdna-ssl.com/wp-content/uploads/2015/07/itunes-app-store-giftcard-50-2017-100x100.jpeg",
                 }}
-                style={{ height: 70, width: 70 }}
+                style={{ height: 50, width: 50, marginRight: 10 }}
               />
               <View style={styles.title_time}>
                 <Text style={styles.title}>Gift card</Text>
@@ -47,31 +47,29 @@ const Transaction = ({ navigation }) => {
 
             <View style={styles.price_del}>
               <Text style={styles.price}>#33,000.00</Text>
-              <Text style={styles.del}>Need clear image</Text>
+              <Text style={styles.del}>Deliverd</Text>
             </View>
           </View>
 
           {/* upload container */}
-          <View style={styles.upload_container}>
-            <Text style={styles.upload_textI}>Kindly upload clear image</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("TransactionImage")}
-            >
-              <View style={styles.upload_btn}>
-                <Feather name="upload" size={24} color="black" />
-                <Text style={styles.upload_text}>
-                  Kindly upload clear picture
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.image}
+            // onPress={() => navigation.navigate("TransactionCheck")}
+          >
+            <Image
+              source={{
+                uri: "https://store-cdn-upxatwuc0q61qf.netdna-ssl.com/wp-content/uploads/2015/07/itunes-app-store-giftcard-50-2017-100x100.jpeg",
+              }}
+              style={{ height: 250, width: "100%" }}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default Transaction;
+export default TransactionImage;
 
 const styles = StyleSheet.create({
   container: {
@@ -105,6 +103,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
+  del: {
+    color: "red",
+    // opacity
+  },
   card: {
     // width: "80%",
     padding: 15,
@@ -136,13 +138,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 30,
     // borderStyle:"do"
-  },
-  upload_textI: {
-    fontSize: 18,
-    fontWeight: "500",
-  },
-  del: {
-    color: "red",
-    // opacity
   },
 });

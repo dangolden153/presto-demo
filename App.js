@@ -17,6 +17,13 @@ import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
 import Dashboard from "./components/Dashboard";
 // import SellGiftCard from "./Screens/SellGiftCard";
 import ButtomTab from "./Screens/ButtomTab";
+import EditProfile from "./Screens/EditProfile";
+import Accounts from "./Screens/Accounts";
+import SellBitcoin from "./Screens/SellBitcoin";
+import TransactionImage from "./Screens/TransactionImage";
+import Withdrawal from "./Screens/Withdrawal";
+import AddBankAccount from "./Screens/AddBankAccount";
+// import TransactionCheck from "./components/TransactionCheck";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -83,6 +90,44 @@ export default function App() {
           <Stack.Screen
             name="ButtomTab"
             component={ButtomTab}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TransactionImage"
+            component={TransactionImage}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Withdrawal"
+            component={Withdrawal}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="AddBankAccount"
+            component={AddBankAccount}
+            options={{ headerShown: false }}
+          />
+
+          {/* <Stack.Screen
+            name="TransactionCheck"
+            component={TransactionCheck}
+            options={{ headerShown: false }}
+          /> */}
+          <Stack.Screen
+            name="SellBitcoin"
+            component={SellBitcoin}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="Accounts"
+            component={Accounts}
             options={{ headerShown: false }}
           />
 

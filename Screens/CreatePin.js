@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  TextInput,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -20,7 +12,7 @@ const CreatePin = ({ navigation }) => {
   const handlePin = () => {
     console.log("code", code);
     if (code.length === 4) {
-      navigation.navigate("Dashboard");
+      navigation.navigate("ButtomTab");
     } else {
       setError("please insert a valid pin");
     }

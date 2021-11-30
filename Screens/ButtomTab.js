@@ -13,6 +13,12 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
+// import TransactionImage from "./TransactionImage";
+import Wallet from "../components/Wallet";
+// import Withdrawal from "./Withdrawal";
+// import AddBankAccount from "./AddBankAccount";
+import TransactionCheck from "../components/TransactionCheck";
+// import SellBitcoin from "../components/SellBitcoin";
 const Tab = createBottomTabNavigator();
 
 const ButtomTab = () => {
@@ -46,8 +52,8 @@ const ButtomTab = () => {
       />
 
       <Tab.Screen
-        name="Transaction"
-        component={Transaction}
+        name="Wallet"
+        component={Wallet}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (
@@ -59,8 +65,8 @@ const ButtomTab = () => {
       />
 
       <Tab.Screen
-        name="Settings"
-        component={Settings}
+        name="TransactionCheck"
+        component={TransactionCheck}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (
@@ -71,8 +77,8 @@ const ButtomTab = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="Settings"
+        component={Settings}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (

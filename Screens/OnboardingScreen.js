@@ -1,9 +1,28 @@
 import React from "react";
-import { View, Text, Image, SafeAreaView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import pics from "../images/Group-2.png";
 import { Button } from "react-native-elements";
+import AppLoading from "expo-app-loading";
+import { useFonts } from "expo-font";
+import { LinearGradient } from "expo-linear-gradient";
 
 const OnboardingScreen = ({ navigation }) => {
+  let [firstLoaded, error] = useFonts({
+    JosefinSans: require("../assets/fonts/JosefinSans-Italic-VariableFont_wght.ttf"),
+    JosefinSansBold: require("../assets/fonts/JosefinSans-VariableFont_wght.ttf"),
+  });
+
+  if (!firstLoaded) {
+    return <AppLoading />;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.img_bg}>
@@ -14,7 +33,7 @@ const OnboardingScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.text_container}>
-        <Text style={styles.header}>
+        <Text style={[styles.header]}>
           The best wey to trade your gift cards{" "}
         </Text>
         <Text style={styles.Sub_header}>
@@ -23,7 +42,7 @@ const OnboardingScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.btn_container}>
-        <Button
+        {/* <Button
           containerStyle={styles.btn}
           buttonStyle={{
             backgroundColor: "#0084F4",
@@ -34,8 +53,21 @@ const OnboardingScreen = ({ navigation }) => {
           // raised
           // loading={loading}
           onPress={() => navigation.navigate("ButtomTab")}
-        />
+        /> */}
 
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate("SecondOnboardingScreen")}
+          //  ButtomTab
+        >
+          <LinearGradient
+            // Button Linear Gradient
+            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            style={styles.btn}
+          >
+            <Text style={styles.text}>Next</Text>
+          </LinearGradient>
+        </TouchableOpacity>
         <View style={styles.dots}>
           <View
             style={{
@@ -67,7 +99,6 @@ const OnboardingScreen = ({ navigation }) => {
   );
 };
 
-export default OnboardingScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,6 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     letterSpacing: 1,
     fontWeight: "bold",
+    // fontFamily: "JosefinSans",
   },
   Sub_header: {
     color: "#999999",
@@ -107,9 +139,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
+  text: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 17,
+  },
   btn: {
     // marginTop: 50,
     width: 200,
+    paddingVertical: 15,
+    borderRadius: 10,
   },
 
   dots: {
@@ -120,3 +159,5 @@ const styles = StyleSheet.create({
     // backgroundColor: "pink",
   },
 });
+
+export default OnboardingScreen;

@@ -65,7 +65,7 @@ const Dashboard = ({ navigation }) => {
           title="withdraw"
           // raised
           // loading={loading}
-          //   onPress={handlePin}
+          onPress={() => navigation.navigate("Withdrawal")}
         />
       </TouchableOpacity>
       {/* middle section container */}
@@ -84,7 +84,10 @@ const Dashboard = ({ navigation }) => {
           />
           <Text style={styles.section_text}>Sell Giftcard</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.right_section}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SellBitcoin")}
+          style={styles.right_section}
+        >
           <Image
             source={coin}
             style={{

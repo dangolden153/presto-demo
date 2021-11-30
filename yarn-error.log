@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Dangolden\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-svg@12.1.0
+  C:\Program Files\nodejs\node.exe C:\Users\Dangolden\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add expo-app-loading
 
 PATH: 
   C:\Program Files\Eclipse Foundation\jdk-11.0.12.7-hotspot\bin;C:\Python39\Scripts\;C:\Python39\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Users\Dangolden\.amplify\bin;C:\Users\Dangolden\AppData\Local\Microsoft\WindowsApps;C:\Users\Dangolden\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Dangolden\AppData\Roaming\npm;C:\Users\Dangolden\AppData\Local\Android\Sdk;C:\Users\Dangolden\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\Java Eclipse Foundation\jdk-11.0.12.7-hotspot;C:\Users\Dangolden\AppData\Local\Android\Sdk\tools\;C:\Users\Dangolden\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\Java Eclipse Foundation\jdk-11.0.12.7-hotspot\bin;C:\Program Files\flutter\bin;C:\Users\Dangolden\Documents\flutter\bin;
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EBUSY: resource busy or locked, copyfile 'C:\Users\Dangolden\AppData\Local\Yarn\Cache\v6\npm-jsc-android-245459.0.0-integrity\node_modules\jsc-android\dist\include\JSCallbackObjectFunctions.h' -> 'C:\Users\Dangolden\Desktop\native\demo\node_modules\jsc-android\dist\include\JSCallbackObjectFunctions.h'
+  Error: ENOENT: no such file or directory, lstat 'C:\Users\Dangolden\Desktop\native\demo\node_modules\sucrase'
 
 npm manifest: 
   {
