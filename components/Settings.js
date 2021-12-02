@@ -137,7 +137,7 @@ const Settings = ({ navigation }) => {
         <View style={styles.body}>
           <TouchableOpacity
             style={styles.Settings_items}
-            onPress={() => navigation.navigate("EditProfile")}
+            onPress={() => navigation.navigate("ChangePasswordScreen")}
           >
             <View style={styles.box_text}>
               <LinearGradient
@@ -154,7 +154,7 @@ const Settings = ({ navigation }) => {
 
           <TouchableOpacity
             style={styles.Settings_items}
-            onPress={() => navigation.navigate("Accounts")}
+            // onPress={() => navigation.navigate("ComfirmPa")}
           >
             <View style={styles.box_text}>
               <LinearGradient

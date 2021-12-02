@@ -15,7 +15,7 @@ import OnboardingScreen from "./Screens/OnboardingScreen";
 import SecondOnboardingScreen from "./Screens/SecondOnboardingScreen";
 import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
 import Dashboard from "./components/Dashboard";
-// import SellGiftCard from "./Screens/SellGiftCard";
+// import SellGiftCard from "./Screens/SellGiftCardScreen";
 import ButtomTab from "./Screens/ButtomTab";
 import EditProfile from "./Screens/EditProfile";
 import Accounts from "./Screens/Accounts";
@@ -23,15 +23,60 @@ import SellBitcoin from "./Screens/SellBitcoin";
 import TransactionImage from "./Screens/TransactionImage";
 import Withdrawal from "./Screens/Withdrawal";
 import AddBankAccount from "./Screens/AddBankAccount";
+import SecndOnboardingScreen from "./Screens/SecndOnboardingScreen.js";
+import OnBoardngScreen from "./Screens/OnBoardngScreen";
+import LandingScreen from "./Screens/LandingScreen";
+import dropdownScreen from "./Screens/dropdownScreen";
+import { NativeBaseProvider } from "native-base";
+import ChangePassword from "./Screens/ChangePasswordScreen";
+import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
+import OtpScreen from "./Screens/OtpScreen";
+import SellGiftCardScreen from "./Screens/SellGiftCardScreen";
 // import TransactionCheck from "./components/TransactionCheck";
+
+{
+  /* <Center flex={1} px="3">
+  <Example />
+</Center> */
+}
 
 export default function App() {
   const Stack = createStackNavigator();
 
   return (
     <NavigationContainer>
+      {/* <NativeBaseProvider> */}
       <SafeAreaProvider>
         <Stack.Navigator>
+          {/* /////////////// */}
+
+          {/* <Stack.Screen
+            name="dropdownScreen"
+            component={dropdownScreen}
+            options={{ headerShown: false }}
+          /> */}
+          {/* <Stack.Screen
+            name="OnBoardngScreen"
+            component={OnBoardngScreen}
+            options={{ headerShown: false }}
+          /> */}
+          {/* <Stack.Screen
+            name="SecndOnboardingScreen"
+            component={SecndOnboardingScreen}
+            options={{ headerShown: false }}
+          /> */}
+
+          {/* <Stack.Screen
+            name="LandingScreen"
+            component={LandingScreen}
+            options={{ headerShown: false }}
+          /> */}
+
+          <Stack.Screen
+            name="ChangePasswordScreen"
+            component={ChangePasswordScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="OnboardingScreen"
             component={OnboardingScreen}
@@ -52,31 +97,26 @@ export default function App() {
             component={LoginScreen}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="RegistrationScreen"
             component={RegistrationScreen}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="CheckVerification"
             component={CheckVerification}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="VerifiedScreen"
             component={VerifiedScreen}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="CreatePin"
             component={CreatePin}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="Dashboard"
             component={Dashboard}
@@ -102,18 +142,12 @@ export default function App() {
             component={Withdrawal}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="AddBankAccount"
             component={AddBankAccount}
             options={{ headerShown: false }}
           />
 
-          {/* <Stack.Screen
-            name="TransactionCheck"
-            component={TransactionCheck}
-            options={{ headerShown: false }}
-          /> */}
           <Stack.Screen
             name="SellBitcoin"
             component={SellBitcoin}
@@ -124,13 +158,23 @@ export default function App() {
             component={EditProfile}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="Accounts"
             component={Accounts}
             options={{ headerShown: false }}
           />
 
+          <Stack.Screen
+            name="OtpScreen"
+            component={OtpScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="SellGiftCardScreen"
+            component={SellGiftCardScreen}
+            options={{ headerShown: false }}
+          />
           {/* <Stack.Screen
             name="Demo"
             component={Demo}
@@ -138,6 +182,7 @@ export default function App() {
           /> */}
         </Stack.Navigator>
       </SafeAreaProvider>
+      {/* </NativeBaseProvider> */}
     </NavigationContainer>
   );
 }

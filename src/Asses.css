@@ -8,6 +8,12 @@ p {
   color: #666666;
 }
 
+/* text-colors gray2*/
+
+p {
+  color: #001e5a;
+  background: #2fb3ff;
+}
 div {
   background-color: #0084f4;
   background: #fbddc3;
