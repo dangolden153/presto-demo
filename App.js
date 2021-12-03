@@ -32,6 +32,7 @@ import ChangePassword from "./Screens/ChangePasswordScreen";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import OtpScreen from "./Screens/OtpScreen";
 import SellGiftCardScreen from "./Screens/SellGiftCardScreen";
+import ThirdOnBoardngScreen from "./Screens/ThirdOnBoardngScreen";
 // import TransactionCheck from "./components/TransactionCheck";
 
 {
@@ -55,28 +56,28 @@ export default function App() {
             component={dropdownScreen}
             options={{ headerShown: false }}
           /> */}
-          {/* <Stack.Screen
+          <Stack.Screen
             name="OnBoardngScreen"
             component={OnBoardngScreen}
             options={{ headerShown: false }}
-          /> */}
-          {/* <Stack.Screen
+          />
+          <Stack.Screen
             name="SecndOnboardingScreen"
             component={SecndOnboardingScreen}
             options={{ headerShown: false }}
-          /> */}
+          />
 
-          {/* <Stack.Screen
+          <Stack.Screen
+            name="ThirdOnBoardngScreen"
+            component={ThirdOnBoardngScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="LandingScreen"
             component={LandingScreen}
             options={{ headerShown: false }}
-          /> */}
-
-          <Stack.Screen
-            name="ChangePasswordScreen"
-            component={ChangePasswordScreen}
-            options={{ headerShown: false }}
           />
+
           <Stack.Screen
             name="OnboardingScreen"
             component={OnboardingScreen}
@@ -173,6 +174,12 @@ export default function App() {
           <Stack.Screen
             name="SellGiftCardScreen"
             component={SellGiftCardScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="ChangePasswordScreen"
+            component={ChangePasswordScreen}
             options={{ headerShown: false }}
           />
           {/* <Stack.Screen

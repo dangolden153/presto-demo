@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { color } from "react-native-reanimated";
-import pics from "../images/thumb.png";
+// import pics from "../images/thumb.png";
+import pics from "../images/cofee.png";
 import btn from "../images/btn.png";
 import { useFonts } from "@expo-google-fonts/inter";
 import AppLoading from "expo-app-loading";

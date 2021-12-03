@@ -19,6 +19,8 @@ import menu from "../images/menu.png";
 import logo from "../images/icon.png";
 import graduate from "../images/user-graduate.png";
 import chart from "../images/user-chart.png";
+import friends from "../images/friends.png";
+import plus from "../images/plus.png";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
@@ -92,7 +94,7 @@ const LandingScreen = ({ navigation }) => {
       >
         <View style={styles.upload_btn}>
           <Image
-            source={graduate}
+            source={tab === "primary" ? graduate : friends}
             style={{
               width: 90,
               height: 90,
@@ -100,7 +102,9 @@ const LandingScreen = ({ navigation }) => {
               marginBottom: 10,
             }}
           />
-          <Text style={styles.selected_header}>Individual Account</Text>
+          <Text style={styles.selected_header}>
+           {tab === "primary" ? "Individual Account" : "Organization Account"} 
+            </Text>
         </View>
       </TouchableOpacity>
 
@@ -109,7 +113,8 @@ const LandingScreen = ({ navigation }) => {
       >
         <View style={styles.upload_btn}>
           <Image
-            source={chart}
+            source={tab === "primary" ? chart : plus}
+
             style={{
               width: 90,
               height: 90,
@@ -117,7 +122,10 @@ const LandingScreen = ({ navigation }) => {
               marginBottom: 10,
             }}
           />
-          <Text style={styles.selected_header}>Business Account</Text>
+          <Text style={styles.selected_header}>
+          {tab === "primary" ? "Business Account" : "Others"} 
+
+            </Text>
         </View>
       </TouchableOpacity>
 
