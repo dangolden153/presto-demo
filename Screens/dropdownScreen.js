@@ -37,7 +37,7 @@ const theme = extendTheme({
 
 // "outline" | "rounded" | "unstyled" | "filled" | "underlined"
 
-const dropdownScreen = () => {
+const dropdownScreen = ({navigation}) => {
   const [service, setService] = React.useState("");
   console.log(service);
   return (
@@ -69,7 +69,8 @@ const dropdownScreen = () => {
       {/* <Center > */}
       <Container flex={1} px="3" ml="10">
         <FormControl isRequired>
-          <FormControl.Label>Choose service</FormControl.Label>
+          {/* <FormControl.Label></FormControl.Label> */}
+          <Text>Choose service</Text>
           <Select
             minWidth="300"
             accessibilityLabel="Choose Service"

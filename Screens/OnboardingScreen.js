@@ -57,7 +57,7 @@ const OnboardingScreen = ({ navigation }) => {
 
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => navigation.navigate("SecondOnboardingScreen")}
+          onPress={() => navigation.navigate("SecondOnboardingScreen")}  //    ButtomTab
           //  ButtomTab
         >
           <LinearGradient

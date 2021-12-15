@@ -12,11 +12,54 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = () => {
+    setLoading(true);
+    var formdata = new FormData();
+    formdata.append("email", email);
+    formdata.append("password", password);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch("https://api.prestohq.io/api/auth/login", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        storeData(result.access_token);
+        setLoading(false);
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  };
+
+  ////store user's token
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      console.log("user token", jsonValue);
+      await AsyncStorage.setItem("@userToken", jsonValue);
+    } catch (e) {
+      console.log("token error", e);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -47,8 +90,8 @@ const LoginScreen = ({ navigation }) => {
               <TextInput
                 placeholderTextColor={"black"}
                 style={styles.input}
-                // value={email}
-                // onChangeText={(text) => setEmail(text)}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
                 type="text"
                 autoFocus
               />
@@ -59,8 +102,8 @@ const LoginScreen = ({ navigation }) => {
               <TextInput
                 placeholderTextColor={"black"}
                 style={styles.input}
-                // value={email}
-                // onChangeText={(text) => setEmail(text)}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
                 type="password"
                 secureTextEntry
                 autoFocus
@@ -78,18 +121,20 @@ const LoginScreen = ({ navigation }) => {
             </Text>
           </View>
 
-          <Button
-            containerStyle={styles.btn}
-            buttonStyle={{
-              backgroundColor: "#0084F4",
-              padding: 20,
-              borderRadius: 10,
-            }}
-            title="Login"
-            // raised
-            // loading={loading}
-            onPress={() => navigation.navigate("CheckVerification")}
-          />
+          <TouchableOpacity activeOpacity={0.7} onPress={() => handleLogin()}>
+            <LinearGradient
+              // Button Linear Gradient
+              colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+              style={styles.btn}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text style={styles.btn_text}>Next</Text>
+              )}
+            </LinearGradient>
+          </TouchableOpacity>
+          {/* //CheckVerification */}
 
           <TouchableOpacity>
             <Text style={{ paddingTop: 20, fontSize: 16, color: "#999999" }}>
@@ -202,5 +247,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     // padding: 20,
     // backgroundColor: "pink",
+  },
+
+  btn_text: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 17,
+  },
+  btn: {
+    marginTop: 10,
+    width: "100%",
+    paddingVertical: 15,
+    borderRadius: 10,
   },
 });

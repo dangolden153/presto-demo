@@ -70,7 +70,10 @@ const Dashboard = ({ navigation }) => {
       </TouchableOpacity>
       {/* middle section container */}
       <View style={styles.mid_section}>
-        <TouchableOpacity style={styles.left_section}>
+        <TouchableOpacity
+                  onPress={() => navigation.navigate("SellGiftCardScreen")}
+
+        style={styles.left_section}>
           <Image
             source={card}
             style={{
@@ -82,10 +85,10 @@ const Dashboard = ({ navigation }) => {
               transform: [{ rotate: "120deg" }],
             }}
           />
-          <Text style={styles.section_text}>Sell Giftcard</Text>
+          <Text style={styles.section_text}>Sell Giftcard</Text> 
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("SellBitcoin")}
+          onPress={() => navigation.navigate("dropdownScreen")}  //SellBitcoin
           style={styles.right_section}
         >
           <Image

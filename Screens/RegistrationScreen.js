@@ -11,17 +11,57 @@ import {
   SafeAreaView,
   Platform,
   TouchableWithoutFeedback,
-  Keyboard,
+  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 const RegistrationScreen = ({ navigation }) => {
   const [radioBtn, setRadioBtn] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneno, setPhoneno] = useState("");
+  const [loading, setLoading] = useState(false);
   const toggleRadio = () => setRadioBtn(!radioBtn);
+
+  const handleSignup = () => {
+    setLoading(true);
+    let formdata = new FormData();
+    formdata.append("firstname", firstName);
+    formdata.append("email", email);
+    formdata.append("password", password);
+    formdata.append("password_confirmation", passwordConfirmation);
+    formdata.append("lastname", lastName);
+    formdata.append("phoneno", phoneno);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch("https://api.prestohq.io/api/auth/register", requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res?.status === "201") {
+          return navigation.navigate("LoginScreen");
+        }
+        // console.log(res)
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  };
   return (
-    <KeyboardAvoidingView
+    <View
       style={styles.container}
-      behavior="padding"
+      // behavior="padding"
       // keyboardVerticalOffset={90}
     >
       <StatusBar style="dark" />
@@ -42,14 +82,17 @@ const RegistrationScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        <View style={styles.input_container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.input_container}
+        >
           <View style={styles.inputTextContainer}>
             <Text style={styles.input_text}>First name</Text>
             <TextInput
               placeholderTextColor={"black"}
               style={styles.input}
-              // value={email}
-              // onChangeText={(text) => setEmail(text)}
+              value={firstName}
+              onChangeText={(text) => setFirstName(text)}
               type="text"
               autoFocus
             />
@@ -60,8 +103,8 @@ const RegistrationScreen = ({ navigation }) => {
             <TextInput
               placeholderTextColor={"black"}
               style={styles.input}
-              // value={email}
-              // onChangeText={(text) => setEmail(text)}
+              value={lastName}
+              onChangeText={(text) => setLastName(text)}
               type="text"
               autoFocus
             />
@@ -72,9 +115,9 @@ const RegistrationScreen = ({ navigation }) => {
             <TextInput
               placeholderTextColor={"black"}
               style={styles.input}
-              // value={email}
-              // onChangeText={(text) => setEmail(text)}
-              type="text"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              type="email"
               autoFocus
             />
           </View>
@@ -84,9 +127,9 @@ const RegistrationScreen = ({ navigation }) => {
             <TextInput
               placeholderTextColor={"black"}
               style={styles.input}
-              // value={email}
-              // onChangeText={(text) => setEmail(text)}
-              type="text"
+              value={phoneno}
+              onChangeText={(text) => setPhoneno(text)}
+              type="number"
               autoFocus
             />
           </View>
@@ -96,14 +139,27 @@ const RegistrationScreen = ({ navigation }) => {
             <TextInput
               placeholderTextColor={"black"}
               style={styles.input}
-              // value={email}
-              // onChangeText={(text) => setEmail(text)}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
               type="password"
               secureTextEntry
               autoFocus
             />
           </View>
-        </View>
+
+          <View style={styles.inputTextContainer}>
+            <Text style={styles.input_password}>Confirm Password</Text>
+            <TextInput
+              placeholderTextColor={"black"}
+              style={styles.input}
+              value={passwordConfirmation}
+              onChangeText={(text) => setPasswordConfirmation(text)}
+              type="password"
+              secureTextEntry
+              autoFocus
+            />
+          </View>
+        </ScrollView>
         <View style={styles.terms}>
           <TouchableOpacity onPress={toggleRadio} style={styles.radioBtn}>
             {radioBtn && <View style={styles.onClicked} />}
@@ -114,21 +170,22 @@ const RegistrationScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        <Button
-          containerStyle={styles.btn}
-          buttonStyle={{
-            backgroundColor: "#0084F4",
-            padding: 20,
-            borderRadius: 10,
-          }}
-          title="SIGN UP"
-          raised
-          // loading={loading}
-          // onPress={() => handleSignUp()}
-        />
+        <TouchableOpacity activeOpacity={0.7} onPress={() => handleSignup()}>
+          <LinearGradient
+            // Button Linear Gradient
+            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            style={styles.btn}
+          >
+            {loading ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={styles.btn_text}>Next</Text>
+            )}
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
       {/* </TouchableWithoutFeedback> */}
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -142,7 +199,7 @@ const styles = StyleSheet.create({
     // paddingTop: 20,
     paddingHorizontal: 20,
     // alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
   },
   header_container: {
     alignItems: "flex-start",
@@ -169,6 +226,8 @@ const styles = StyleSheet.create({
 
   input_container: {
     marginTop: 10,
+    flexGrow: 0.9,
+    // backgroundColor: "green",
   },
   inputTextContainer: {
     marginTop: 5,
@@ -195,6 +254,18 @@ const styles = StyleSheet.create({
     color: "gray",
     fontSize: 15,
   },
+
+  input_password: {
+    marginLeft: 30,
+    top: 10,
+    paddingHorizontal: 10,
+    backgroundColor: "#ffff",
+    zIndex: 200,
+    width: 160,
+    textAlign: "center",
+    color: "gray",
+    fontSize: 15,
+  },
   input: {
     // backgroundColor: "black",
     borderWidth: 1,
@@ -210,6 +281,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 15,
+
     // backgroundColor: "pink",
     // width: "100%",
     // overflow: "hidden",
@@ -237,9 +309,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     width: "85%",
   },
+  btn_text: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 17,
+  },
   btn: {
-    marginTop: 20,
-    // padding: 20,
-    // backgroundColor: "pink",
+    marginTop: 10,
+    width: "100%",
+    paddingVertical: 15,
+    borderRadius: 10,
   },
 });
