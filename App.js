@@ -29,11 +29,14 @@ import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import OtpScreen from "./Screens/OtpScreen";
 import SellGiftCardScreen from "./Screens/SellGiftCardScreen";
 import AsyncStorage from '@react-native-async-storage/async-storage';                                               
+import { Context } from "./AuthContext";
+import ValidatePinSreen from "./Screens/ValidatePinScreen";
+import ValidatePinScreen from "./Screens/ValidatePinScreen";
 
 
 
 export default function App() {
-  const [token, setToken] = useState(null)
+  const [token, setToken] = useState(null) 
 
   useEffect(() => {
     const getData = async () => {
@@ -53,13 +56,15 @@ export default function App() {
       getData()
   }, [token])
 
-  console.log("token", token)
+  console.log("Apptoken", token)
 
   const Stack = createStackNavigator();
 
   return (
     <NavigationContainer>
       {/* <NativeBaseProvider> */}
+      <Context.Provider value={{setToken,token}}>
+
       <SafeAreaProvider>
         <Stack.Navigator>
           {/* /////////////// */}
@@ -75,11 +80,23 @@ export default function App() {
   token ?  (
      <>
      
-    {/* <Stack.Screen
-    name="Dashboard"
-    component={Dashboard}
+ 
+
+<Stack.Screen
+    name="LoginScreen"
+    component={LoginScreen}
     options={{ headerShown: false }}
-  /> */}
+  />
+   <Stack.Screen
+    name="CreatePin"
+    component={CreatePin}
+    options={{ headerShown: false }}
+  />
+     <Stack.Screen
+    name="ValidatePinScreen"
+    component={ValidatePinScreen}
+    options={{ headerShown: false }}
+  />
    <Stack.Screen
     name="ButtomTab"
     component={ButtomTab}
@@ -183,6 +200,11 @@ export default function App() {
     component={CreatePin}
     options={{ headerShown: false }}
   />
+     <Stack.Screen
+    name="ValidatePinScreen"
+    component={ValidatePinScreen}
+    options={{ headerShown: false }}
+  />
   </>
   )
 }
@@ -196,6 +218,8 @@ export default function App() {
         </Stack.Navigator>
       </SafeAreaProvider>
       {/* </NativeBaseProvider> */}
+      </Context.Provider>
+
     </NavigationContainer>
   );
 }

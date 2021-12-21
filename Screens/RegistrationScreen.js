@@ -29,6 +29,9 @@ const RegistrationScreen = ({ navigation }) => {
   const toggleRadio = () => setRadioBtn(!radioBtn);
 
   const handleSignup = () => {
+    if(!radioBtn){
+      return null
+    }
     setLoading(true);
     let formdata = new FormData();
     formdata.append("firstname", firstName);
@@ -48,15 +51,15 @@ const RegistrationScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then((res) => {
         if (res?.status === "201") {
-          return navigation.navigate("LoginScreen");
+          return navigation.navigate("CheckVerification"); 
         }
-        // console.log(res)
+        console.log("res", res)
         setLoading(false);
       })
-      .catch((error) => {
-        console.log("error", error);
-        setLoading(false);
-      });
+      // .catch((error) => {
+      //   console.log("error", error);
+      //   setLoading(false);
+      // });
   };
   return (
     <View
@@ -226,6 +229,7 @@ const styles = StyleSheet.create({
 
   input_container: {
     marginTop: 10,
+    // marginBottom:40,
     flexGrow: 0.9,
     // backgroundColor: "green",
   },
@@ -321,3 +325,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+
+
+
+// messsage : {firsname :"please insert "}, {lastnme:""},{email:""}

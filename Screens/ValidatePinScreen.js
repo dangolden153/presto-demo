@@ -7,12 +7,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Context } from "../AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CreatePin = ({ navigation }) => {
+const ValidatePinScreen = ({ navigation }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
   // const { token } = useContext(Context);
-  // console.log("code", typeof code);
+//   console.log("code", typeof code);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -30,13 +30,13 @@ const CreatePin = ({ navigation }) => {
     getData();
   }, []);
 
-
+ 
   const handlePin = () => {
     var myHeaders = new Headers();
     if(!token){
       return null
     }
-    console.log("pin token", token)
+    // console.log("pin token", token)
 myHeaders.append("Authorization", `Bearer` + `${token}`);  
 
 var formdata = new FormData();
@@ -50,7 +50,7 @@ var requestOptions = {
   redirect: 'follow'
 }; 
 
-fetch("https://api.prestohq.io/api/auth/updatepin", requestOptions) 
+fetch("https://api.prestohq.io/api/auth/validatepin", requestOptions) 
   .then(response => response.text())
   .then(result => console.log(result))
   .catch(error => console.log('error', error));
@@ -80,7 +80,7 @@ fetch("https://api.prestohq.io/api/auth/updatepin", requestOptions)
           />
         </TouchableOpacity>
 
-        <Text style={styles.header}>Create Pin</Text>
+        <Text style={styles.header}>Insert Pin</Text>
       </View>
 
       <View style={styles.sub_container}>
@@ -103,7 +103,7 @@ fetch("https://api.prestohq.io/api/auth/updatepin", requestOptions)
             // }}
             cellSize={58}
           />
-          <Text style={styles.Sub_header}>Create new Pin</Text>
+          <Text style={styles.Sub_header}>Insert your Pin</Text>
         </View>
 
         <Button
@@ -123,7 +123,7 @@ fetch("https://api.prestohq.io/api/auth/updatepin", requestOptions)
   );
 };
 
-export default CreatePin;
+export default ValidatePinScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -169,3 +169,4 @@ const styles = StyleSheet.create({
     width: 250,
   },
 });
+

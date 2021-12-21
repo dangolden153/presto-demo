@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -17,8 +17,24 @@ import pics from "../images/bg.png";
 import card from "../images/Payment.png";
 import coin from "../images/Coin.png";
 import gift from "../images/gift.png";
+import AsyncStorage from '@react-native-async-storage/async-storage';                                               
+import { Context } from "../AuthContext";
 
 const Dashboard = ({ navigation }) => {
+
+  const {setToken} = useContext( Context )
+ 
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem("@userToken");
+      setToken("")
+      console.log("removed!", token)
+      // navigation.navigate("LoginScreen")
+    } catch (e) {
+      console.log("remove token error", e);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
@@ -27,7 +43,7 @@ const Dashboard = ({ navigation }) => {
         <Text style={styles.nav_text}>Hello Chief,</Text>
         <View style={styles.text_icon}>
           <Text style={styles.nav_text}>Today Thu, 30 September,</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=> logout()}>
             <Ionicons name="notifications-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>

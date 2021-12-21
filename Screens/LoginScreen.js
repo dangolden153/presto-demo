@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect,useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -18,11 +18,14 @@ import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Context } from "../AuthContext";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const {setToken, } = useContext( Context )
 
   const handleLogin = () => {
     setLoading(true);
@@ -38,10 +41,21 @@ const LoginScreen = ({ navigation }) => {
 
     fetch("https://api.prestohq.io/api/auth/login", requestOptions)
       .then((response) => response.json())
+
       .then((result) => {
-        storeData(result.access_token);
+        // console.log(result);
+        console.log("user pin",result?.user?.pin);
         setLoading(false);
-        console.log(result);
+
+        if (result?.access_token &&  result?.user?.pin) {
+          storeData(result?.access_token);
+          navigation.navigate("ValidatePinScreen")
+          setLoading(false);
+        } else{
+          storeData(result?.access_token);
+          navigation.navigate("VerifiedScreen")
+          setLoading(false);
+        }
       })
       .catch((error) => {
         console.log("error", error);
@@ -52,9 +66,10 @@ const LoginScreen = ({ navigation }) => {
   ////store user's token
   const storeData = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value);
-      console.log("user token", jsonValue);
+      const jsonValue = value;
+      // console.log("user token", jsonValue);
       await AsyncStorage.setItem("@userToken", jsonValue);
+      // setToken(jsonValue)
     } catch (e) {
       console.log("token error", e);
     }
@@ -261,3 +276,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+
+
+
