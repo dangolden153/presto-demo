@@ -6,10 +6,7 @@ import {
   View,
   KeyboardAvoidingView,
   TextInput,
-  Image,
   TouchableOpacity,
-  SafeAreaView,
-  Platform,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
@@ -24,10 +21,33 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [validate, setValidate] = useState("")
+  const {setIsAuthenticated } = useContext( Context )
 
-  const {setToken, } = useContext( Context )
 
+  const handleValidation =()=>{
+    if(!email){
+      setValidate("please use a valid email address!")
+      alert("please use a valid email address!")
+      return false
+    }
+
+    else if(!password && password.length < 6){
+      setValidate("password too short!")
+      alert("password too short!")
+      return false
+    }
+    else {
+      return true
+    }
+  }
+
+  
   const handleLogin = () => {
+    if (!handleValidation()){
+      return null
+  }
+    
     setLoading(true);
     var formdata = new FormData();
     formdata.append("email", email);
@@ -44,12 +64,20 @@ const LoginScreen = ({ navigation }) => {
 
       .then((result) => {
         // console.log(result);
-        console.log("user pin",result?.user?.pin);
+        console.log("result",result);
         setLoading(false);
+
+        if(result?.error){
+          setLoading(false);
+          // setValidate("Unauthorized, please make sure your account is verified")
+          setValidate(result?.error)
+          return null
+        }
 
         if (result?.access_token &&  result?.user?.pin) {
           storeData(result?.access_token);
-          navigation.navigate("ValidatePinScreen")
+          // navigation.navigate("CreatePin")
+          setIsAuthenticated(true)
           setLoading(false);
         } else{
           storeData(result?.access_token);
@@ -58,9 +86,12 @@ const LoginScreen = ({ navigation }) => {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("catching error", error);
         setLoading(false);
       });
+
+    
+
   };
 
   ////store user's token
@@ -162,6 +193,8 @@ const LoginScreen = ({ navigation }) => {
               </Text>
             </Text>
           </TouchableOpacity>
+
+          {validate === "" ? null : <Text style={{ fontSize:13, color:"red", opacity:.6, marginTop:20, alignSelf: "center"}}>{validate}</Text> }
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

@@ -11,7 +11,7 @@ const CreatePin = ({ navigation }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
-  // const { token } = useContext(Context);
+  const {setIsAuthenticated } = useContext( Context )
   // console.log("code", typeof code);
   useEffect(() => {
     const getData = async () => {
@@ -23,37 +23,43 @@ const CreatePin = ({ navigation }) => {
           console.log("@userToken", value);
         }
       } catch (e) {
-        console.log(e);     
+        console.log(e);
       }
     };
 
     getData();
   }, []);
 
-
   const handlePin = () => {
     var myHeaders = new Headers();
-    if(!token){
-      return null
+    if (!token) {
+      return null;
     }
-    console.log("pin token", token)
-myHeaders.append("Authorization", `Bearer` + `${token}`);  
+    console.log("pin token", token);
+    myHeaders.append("Authorization", `Bearer` + `${token}`);
 
-var formdata = new FormData();
-formdata.append("pin", code);
-formdata.append("", "");
+    var formdata = new FormData();
+    formdata.append("pin", code);
+    formdata.append("", "");
 
-var requestOptions = { 
-  method: 'POST',
-  headers: myHeaders,
-  body: formdata,
-  redirect: 'follow'
-}; 
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
 
-fetch("https://api.prestohq.io/api/auth/updatepin", requestOptions) 
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+    fetch("https://api.prestohq.io/api/auth/updatepin", requestOptions)
+      .then((response) => response.json())
+      .then((result) =>{
+        console.log(result)
+        console.log(result?.message)
+      if(result?.message === "Pin updated"){
+        setIsAuthenticated(true)
+        return
+      }
+      })
+      .catch((error) => console.log("error", error));
   };
   return (
     <View style={styles.container}>

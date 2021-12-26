@@ -8,30 +8,29 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
-  ScrollView
+  ScrollView,
 } from "react-native";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
-import { Button } from "react-native-elements";
-import DropdownGiftcard from "../components/Dropdown/DropdownGiftcard";
-import DropdownCountry from "../components/Dropdown/DropdownCountry";
-import DropdownCardType from "../components/Dropdown/DropdownCardType";
-import GiftcardValue from "../components/Dropdown/GiftcardValue";
+import Dropdown from "../components/Dropdown/Dropdown";
+import { card, countries, values } from "../components/data";
 
 const SellGiftCardScreen = ({ navigation }) => {
-  const [newPassword, setNewPassword] = useState("");
-  const [showPass, setShowPass] = useState(true);
-  const [showComfirmPass, setShowComfirmPass] = useState(true);
+  const [country, setCountry] = useState("");
+  const [type, setType] = useState("");
+  const [amount, setAmount] = useState("");
+  const [value, setValue] = useState("");
 
-  const handleToglgle = () => {
-    setShowPass(!showPass);
-  };
+  console.log(`type`, type);
+  console.log(`country`, country);
+  console.log(`amount`, amount);
+  console.log(`value`, value);
 
-  const handleToggle = () => {
-    setShowComfirmPass(!showComfirmPass);
-  };
+  // const selectCard =(value)=>{
+  //   setType(value)
+  // }
 
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
@@ -61,44 +60,85 @@ const SellGiftCardScreen = ({ navigation }) => {
         <Text style={styles.header}>Sell Giftcard</Text>
       </View>
 
-      <  ScrollView
-      showsVerticalScrollIndicator={false}
- style={styles.body}>
-        <DropdownGiftcard />
-        <DropdownCountry />
-        <DropdownCardType />
-        <GiftcardValue />
+      {/* //////////////////////////dropdown */}
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.body}>
+        <Dropdown
+          label="Giftcard"
+          placeholder="Select Card type"
+          data={card}
+          setItem={setType}
+          item={type}
+        />
+        <Dropdown
+          label="Country"
+          placeholder="Select Country"
+          data={countries}
+          setItem={setCountry}
+          item={country}
+        />
+        {/* <Dropdown
+          label="Giftcard Type"
+          placeholder="Select Giftcard Type"
+          data={card}
+          setItem={setType}
+          item={type}
+        /> */}
+        <Dropdown
+          label="Giftcard Value"
+          placeholder="Select Giftcard Value"
+          data={values}
+          setItem={setValue}
+          item={value}
+        />
 
         <View style={styles.text_input}>
-          <Text style={{fontSize:16, fontFamily:"regular", marginBottom:5, alignSelf:"flex-start"}}>Amount</Text>
-          <TextInput placeholder="$Enter the amount" style={styles.input} />
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: "regular",
+              marginBottom: 5,
+              alignSelf: "flex-start",
+            }}
+          >
+            Amount
+          </Text>
+          <TextInput
+            value={amount}
+            onChangeText={(text) => setAmount(text)}
+            placeholder="$Enter the amount"
+            style={styles.input}
+          />
         </View>
 
         <View style={styles.rate_container}>
-        <View style={styles.rate}>
-        <Text style={styles.rate_text}>Rate:</Text>
-        <Text style={styles.price}>330/$</Text>
-        </View>
+          <View style={styles.rate}>
+            <Text style={styles.rate_text}>Rate:</Text>
+            <Text style={styles.price}>330/$</Text>
+          </View>
 
-        <View style={styles.rate}>
-        <Text style={styles.rate_text}>Total amount</Text>
-        <Text style={styles.price}>N</Text>
+          <View style={styles.rate}>
+            <Text style={styles.rate_text}>Total amount</Text>
+            <Text style={styles.price}>N</Text>
+          </View>
         </View>
-        </View>
-      </  ScrollView>
+      </ScrollView>
 
       <TouchableOpacity
-          activeOpacity={0.7}
-          // onPress={() => navigation.navigate("ThirdOnboardingScreen")}
+        activeOpacity={0.7}
+        onPress={() =>
+          navigation.navigate("UploadGiftcardScreen", {
+            giftcardData: { country, type, value, amount },
+          })
+        }
+      >
+        <LinearGradient
+          // Button Linear Gradient
+          colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+          style={styles.btn}
         >
-          <LinearGradient
-            // Button Linear Gradient
-            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
-            style={styles.btn}
-          >
-            <Text style={styles.text}>Proceed</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+          <Text style={styles.text}>Proceed</Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -133,46 +173,46 @@ const styles = StyleSheet.create({
     fontFamily: "semiBold",
   },
 
-  body:{
+  body: {
     backgroundColor: "#f4fafe",
     // marginVertical: 20,
     // flexGrow:.98,
-    flex:1,
-padding:10,
-    borderRadius:20,
+    flex: 1,
+    padding: 10,
+    borderRadius: 20,
   },
-  text_input:{
-    alignItems:"center",
-    marginVertical:15,
-    paddingHorizontal:10,
+  text_input: {
+    alignItems: "center",
+    marginVertical: 15,
+    paddingHorizontal: 10,
   },
-  input:{
-    width:"100%",
+  input: {
+    width: "100%",
     backgroundColor: "white",
-    padding:15,
+    padding: 15,
     borderRadius: 10,
   },
 
-  rate_container:{
-    margin:10,
+  rate_container: {
+    margin: 10,
     backgroundColor: "white",
-    padding:15,
+    padding: 15,
     borderRadius: 10,
-    marginBottom:20
+    marginBottom: 20,
   },
-  rate:{
-flexDirection: "row",
-alignItems: "center",
+  rate: {
+    flexDirection: "row",
+    alignItems: "center",
 
-marginVertical:5
+    marginVertical: 5,
   },
-  rate_text:{
-    fontSize:16, 
+  rate_text: {
+    fontSize: 16,
     fontFamily: "regular",
-    marginRight: 10
+    marginRight: 10,
   },
-  price:{
-    fontSize:16, 
+  price: {
+    fontSize: 16,
     fontFamily: "regular",
   },
   text: {
@@ -186,5 +226,4 @@ marginVertical:5
     paddingVertical: 15,
     borderRadius: 10,
   },
-
 });

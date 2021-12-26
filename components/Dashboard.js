@@ -43,7 +43,9 @@ const Dashboard = ({ navigation }) => {
         <Text style={styles.nav_text}>Hello Chief,</Text>
         <View style={styles.text_icon}>
           <Text style={styles.nav_text}>Today Thu, 30 September,</Text>
-          <TouchableOpacity onPress={()=> logout()}>
+          <TouchableOpacity 
+          // onPress={()=> logout()}
+          >
             <Ionicons name="notifications-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -101,10 +103,10 @@ const Dashboard = ({ navigation }) => {
               transform: [{ rotate: "120deg" }],
             }}
           />
-          <Text style={styles.section_text}>Sell Giftcard</Text> 
+          <Text style={styles.section_text}>Sell{"\n"}Giftcard</Text> 
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("dropdownScreen")}  //SellBitcoin
+          onPress={() => navigation.navigate("SellBitcoin")}  //SellBitcoin
           style={styles.right_section}
         >
           <Image
@@ -118,7 +120,7 @@ const Dashboard = ({ navigation }) => {
               top: -100,
             }}
           />
-          <Text style={styles.section_text}>Sell Bitcoin</Text>
+          <Text style={styles.section_text}>Sell{"\n"}Crypto</Text>
         </TouchableOpacity>
       </View>
 
@@ -206,9 +208,10 @@ const styles = StyleSheet.create({
   },
   section_text: {
     fontSize: 22,
-    width: 100,
+    // width: 100,
     letterSpacing: 0.5,
     marginTop: 80,
+    textAlign: "center",
   },
   right_section: {
     backgroundColor: "#FFCBD3",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -20,8 +20,39 @@ import pics from "../images/Memoji.png";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
+import { Context } from "../AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const Settings = ({ navigation }) => {
+  const {setIsAuthenticated,setToken} = useContext( Context )
+
+  const Logout = async () => {
+    try {
+     await AsyncStorage.removeItem("@userToken");
+      // navigation.navigate("LoginScreen")
+        console.log("@card token", "logout");
+        setToken(null)
+    } catch (e) {
+      console.log("token remove error",e);
+    }
+  }
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("@userToken");
+        if (value !== null) {
+          // value previously stored
+          // setToken(value);
+          console.log("@card token", value);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, []);
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
@@ -209,6 +240,7 @@ const Settings = ({ navigation }) => {
           <TouchableOpacity
             style={styles.Settings_items}
             // onPress={() => navigation.navigate("Accounts")}
+            onPress={() => Logout()}
           >
             <View style={styles.box_text}>
               <LinearGradient

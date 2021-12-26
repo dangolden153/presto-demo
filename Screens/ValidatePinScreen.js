@@ -11,8 +11,11 @@ const ValidatePinScreen = ({ navigation }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
-  // const { token } = useContext(Context);
-//   console.log("code", typeof code);
+  const [validate, setValidate] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { setIsAuthenticated } = useContext(Context);
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -23,37 +26,55 @@ const ValidatePinScreen = ({ navigation }) => {
           console.log("@userToken", value);
         }
       } catch (e) {
-        console.log(e);     
+        console.log(e);
       }
     };
 
     getData();
   }, []);
 
- 
   const handlePin = () => {
-    var myHeaders = new Headers();
-    if(!token){
-      return null
+    if (!token) {
+      return null;
     }
-    // console.log("pin token", token)
-myHeaders.append("Authorization", `Bearer` + `${token}`);  
 
-var formdata = new FormData();
-formdata.append("pin", code);
-formdata.append("", "");
+    setLoading(true);
 
-var requestOptions = { 
-  method: 'POST',
-  headers: myHeaders,
-  body: formdata,
-  redirect: 'follow'
-}; 
+    let myHeaders = new Headers();
+    console.log("pin token", token);
+    myHeaders.append("Authorization", `Bearer` + `${token}`);
 
-fetch("https://api.prestohq.io/api/auth/validatepin", requestOptions) 
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+    let formdata = new FormData();
+    formdata.append("pin", code);
+    formdata.append("", "");
+
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch("https://api.prestohq.io/api/auth/validatepin", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("result", result?.message);
+
+        if (result?.message === "Pin incorrect") {
+          alert(result?.message);
+          setLoading(false);
+          // navigation.navigate("ButtomTab");
+          return null;
+         
+        }
+        setLoading(false);
+       
+        setIsAuthenticated(true)
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log("error", error);
+      });
   };
   return (
     <View style={styles.container}>
@@ -115,7 +136,7 @@ fetch("https://api.prestohq.io/api/auth/validatepin", requestOptions)
           }}
           title="Login"
           // raised
-          // loading={loading}
+          loading={loading}
           onPress={() => handlePin()}
         />
       </View>
@@ -123,7 +144,7 @@ fetch("https://api.prestohq.io/api/auth/validatepin", requestOptions)
   );
 };
 
-export default ValidatePinScreen
+export default ValidatePinScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -169,4 +190,3 @@ const styles = StyleSheet.create({
     width: 250,
   },
 });
-
