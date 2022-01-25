@@ -8,27 +8,17 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { MaterialIcons, Feather } from "@expo/vector-icons";
+import { MaterialIcons, Feather, Ionicons } from "@expo/vector-icons";
 
 const Transaction = ({ navigation }) => {
+const [uploadCard, setUploadCard] = useState(false)
+
+const togglePickCard = () => setUploadCard(!uploadCard)
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
 
-      <View style={styles.nav}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <MaterialIcons
-            name="arrow-back-ios"
-            // style={{ marginLeft: 15 }}
-            size={24}
-            color="black"
-          />
-        </TouchableOpacity>
-
-        <Text style={styles.header}>Transaction</Text>
-      </View>
-
-      {/* the body of transaction screen */}
+      {/* *************************the body of transaction screen ************************* */}
       <View style={styles.body}>
         <View style={styles.card}>
           <View style={styles.gift_card}>
@@ -51,20 +41,49 @@ const Transaction = ({ navigation }) => {
             </View>
           </View>
 
-          {/* upload container */}
-          <View style={styles.upload_container}>
-            <Text style={styles.upload_textI}>Kindly upload clear image</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("TransactionImage")}
+          {/* ****************************Card container ************************* */}
+
+          {uploadCard ?
+          
+          (
+            
+            <View style={styles.upload_container}> 
+              <Text style={styles.upload_textI}>
+                Kindly upload clear image
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("TransactionImage")}
+              >
+                <View style={styles.upload_btn}>
+                  <Feather name="upload" size={24} color="#999999" />
+                  <Text style={styles.upload_text}>
+                    Kindly upload clear picture
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          
+        )
+          :(
+            <View
+              style={{
+                width: "100%",
+                position: "relative",
+              }}
             >
-              <View style={styles.upload_btn}>
-                <Feather name="upload" size={24} color="black" />
-                <Text style={styles.upload_text}>
-                  Kindly upload clear picture
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+              <Image
+                source={{
+                  uri: "https://www-konga-com-res.cloudinary.com/w_auto,f_auto,fl_lossy,dpr_auto,q_auto/media/catalog/product/Q/B/56261_1561559385.jpg",
+                }}
+                style={{ height: 200, width: "100%" }}
+              />
+              <TouchableOpacity onPress={() => togglePickCard()}
+                style={{ position: "absolute", bottom: -10, right: 30 }}
+              >
+                <Ionicons name="ios-download-outline" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          ) }
         </View>
       </View>
     </SafeAreaView>
@@ -129,17 +148,18 @@ const styles = StyleSheet.create({
   upload_btn: {
     borderWidth: 2,
     borderStyle: "dashed",
+    borderColor: "#999999",
     borderRadius: 0.0000001,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 10,
-    padding: 30,
+    padding: 20,
     // borderStyle:"do"
   },
-  upload_textI: {
+  upload_text: {
     fontSize: 18,
-    fontWeight: "500",
+    color: "#999999",
   },
   del: {
     color: "red",

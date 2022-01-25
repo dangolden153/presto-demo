@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -8,9 +8,45 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
+  ScrollView
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Context } from "../AuthContext";
+import Loading from "./Loading";
+
+
 const TransactionCheck = ({ navigation }) => {
+  const [cardTransactions, setCardTransaction] = useState([]);
+  const { token } = useContext(Context);
+
+  useEffect(() => {
+    fetchCardTransactions();
+  }, [token]);
+  const fetchCardTransactions = () => {
+    // setLoading(true);
+    let myHeaders = new Headers();
+    console.log("token", token);
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    let requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("https://api.prestohq.io/api/allcardtransaction", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("get card transaction", result?.cardtransactions);
+        setCardTransaction(result?.cardtransactions);
+      })
+      .catch((error) => {
+        // setLoading(false);
+        setValidate("unable to process transaction");
+        console.log("error", error);
+      });
+  }; 
   const data = [
     {
       title: "Gift card",
@@ -45,6 +81,10 @@ const TransactionCheck = ({ navigation }) => {
       statusValue: "Failed",
     },
   ];
+
+  if(!cardTransactions || cardTransactions.length == 0){
+    return <Loading />
+  }
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
@@ -61,14 +101,17 @@ const TransactionCheck = ({ navigation }) => {
 
         <Text style={styles.header}>Transaction</Text>
       </View>
-      <View style={styles.body}>
+
+      <ScrollView style={styles.body}>
         <TextInput style={styles.input} placeholder="Search Transaction" />
 
-        {data.map((datas, i) => (
+        {cardTransactions.map((datas, i) => (
           <View key={i} style={styles.gift_card}>
             <View style={styles.img_title}>
               <Image
-                source={{ uri: datas.img }}
+                source={{
+                  uri: "https://www-konga-com-res.cloudinary.com/w_auto,f_auto,fl_lossy,dpr_auto,q_auto/media/catalog/product/Q/B/56261_1561559385.jpg",
+                }}
                 style={{
                   height: 90,
                   width: 70,
@@ -77,28 +120,28 @@ const TransactionCheck = ({ navigation }) => {
                 }}
               />
               <View style={styles.title_time}>
-                <Text style={styles.title}>{datas.title}</Text>
-                <Text style={styles.time}>{datas.time}</Text>
+                <Text style={styles.title}>{datas.type}</Text>
+                <Text style={styles.time}>{datas.created_at}</Text>
               </View>
             </View>
 
             <View style={styles.price_status}>
               <Text style={{ fontSize: 19 }} style={styles.time}>
-                {datas.price}
+                #{datas.amount}
               </Text>
               <Text
                 style={
-                  datas.statusValue === "Failed"
+                  datas.status === "0"
                     ? styles.status_fail
                     : styles.status_success
                 }
               >
-                {datas.status}
+                {datas.status === "0" ? "Failed" : "Successful"}
               </Text>
             </View>
           </View>
         ))}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -144,6 +187,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 17,
+    textTransform:"capitalize"
   },
   time: {
     // fontSize: 18,
@@ -168,6 +212,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 20,
     padding: 7,
+    width:"100%",
   },
   img_title: {
     flexDirection: "row",
@@ -183,6 +228,6 @@ const styles = StyleSheet.create({
     // opacity: 0.4,
   },
   price_status: {
-    width: "40%",
+    // width: "40%",
   },
 });

@@ -1,33 +1,64 @@
-import React from "react";
+import React, { useContext , useEffect, useState} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
 
 import Dashboard from "../components/Dashboard";
-import Transaction from "../components/Transaction";
 import Settings from "../components/Settings";
-import Profile from "../components/Profile";
 import {
   AntDesign,
-  FontAwesome,
-  Ionicons,
-  MaterialIcons,
 } from "@expo/vector-icons";
-// import TransactionImage from "./TransactionImage";
 import Wallet from "../components/Wallet";
-// import Withdrawal from "./Withdrawal";
-// import AddBankAccount from "./AddBankAccount";
 import TransactionCheck from "../components/TransactionCheck";
-// import SellBitcoin from "../components/SellBitcoin";
+import { Context } from "../AuthContext";
+import { useDispatch,useSelector } from "react-redux";
+import { USER_DATA } from "../Redux/Types/type";
 const Tab = createBottomTabNavigator();
 
+
+
+
 const ButtomTab = () => {
+const dispatch = useDispatch()
+const { user } = useSelector(state => state.UserReducer); 
+  // console.log('user', user); 
+
+  // ********************get user's details function *********************************
+  const { token } = useContext(Context);
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, [token]);
+
+  const fetchUserDetails = () => {
+    let myHeaders = new Headers();
+    console.log("token", token);
+
+    myHeaders.append("Authorization", "Bearer " + token);
+    let requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("https://api.prestohq.io/api/auth/profile", requestOptions) 
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("users details", result);
+        dispatch({type:USER_DATA , payload: result})
+      })
+      .catch((error) => {
+        setValidate("unable to process transaction");
+        console.log("error", error);
+      });
+  };
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        showLabel: false,
-      }}
+      // tabBarOptions={{
+      //   showLabel: false,
+      // }}
       screenOptions={{
+        tabBarShowLabel: false,
         tabBarStyle: {
           alignItems: "center",
           justifyContent: "space-between",

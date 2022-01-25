@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -7,15 +7,67 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  TextInput,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import pics from "../images/bg.png";
-const Withdrawal = ({ navigation }) => {
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* up section container */}
+import { Context } from "../AuthContext";
+import {ModalComponent} from '../components/Modal'
 
+const Withdrawal = ({ navigation }) => {
+  const [amount, setAmount] = useState("");
+  const [message, setModalMessage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const { token } = useContext(Context);
+
+
+
+  const handleWithdraw = () => {
+    if (!amount) {
+      alert("please enter an amount"); 
+      return null;
+    }
+    setLoading(true);
+
+    let myHeaders = new Headers();
+    console.log("token", token);
+
+    myHeaders.append("Authorization", "Bearer " + token);
+    let formdata = new FormData();
+    formdata.append("amount", amount);
+
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch("https://api.prestohq.io/api/requestwithdrawal", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setLoading(false);
+        console.log("bank result", result);
+        setModalMessage( result?.message ||result?.result )
+        setOpenModal( true)
+      })
+      .catch((error) => {
+        setLoading(false);
+        // setValidate("unable to process transaction");
+        console.log("error", error);
+      });
+  };
+
+  return (
+    <>
+
+        <SafeAreaView style={styles.container}>
+
+      {/* up section container */}
+ 
       <View style={styles.nav}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialIcons
@@ -44,25 +96,32 @@ const Withdrawal = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={styles.amount_input}>
-          <Text style={{ fontSize: 20, color: "#999999" }}>Enter Amount</Text>
-        </View>
+        <TextInput
+          value={amount}
+          onChangeText={(text) => setAmount(text)}
+          style={styles.input}
+          placeholder="Enter Amount"
+        />
 
         <Button
           containerStyle={styles.btn}
           buttonStyle={{
-            backgroundColor: "#0084F4",
+            backgroundColor: "#0084F4", 
             padding: 20,
             borderRadius: 10,
             marginTop: 80,
           }}
           title="Withdraw"
           // raised
-          // loading={loading}
-          onPress={() => navigation.navigate("AddBankAccount")}
+          loading={loading} 
+          onPress={() => handleWithdraw()}  
         />
       </View>
+      {openModal && <ModalComponent modalVisible={openModal} message={message}  />}
+
     </SafeAreaView>
+
+    </>
   );
 };
 
@@ -73,6 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: "white",
+    // position:"relative"
   },
 
   nav: {
@@ -130,14 +190,16 @@ const styles = StyleSheet.create({
   title_sub: {
     marginLeft: 10,
   },
-  amount_input: {
-    flexDirection: "row",
-    alignItems: "center",
-    // justifyContent: "center",
+
+  input: {
     padding: 15,
+    // paddingVertical:20,
     marginHorizontal: 10,
-    marginVertical: 20,
+    marginVertical: 10,
     backgroundColor: "white",
     borderRadius: 10,
+    width: "100%",
+    alignSelf: "center",
+    fontSize: 17,
   },
 });

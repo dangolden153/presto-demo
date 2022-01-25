@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity,ActivityIndicator } from "reac
 import { LinearGradient } from "expo-linear-gradient";
 
 const LinearButton = ({ navigation, title, onPress ,loading}) => {
+  console.log('loading', loading);
   return (
     <View>
       <TouchableOpacity

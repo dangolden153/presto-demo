@@ -87,8 +87,9 @@ const RegistrationScreen = ({ navigation }) => {
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={styles.input_container}
+          style={styles.input_container} 
         >
+          <View style={{justifyContent: 'center'}}>
           <View style={styles.inputTextContainer}>
             <Text style={styles.input_text}>First name</Text>
             <TextInput
@@ -162,6 +163,7 @@ const RegistrationScreen = ({ navigation }) => {
               autoFocus
             />
           </View>
+          </View>
         </ScrollView>
         <View style={styles.terms}>
           <TouchableOpacity onPress={toggleRadio} style={styles.radioBtn}>
@@ -228,13 +230,18 @@ const styles = StyleSheet.create({
   },
 
   input_container: {
-    marginTop: 10,
+    marginTop: 20,
     // marginBottom:40,
-    flexGrow: 0.9,
+    // flexGrow: 0.8,
+    // flex: 1,
+    height:"55%",  
     // backgroundColor: "green",
+      //  justifyContent: "center",
+      //  paddingTop:10
+
   },
   inputTextContainer: {
-    marginTop: 5,
+    marginTop: 5, 
   },
   input_text: {
     marginLeft: 30,

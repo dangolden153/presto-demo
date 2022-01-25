@@ -14,7 +14,7 @@ import { Button } from "react-native-elements";
 import NavBar from "../components/NavBar";
 import * as ImagePicker from "expo-image-picker";
 
-const SellBitcoin = ({ navigation }) => {
+const SellUsdtScreen = ({ navigation }) => {
   const [image, setImage] = useState("");
 
   // console.log(`image`, image);
@@ -39,13 +39,8 @@ const SellBitcoin = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       {/* up section container */}
 
-      <NavBar navigation={navigation} title="Select Bitcoin" />
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.body}
-        scroll
-      >
+      <NavBar navigation={navigation} title="Select USDT"  />
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.body}>
         <TouchableOpacity>
           <AntDesign
             style={styles.code}
@@ -71,16 +66,15 @@ const SellBitcoin = ({ navigation }) => {
           // loading={loading}
           //   onPress={() => navigation.navigate("CheckVerification")}
         />
+
+
         <Text style={styles.btc_text}>
           the address and the barcode are yours you can recieve bitcoin and
           please provide proof
         </Text>
         <View style={styles.upload_container}>
           <Text style={styles.upload_textI}>Kindly upload Proof</Text>
-          <TouchableOpacity
-            style={styles.upload_btn}
-            onPress={() => pickImage()}
-          >
+          <TouchableOpacity style={styles.upload_btn} onPress={() =>pickImage()}>
             <Feather name="upload" size={24} color="black" />
             <Text style={styles.upload_text}> Upload Proof</Text>
           </TouchableOpacity>
@@ -132,7 +126,6 @@ const SellBitcoin = ({ navigation }) => {
   );
 };
 
-export default SellBitcoin;
 
 const styles = StyleSheet.create({
   container: {
@@ -172,7 +165,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   time: {
-    // fontSize: 18,
     color: "#999999",
   },
 
@@ -212,6 +204,7 @@ const styles = StyleSheet.create({
     color: "#999999",
     textAlign: "center",
     marginTop: 10,
+    
   },
   upload_container: {
     marginTop: 20,
@@ -247,8 +240,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     marginTop: 10,
-    marginBottom: 30,
     alignItems: "center",
+    marginBottom: 30,
   },
   rate_header: {
     fontSize: 20,
@@ -289,3 +282,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+
+export default SellUsdtScreen

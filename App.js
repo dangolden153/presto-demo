@@ -33,9 +33,12 @@ import { Context } from "./AuthContext";
 import ValidatePinSreen from "./Screens/ValidatePinScreen";
 import ValidatePinScreen from "./Screens/ValidatePinScreen";
 import UploadGiftcardScreen from "./Screens/UploadGiftcardScreen";
+import CryptoScreen from "./Screens/CryptoScreen";
+import SellUsdtScreen from "./Screens/SellUsdtScreen";
+import PendingTransactionScreen from "./Screens/PendingTransactionScreen";
 
 export default function App() {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -53,7 +56,7 @@ export default function App() {
     };
 
     getData();
-  }, [token,isAuthenticated]);
+  }, [token, isAuthenticated]);
 
   console.log("Apptoken", token);
   console.log("isAuthenticated", isAuthenticated);
@@ -63,11 +66,11 @@ export default function App() {
   return (
     <NavigationContainer>
       {/* <NativeBaseProvider> */}
-      <Context.Provider value={{ setToken, token,setIsAuthenticated }}>
+      <Context.Provider value={{ setToken, token, setIsAuthenticated }}>
         <SafeAreaProvider>
-          <Stack.Navigator>
-
-
+          <Stack.Navigator 
+          // initialRouteName="PendingTransactionScreen"
+          >
             {token ? (
               <>
                 {/* <Stack.Screen
@@ -145,7 +148,7 @@ export default function App() {
                   component={SellGiftCardScreen}
                   options={{ headerShown: false }}
                 />
-<Stack.Screen
+                <Stack.Screen
                   name="UploadGiftcardScreen"
                   component={UploadGiftcardScreen}
                   options={{ headerShown: false }}
@@ -155,11 +158,27 @@ export default function App() {
                   component={ChangePasswordScreen}
                   options={{ headerShown: false }}
                 />
+                <Stack.Screen
+                  name="CryptoScreen"
+                  component={CryptoScreen}
+                  options={{ headerShown: false }}
+                />
+
+                <Stack.Screen
+                  name="SellUsdtScreen"
+                  component={SellUsdtScreen}
+                  options={{ headerShown: false }}
+                />
+
+<Stack.Screen
+                  name="PendingTransactionScreen"
+                  component={PendingTransactionScreen}
+                  options={{ headerShown: false }}
+                />
               </>
             ) : (
               <>
-             
-                <Stack.Screen
+                {/* <Stack.Screen
                   name="OnboardingScreen"
                   component={OnboardingScreen}
                   options={{ headerShown: false }}
@@ -173,7 +192,8 @@ export default function App() {
                   name="ThirdOnboardingScreen"
                   component={ThirdOnboardingScreen}
                   options={{ headerShown: false }}
-                />
+                /> */}
+
                 <Stack.Screen
                   name="LoginScreen"
                   component={LoginScreen}
@@ -228,3 +248,40 @@ export default function App() {
 //  if token is true
 
 //if token is true, lets some certairn screeen pass......else dont let them pass
+
+
+
+
+
+
+// bitcoin transaction connection to the server
+// usdt transaction connection to the server
+
+/////having two different transaction screens .....one is inline on figma with bitcoin and amazon and the other is inline with widthdral..so whats the different --pelumi
+/// have api that calls for bitcoin transactions and to update if its either successful or not without it specific screen
+/// screen for all btc transaction (admin) -- pelumi
+/// i dont have screen for btc transaction
+
+
+
+
+// gift card value ==== sub-category
+
+// post to btc endpoint 
+// post to usdt endpoints 
+// sell card revamping/ modification ../
+// get bank details 
+// 
+
+// transaction  ..../
+// update/create bank account ../
+// get card  transactions ../
+// withdraw api  --/
+// native base to open modal ..
+//set up redux
+// set up navvigation and context api and sign out
+// tell boss that we dont have screen for widthdraw history
+// download moment 
+
+
+// after connecting the transaction pending and add/get bank and widthdraw. login to test the endpoints

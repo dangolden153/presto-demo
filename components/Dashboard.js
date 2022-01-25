@@ -17,33 +17,48 @@ import pics from "../images/bg.png";
 import card from "../images/Payment.png";
 import coin from "../images/Coin.png";
 import gift from "../images/gift.png";
-import AsyncStorage from '@react-native-async-storage/async-storage';                                               
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from "../AuthContext";
+import AppLoading from "expo-app-loading";
+import { useFonts } from "expo-font";
+import { useSelector } from "react-redux";
 
 const Dashboard = ({ navigation }) => {
+  const { user } = useSelector(state => state.UserReducer); 
+  console.log('user', user); 
+  const [fontLoaded, error] = useFonts({
+    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
+    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
+    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
+  });
 
-  const {setToken} = useContext( Context )
- 
-  const logout = async () => {
-    try {
-      await AsyncStorage.removeItem("@userToken");
-      setToken("")
-      console.log("removed!", token)
-      // navigation.navigate("LoginScreen")
-    } catch (e) {
-      console.log("remove token error", e);
-    }
-  };
+  if (!fontLoaded) {
+    return <AppLoading />;
+  }
+
+  // const { setToken } = useContext(Context);
+
+  // const logout = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem("@userToken");
+  //     setToken("");
+  //     console.log("removed!", token);
+  //     // navigation.navigate("LoginScreen")
+  //   } catch (e) {
+  //     console.log("remove token error", e);
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
 
       <View style={styles.nav_container}>
-        <Text style={styles.nav_text}>Hello Chief,</Text>
+        <Text style={styles.boldVav_text}>Hello Chief,</Text>
         <View style={styles.text_icon}>
           <Text style={styles.nav_text}>Today Thu, 30 September,</Text>
-          <TouchableOpacity 
+          <TouchableOpacity
           // onPress={()=> logout()}
           >
             <Ionicons name="notifications-outline" size={24} color="black" />
@@ -76,22 +91,23 @@ const Dashboard = ({ navigation }) => {
             backgroundColor: "#0084F4",
             paddingVertical: 10,
             width: 160,
-            // paddingHorizontal: 30,
+            fontFamily: "semibold",
+
             borderRadius: 10,
             marginTop: 10,
           }}
           title="withdraw"
           // raised
           // loading={loading}
-          onPress={() => navigation.navigate("Withdrawal")}
+          onPress={() => navigation.navigate("Withdrawal")} // this button should navigate to AddBankAccount or Withdrawal
         />
       </TouchableOpacity>
       {/* middle section container */}
       <View style={styles.mid_section}>
         <TouchableOpacity
-                  onPress={() => navigation.navigate("SellGiftCardScreen")}
-
-        style={styles.left_section}>
+          onPress={() => navigation.navigate("SellGiftCardScreen")}
+          style={styles.left_section}
+        >
           <Image
             source={card}
             style={{
@@ -103,10 +119,10 @@ const Dashboard = ({ navigation }) => {
               transform: [{ rotate: "120deg" }],
             }}
           />
-          <Text style={styles.section_text}>Sell{"\n"}Giftcard</Text> 
+          <Text style={styles.section_text}>Sell{"\n"}Giftcard</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("SellBitcoin")}  //SellBitcoin
+          onPress={() => navigation.navigate("CryptoScreen")} //SellBitcoin
           style={styles.right_section}
         >
           <Image
@@ -129,7 +145,7 @@ const Dashboard = ({ navigation }) => {
         <View style={styles.bttm_txt_container}>
           <Text style={styles.bottom_bold_text}>Refer and earn</Text>
           <Text style={styles.bottom_text}>
-            Refer a friend today and earn #5000 to #10,000 weekly
+            Refer a friend today and earn N5000 to N10,000 weekly
           </Text>
         </View>
         <Image
@@ -158,6 +174,7 @@ const styles = StyleSheet.create({
     padding: 20,
     position: "relative",
     alignItems: "center",
+    backgroundColor: "white",
     // justifyContent: "center",
   },
 
@@ -170,8 +187,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  nav_text: {},
-
+  nav_text: {
+    fontFamily: "regular",
+  },
+  boldVav_text: {
+    fontFamily: "semibold",
+  },
   up_section: {
     width: "100%",
     height: 170,
@@ -182,7 +203,7 @@ const styles = StyleSheet.create({
   },
 
   up_section_text: {
-    fontWeight: "100",
+    fontFamily: "regular",
   },
   price_icon: {
     flexDirection: "row",
@@ -190,10 +211,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // backgroundColor: "gray",
     width: 130,
-    marginVertical: 7,
+    marginBottom: 7,
   },
   price: {
-    fontWeight: "bold",
+    fontFamily: "semibold",
     fontSize: 15,
   },
   mid_section: {
@@ -208,10 +229,10 @@ const styles = StyleSheet.create({
   },
   section_text: {
     fontSize: 22,
-    // width: 100,
     letterSpacing: 0.5,
     marginTop: 80,
     textAlign: "center",
+    fontFamily: "medium",
   },
   right_section: {
     backgroundColor: "#FFCBD3",
@@ -252,9 +273,10 @@ const styles = StyleSheet.create({
   },
   bottom_bold_text: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "bold",
   },
   bottom_text: {
     fontSize: 12,
+    fontFamily: "medium",
   },
 });

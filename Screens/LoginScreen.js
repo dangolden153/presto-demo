@@ -16,16 +16,25 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from "../AuthContext";
-
+import {useSelector, useDispatch} from 'react-redux'
+import { USER_TOKEN } from "../Redux/Types/type";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [validate, setValidate] = useState("")
-  const {setIsAuthenticated } = useContext( Context )
+  const {setIsAuthenticated ,setToken} = useContext( Context )
+  const dispatch = useDispatch()
+  const {user, userToken} = useSelector(state=> state.UserReducer)
 
 
-  const handleValidation =()=>{
+
+ 
+  let trimEmail = email.trim()
+  let trimPassword = password.trim()
+  
+  console.log('user', user); 
+  const handleValidation =()=>{  
     if(!email){
       setValidate("please use a valid email address!")
       alert("please use a valid email address!")
@@ -50,8 +59,8 @@ const LoginScreen = ({ navigation }) => {
     
     setLoading(true);
     var formdata = new FormData();
-    formdata.append("email", email);
-    formdata.append("password", password);
+    formdata.append("email", trimEmail);
+    formdata.append("password", trimPassword);
 
     var requestOptions = {
       method: "POST",
@@ -76,11 +85,12 @@ const LoginScreen = ({ navigation }) => {
 
         if (result?.access_token &&  result?.user?.pin) {
           storeData(result?.access_token);
-          // navigation.navigate("CreatePin")
+          dispatch({type: USER_TOKEN, payload:result?.access_token})
           setIsAuthenticated(true)
           setLoading(false);
         } else{
           storeData(result?.access_token);
+          dispatch({type: USER_TOKEN, payload:result?.access_token})
           navigation.navigate("VerifiedScreen")
           setLoading(false);
         }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -8,13 +8,89 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
+  ScrollView
 } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
+import NavBar from "../components/NavBar";
+import { Context } from "../AuthContext";
+import LinearButton from "../components/LinearButton";
+import { ModalComponent } from "../components/Modal";
+import { Dimensions } from "react-native";
+const deviceHeight = Dimensions.get('window').height
 
 const Accounts = ({ navigation }) => {
+  const [bank, setBank] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [accountName, setAccountName] = useState("");
+  const [validate, setValidate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setModalMessage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const { token } = useContext(Context);
+// console.log('deviceHeight', deviceHeight/20);
+  console.log(" add bank token", token);
+
+  const handleValidation = () => {
+    if (!bank) {
+      // setValidate("please select a bank!");
+      alert("please select a bank!");
+      return true;
+    }
+    if (!accountNumber) {
+      setValidate("please enter your account number!");
+      alert("please enter your account number!");
+      return true;
+    }
+    if (!accountName) { 
+      setValidate("please enter your account name!");
+      alert("please enter your account name!");
+      return true;
+    }
+    if (!token) {
+      setValidate("invalid token!"); 
+      alert("invalid token!");
+      return true;
+    }
+  };
+  const AddBankAccountDetails = () => {
+    if (handleValidation()) {
+      return null;
+    }
+    setLoading(true);
+
+    let myHeaders = new Headers();
+    console.log("token", token);
+
+    myHeaders.append("Authorization", "Bearer " + token);
+    let formdata = new FormData();
+    formdata.append("bank", bank);
+    formdata.append("accountname", accountName);
+    formdata.append("accountno", accountNumber);
+
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch("https://api.prestohq.io/api/auth/updateaccount", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setLoading(false);
+        setModalMessage(result?.message)
+        setOpenModal( true)
+        // console.log("bank result", result);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setValidate("unable to process transaction");
+        console.log("error", error);
+      });
+  };
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
@@ -24,21 +100,10 @@ const Accounts = ({ navigation }) => {
     return <AppLoading />;
   }
   return (
+    <>
     <SafeAreaView style={styles.container}>
       {/* up section container */}
-
-      <View style={styles.nav}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <MaterialIcons
-            name="arrow-back-ios"
-            // style={{ marginLeft: 15 }}
-            size={24}
-            color="black"
-          />
-        </TouchableOpacity>
-
-        <Text style={styles.header}>Transaction</Text>
-      </View>
+      <NavBar title="Account" navigation={navigation} />
 
       <View style={styles.gift_card}>
         <View style={styles.img_title}>
@@ -64,36 +129,33 @@ const Accounts = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.body}>
-        {/* <View> */}
-        <View>
-          <Text style={styles.input_text}>First Name</Text>
-          <TextInput style={styles.input} placeholder="Choose bank" />
-        </View>
+      <ScrollView style={styles.body}>
+          <Text style={styles.input_text}>Add Account</Text>
+          <TextInput
+            value={bank}
+            onChangeText={(text) => setBank(text)}
+            style={styles.input}
+            placeholder="Enter bank"
+          />
 
-        <View style={styles.text_input}>
-          <TextInput style={styles.input} placeholder="Acount number" />
-        </View>
+          <TextInput
+          value={accountNumber}
+          onChangeText={(text) => setAccountNumber(text)}
+           style={styles.input} placeholder="Acount number" />
 
-        <View style={styles.text_input}>
-          <TextInput style={styles.input} placeholder="Afeez Olamide" />
-        </View>
+          <TextInput
+          value={accountName}
+          onChangeText={(text) => setAccountName(text)}
+          style={styles.input} placeholder="Afeez Olamide" />
 
-        <TouchableOpacity
-          activeOpacity={0.7}
-          //   onPress={() => navigation.navigate("ButtomTab")}
-          //SecondOnboardingScreen
-        >
-          <LinearGradient
-            // Button Linear Gradient
-            colors={["#86c6fd", "#2e9bf7", "#2998f7"]}
-            style={styles.btn}
-          >
-            <Text style={styles.text}>Add acount</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
+      <LinearButton title="Add Account" onPress={AddBankAccountDetails} loading={loading} />
+
     </SafeAreaView>
+    {openModal && (
+        <ModalComponent modalVisible={openModal} message={message} />
+      )}
+    </>
   );
 };
 
@@ -104,7 +166,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: "white",
-    // justifyContent: "space-between",
+    justifyContent: "center",
   },
 
   nav: {
@@ -127,16 +189,13 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    // alignItems: "center",
-    justifyContent: "center",
-    marginTop: 180,
+    marginTop: 150,
     backgroundColor: "#f4fafe",
 
     borderRadius: 20,
-    // flex: 1,
     width: "100%",
-    paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingBottom: 70,
+    paddingHorizontal: 10, 
   },
   title: {
     fontSize: 17,
@@ -150,6 +209,7 @@ const styles = StyleSheet.create({
   input_text: {
     fontFamily: "semiBold",
     fontSize: 16,
+    marginTop:20
   },
 
   input: {

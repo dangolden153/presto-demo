@@ -16,6 +16,8 @@ import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import Dropdown from "../components/Dropdown/Dropdown";
 import { card, countries, values } from "../components/data";
+import { cardData } from "../utils/cardData";
+import { Button } from "react-native-elements";
 
 const SellGiftCardScreen = ({ navigation }) => {
   const [country, setCountry] = useState("");
@@ -23,14 +25,14 @@ const SellGiftCardScreen = ({ navigation }) => {
   const [amount, setAmount] = useState("");
   const [value, setValue] = useState("");
 
-  console.log(`type`, type);
-  console.log(`country`, country);
-  console.log(`amount`, amount);
+  let emptyArray = [];
+  console.log(`type`, type?.cardName);
+  // console.log(`type`, type.country);
+  console.log(`country`, country?.countryName);
   console.log(`value`, value);
 
-  // const selectCard =(value)=>{
-  //   setType(value)
-  // }
+  const ctry = country?.countryName
+  const tpe = type?.cardName
 
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
@@ -60,33 +62,32 @@ const SellGiftCardScreen = ({ navigation }) => {
         <Text style={styles.header}>Sell Giftcard</Text>
       </View>
 
-      {/* //////////////////////////dropdown */}
+      {/* **********************dropdown Select Card type ***********************/}
       <ScrollView showsVerticalScrollIndicator={false} style={styles.body}>
         <Dropdown
           label="Giftcard"
-          placeholder="Select Card type"
-          data={card}
+          placeholder={type.cardName || "Select a card"}
+          data={cardData}
           setItem={setType}
           item={type}
         />
+
+        {/* **********************dropdown Select Country ***********************/}
         <Dropdown
-          label="Country"
-          placeholder="Select Country"
-          data={countries}
+          label="Select Country"
+          selectItemLabel="Select a card"
+          placeholder={country.countryName || "Select Country"}
+          data={type !== null ? type.country : emptyArray}
           setItem={setCountry}
           item={country}
         />
-        {/* <Dropdown
-          label="Giftcard Type"
-          placeholder="Select Giftcard Type"
-          data={card}
-          setItem={setType}
-          item={type}
-        /> */}
+
+        {/* **********************dropdown Select Giftcard Value ***********************/}
         <Dropdown
-          label="Giftcard Value"
+          label="Select a card"
+          selectItemLabel="Select Country"
           placeholder="Select Giftcard Value"
-          data={values}
+          data={country.amount}
           setItem={setValue}
           item={value}
         />
@@ -121,13 +122,22 @@ const SellGiftCardScreen = ({ navigation }) => {
             <Text style={styles.price}>N</Text>
           </View>
         </View>
+
+
+        <LinearGradient
+          // Button Linear Gradient
+          colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+          style={[styles.btn,{marginBottom:30}]}
+        >
+          <Text style={styles.text}>Prepaid card</Text>
+        </LinearGradient>
       </ScrollView>
 
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() =>
           navigation.navigate("UploadGiftcardScreen", {
-            giftcardData: { country, type, value, amount },
+            giftcardData: { ctry, tpe, value, amount },
           })
         }
       >
@@ -175,11 +185,10 @@ const styles = StyleSheet.create({
 
   body: {
     backgroundColor: "#f4fafe",
-    // marginVertical: 20,
-    // flexGrow:.98,
     flex: 1,
     padding: 10,
     borderRadius: 20,
+    
   },
   text_input: {
     alignItems: "center",
@@ -198,7 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 15,
     borderRadius: 10,
-    marginBottom: 20,
+    // marginBottom: 10,
   },
   rate: {
     flexDirection: "row",

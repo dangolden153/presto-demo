@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import pics from "../images/Group.png";
-import { Button } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 const ThirdOnboardingScreen = ({ navigation }) => {
   return (
