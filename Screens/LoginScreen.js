@@ -75,17 +75,18 @@ const LoginScreen = ({ navigation }) => {
         // console.log(result);
         console.log("result",result);
         setLoading(false);
-
+        setIsAuthenticated(true)
         if(result?.error){
           setLoading(false);
           // setValidate("Unauthorized, please make sure your account is verified")
           setValidate(result?.error)
+          setIsAuthenticated(true)
           return null
         }
 
         if (result?.access_token &&  result?.user?.pin) {
           storeData(result?.access_token);
-          dispatch({type: USER_TOKEN, payload:result?.access_token})
+          // dispatch({type: USER_TOKEN, payload:result?.access_token})
           setIsAuthenticated(true)
           setLoading(false);
         } else{
@@ -109,7 +110,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       const jsonValue = value;
       // console.log("user token", jsonValue);
-      await AsyncStorage.setItem("@userToken", jsonValue);
+      await AsyncStorage.setItem("@prestoToken", jsonValue);
       // setToken(jsonValue)
     } catch (e) {
       console.log("token error", e);

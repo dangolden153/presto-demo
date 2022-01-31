@@ -1,4 +1,4 @@
-import React, { useContext, useState,useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -23,36 +23,20 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Context } from "../AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 const Settings = ({ navigation }) => {
-  const {setIsAuthenticated,setToken} = useContext( Context )
+  const { setIsAuthenticated, setToken } = useContext(Context);
 
   const Logout = async () => {
     try {
-     await AsyncStorage.removeItem("@userToken");
-      // navigation.navigate("LoginScreen")
-        console.log("@card token", "logout");
-        setToken(null)
+      await AsyncStorage.removeItem("@prestoToken");
+      console.log("@card token", "logout");
+      setIsAuthenticated(false);
     } catch (e) {
-      console.log("token remove error",e);
+      console.log("token remove error", e);
+      dispatch({ type: USER_DATA, payload: result });
     }
-  }
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@userToken");
-        if (value !== null) {
-          // value previously stored
-          // setToken(value);
-          console.log("@card token", value);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
+  };
 
-    getData();
-  }, []);
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),

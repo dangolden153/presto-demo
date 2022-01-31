@@ -20,8 +20,7 @@ const Tab = createBottomTabNavigator();
 
 const ButtomTab = () => {
 const dispatch = useDispatch()
-const { user } = useSelector(state => state.UserReducer); 
-  // console.log('user', user); 
+
 
   // ********************get user's details function *********************************
   const { token } = useContext(Context);
@@ -44,8 +43,11 @@ const { user } = useSelector(state => state.UserReducer);
     fetch("https://api.prestohq.io/api/auth/profile", requestOptions) 
       .then((response) => response.json())
       .then((result) => {
-        console.log("users details", result);
-        dispatch({type:USER_DATA , payload: result})
+        // console.log("users details", result);
+        if(result){
+          dispatch({type:USER_DATA , payload: result})
+          return
+        }
       })
       .catch((error) => {
         setValidate("unable to process transaction");

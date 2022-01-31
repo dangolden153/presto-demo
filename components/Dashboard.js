@@ -4,8 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
-  TextInput,
   Image,
   TouchableOpacity,
   SafeAreaView,
@@ -17,8 +15,6 @@ import pics from "../images/bg.png";
 import card from "../images/Payment.png";
 import coin from "../images/Coin.png";
 import gift from "../images/gift.png";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Context } from "../AuthContext";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { useSelector } from "react-redux";
@@ -26,6 +22,11 @@ import { useSelector } from "react-redux";
 const Dashboard = ({ navigation }) => {
   const { user } = useSelector(state => state.UserReducer); 
   console.log('user', user); 
+  const date = new Date()
+  const getMonth = date.getMonth()
+  const getDay = date.getDay()
+  const getDate = date.getDate()
+  console.log('getDay getMonth', getDay,getDate, getMonth);
   const [fontLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
@@ -55,7 +56,7 @@ const Dashboard = ({ navigation }) => {
       {/* up section container */}
 
       <View style={styles.nav_container}>
-        <Text style={styles.boldVav_text}>Hello Chief,</Text>
+        <Text style={styles.boldVav_text}>Hello {user?.firstname},</Text>
         <View style={styles.text_icon}>
           <Text style={styles.nav_text}>Today Thu, 30 September,</Text>
           <TouchableOpacity
@@ -66,7 +67,7 @@ const Dashboard = ({ navigation }) => {
         </View>
       </View>
 
-      {/* up section container */}
+      {/* ******************* up section container******************************* */}
       <TouchableOpacity
         onPress={() => navigation.navigate("ButtomTab")}
         style={styles.up_section}
@@ -82,7 +83,7 @@ const Dashboard = ({ navigation }) => {
         />
         <Text style={styles.up_section_text}>Your available balance</Text>
         <View style={styles.price_icon}>
-          <Text style={styles.price}>150,000,00</Text>
+          <Text style={styles.price}>{user?.balance} .00k</Text>
           <Feather name="eye" size={24} color="black" />
         </View>
         <Button
@@ -192,6 +193,7 @@ const styles = StyleSheet.create({
   },
   boldVav_text: {
     fontFamily: "semibold",
+    textTransform: "capitalize"
   },
   up_section: {
     width: "100%",
@@ -215,7 +217,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: "semibold",
-    fontSize: 15,
+    fontSize: 16,
   },
   mid_section: {
     width: "100%",
