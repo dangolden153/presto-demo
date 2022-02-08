@@ -30,10 +30,9 @@ const Settings = ({ navigation }) => {
     try {
       await AsyncStorage.removeItem("@prestoToken");
       console.log("@card token", "logout");
-      setIsAuthenticated(false);
+      setIsAuthenticated(false);  
     } catch (e) {
       console.log("token remove error", e);
-      dispatch({ type: USER_DATA, payload: result });
     }
   };
 
@@ -43,7 +42,7 @@ const Settings = ({ navigation }) => {
   });
 
   if (!firstLoaded) {
-    return <AppLoading />;
+    return <AppLoading />; 
   }
   return (
     <SafeAreaView style={styles.container}>

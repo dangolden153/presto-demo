@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -9,23 +9,47 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import { AntDesign, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Feather,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import NavBar from "../components/NavBar";
 import * as ImagePicker from "expo-image-picker";
+import BitcoinModalScreen from "../components/BitcoinModal";
+import { Context } from "../AuthContext";
+import LinearButton from "../components/LinearButton";
+import { ModalComponent } from "../components/Modal";
+import { useDispatch } from "react-redux";
+import { handleSellBtc } from "../Redux/Actions/crptoTransaction";
 
 const SellBitcoin = ({ navigation }) => {
   const [image, setImage] = useState("");
-
+  const [openModal, setOpenModal] = useState(true);
+  const [openResModal, setOpenResModal] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setModalMessage] = useState("");
+  const { token } = useContext(Context);
+  const dispatch = useDispatch(); 
+  const USD = 450;
+  const UsdToNaira = USD * parseInt(amount);
+  const handleToggleModal = () => {
+    setOpenModal(!openModal);
+  };
   // console.log(`image`, image);
+  // console.log("set amount btc", amount);
+  // console.log("cal btc", UsdToNaira);
 
-  /// pick image from photo library
+  ///******* */ pick image from photo library ********
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      // aspect: [6, 10],  
-      aspect: [4, 4],  
+      // aspect: [6, 10],
+      aspect: [4, 4],
       quality: 1,
     });
 
@@ -35,100 +59,152 @@ const SellBitcoin = ({ navigation }) => {
     }
   };
 
+  ///*******************submit card function *********************
+  const handleSubmit = () => {
+    dispatch(
+      handleSellBtc(
+        image,
+        amount,
+        token,
+        setModalMessage,
+        setOpenResModal,
+        setLoading
+      )
+    );
+  };
+
+  
   return (
-    <SafeAreaView style={styles.container}>
-      {/* up section container */}
+    <>
+      <SafeAreaView style={styles.container}>
+        {/* up section container */}
 
-      <NavBar navigation={navigation} title="Select Bitcoin" />
+        <NavBar navigation={navigation} title="Select Bitcoin" />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.body}
-        scroll
-      >
-        <TouchableOpacity>
-          <AntDesign
-            style={styles.code}
-            name="qrcode"
-            size={200}
-            color="black"
-          />
-        </TouchableOpacity>
-        <Text style={styles.btc_address}>BTC Wallet Details</Text>
-        <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
-        <Button
-          containerStyle={styles.btn}
-          buttonStyle={{
-            backgroundColor: "#0084F4",
-            padding: 15,
-            borderRadius: 10,
-            width: 350,
-            fontSize: 17,
-            marginTop: 5,
-          }}
-          title="Click to copy"
-          // raised
-          // loading={loading}
-          //   onPress={() => navigation.navigate("CheckVerification")}
-        />
-        <Text style={styles.btc_text}>
-          the address and the barcode are yours you can recieve bitcoin and
-          please provide proof
-        </Text>
-        <View style={styles.upload_container}>
-          <Text style={styles.upload_textI}>Kindly upload Proof</Text>
-          <TouchableOpacity
-            style={styles.upload_btn}
-            onPress={() => pickImage()}
-          >
-            <Feather name="upload" size={24} color="black" />
-            <Text style={styles.upload_text}> Upload Proof</Text>
-          </TouchableOpacity>
-        </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.body}
+          scroll
+        >
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity>
+              <AntDesign
+                style={styles.code}
+                name="qrcode"
+                size={180}
+                color="black"
+              />
+            </TouchableOpacity>
+            <Text style={styles.btc_address}>BTC Wallet Details</Text>
+            <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
+          </View>
 
-        {image ? (
-          <View style={{ position: "relative" }}>
-          <TouchableOpacity
-            style={styles.icon_container}
-            onPress={() => setImage("")}
-          >
-            <Ionicons name="close" color="white" size={25} />
-          </TouchableOpacity>
-          <Image
-            source={{ uri: image }}
-            style={{ width: 170, height: 170, margin: 10, }}
-          />
-        </View>
-      
-        ) : (
-          <View style={styles.btc_table}>
-            <Text style={styles.rate_header}>Sell Bitcoin</Text>
+          {/* <Button
+            containerStyle={styles.btn}
+            buttonStyle={{
+              backgroundColor: "#0084F4",
+              padding: 15,
+              borderRadius: 10,
+              width: 350,
+              fontSize: 17,
+              marginTop: 5,
+            }}
+            title="Click to copy"
+            // raised
+            // loading={loading}
+            //   onPress={() => navigation.navigate("CheckVerification")}
+            onPress={() => handleModal()}
+          /> */}
+          <LinearButton title="Click to copy" onPress={handleToggleModal} />
+          <Text style={styles.btc_text}>
+            the address and the barcode are yours you can recieve bitcoin and
+            please provide proof
+          </Text>
+          <View style={styles.upload_container}>
+            <Text style={styles.upload_textI}>Kindly upload Proof</Text>
+            <TouchableOpacity
+              style={styles.upload_btn}
+              onPress={() => pickImage()}
+            >
+              <Feather name="upload" size={24} color="black" />
+              <Text style={styles.upload_text}> Upload Proof</Text>
+            </TouchableOpacity>
+          </View>
 
-            <View style={styles.value_table}>
-              <View style={styles.value_rates}>
-                <Text style={styles.value_header}>Value</Text>
-                <Text style={styles.value_header}>Rate </Text>
+          {image ? (
+            <View
+              style={{ position: "relative", width: "100%", marginBottom: 20 }}
+            >
+              <View style={{ position: "relative", alignSelf: "center" }}>
+                <TouchableOpacity
+                  style={styles.icon_container}
+                  onPress={() => setImage("")}
+                >
+                  <Ionicons name="close" color="white" size={25} />
+                </TouchableOpacity>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 170, height: 170, margin: 10 }}
+                />
               </View>
 
-              <View style={styles.value_rates}>
-                <Text style={styles.value}>less that 100</Text>
-                <Text style={styles.value}>520</Text>
-              </View>
+              <LinearButton
+                title="Sell Btc"
+                loading={loading}
+                onPress={handleSubmit}
+              />
+            </View>
+          ) : (
+            <View style={styles.btc_table}>
+              <Text style={styles.rate_header}>Sell Bitcoin</Text>
 
-              <View style={styles.value_rates}>
-                <Text style={styles.value}>100+ to 1,000</Text>
-                <Text style={styles.value}>535</Text>
-              </View>
+              <View style={styles.value_table}>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value_header}>Value</Text>
+                  <Text style={styles.value_header}>Rate </Text>
+                </View>
 
-              <View style={styles.value_rates}>
-                <Text style={styles.value}>Above 1,000</Text>
-                <Text style={styles.value}>550</Text>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>less that 100</Text>
+                  <Text style={styles.value}>520</Text>
+                </View>
+
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>100+ to 1,000</Text>
+                  <Text style={styles.value}>535</Text>
+                </View>
+
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>Above 1,000</Text>
+                  <Text style={styles.value}>550</Text>
+                </View>
               </View>
             </View>
-          </View>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+
+      {/* *********Bitcoin  modal************************** */}
+      {openModal && (
+        <BitcoinModalScreen
+          open={openModal}
+          close={setOpenModal}
+          handleToggleModal={handleToggleModal}
+          amount={amount}
+          setAmount={setAmount}
+          UsdToNaira={UsdToNaira}
+        />
+      )}
+
+      {/* *********response modal************************** */}
+      {openResModal && (
+        <ModalComponent
+          modalVisible={openResModal}
+          setModalVisible={setOpenResModal}
+          message={message}
+        />
+      )}
+    </>
   );
 };
 
@@ -139,6 +215,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: "white",
+    width: "100%",
   },
 
   nav: {
@@ -162,7 +239,7 @@ const styles = StyleSheet.create({
 
   body: {
     backgroundColor: "#f4fafe",
-    alignItems: "center",
+    // alignItems: "center",
     marginTop: 20,
     borderRadius: 20,
     width: "100%",

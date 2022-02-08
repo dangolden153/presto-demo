@@ -6,17 +6,12 @@ import LinearButton from "../components/LinearButton";
 import { Context } from "../AuthContext";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {ModalComponent} from '../components/Modal'
+import { ModalComponent } from "../components/Modal";
 
-
-
-
-const UploadGiftcardScreen = ({ route, navigation, }) => {
+const UploadGiftcardScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [receipt, setReceipt] = useState("");
-  // const { token } = useContext(Context);
-  const [token, setToken] = useState(null);
   const [validate, setValidate] = useState("");
   const [message, setModalMessage] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -24,23 +19,8 @@ const UploadGiftcardScreen = ({ route, navigation, }) => {
   const { ctry, tpe, amount, value } = route?.params?.giftcardData;
 
   console.log("routes", route?.params?.giftcardData);
-  // console.log("image", image);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@userToken");
-        if (value !== null) {
-          // value previously stored
-          setToken(value);
-          console.log("@card token", value);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
 
-    getData();
-  }, []);
+  const { token } = useContext(Context);
 
   /// pick image from photo library
   const pickImage = async () => {
@@ -112,13 +92,15 @@ const UploadGiftcardScreen = ({ route, navigation, }) => {
           setModalMessage(result?.result);
           setOpenModal(true);
         } else {
+          setOpenModal(true);
           setModalMessage("unable to process transaction");
         }
         console.log("card result", result);
       })
       .catch((error) => {
         setLoading(false);
-        setValidate("unable to process transaction"); 
+        setOpenModal(true);
+        setModalMessage("unable to process transaction");
         console.log("error", error);
       });
   };
@@ -145,7 +127,7 @@ const UploadGiftcardScreen = ({ route, navigation, }) => {
               </TouchableOpacity>
               <Image
                 source={{ uri: image }}
-                style={{ width: 120, height: 120, margin: 10 }} 
+                style={{ width: 120, height: 120, margin: 10 }}
               />
             </View>
           ) : null}
@@ -255,6 +237,8 @@ const UploadGiftcardScreen = ({ route, navigation, }) => {
           ) : null}
         </View>
       </View>
+
+      {/* *********response modal************************** */}
       {openModal && (
         <ModalComponent modalVisible={openModal} message={message} />
       )}

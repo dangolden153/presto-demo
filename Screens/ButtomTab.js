@@ -32,7 +32,7 @@ const dispatch = useDispatch()
   const fetchUserDetails = () => {
     let myHeaders = new Headers();
     console.log("token", token);
-
+  
     myHeaders.append("Authorization", "Bearer " + token);
     let requestOptions = {
       method: "GET",

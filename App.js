@@ -48,10 +48,10 @@ export default function App() {
 // download moment ../
 // get users details and store to redux state ../
 // date AND time on dashboard ../
-// set up navvigation and context api and sign out ../
+// set up navvigation and context api and sign out ../ ✅✅ 
 // tell boss that we dont have screen for widthdraw history
 
-// usdt transaction
-// btc transaction
+// usdt transaction and modal
+// btc transaction and madal
 // update pin and password 
 // after connecting the transaction pending and add/get bank and widthdraw. login to test the endpoints

@@ -38,10 +38,10 @@ import SellUsdtScreen from "./Screens/SellUsdtScreen";
 import PendingTransactionScreen from "./Screens/PendingTransactionScreen";
 
 const AppNavigator = () => {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  
+
   // *************user token check*********************************
   useEffect(() => {
     const getData = async () => {
@@ -54,17 +54,24 @@ const AppNavigator = () => {
       }
     };
 
-    getData();
-  }, [ isAuthenticated]);
+    getData(); 
+  }, [isAuthenticated,setIsAuthenticated]);
 
-  console.log("Apptoken", token);
-  console.log("isAuthenticated", isAuthenticated);
+  // console.log("Apptoken", token);
+  // console.log("isAuthenticated", isAuthenticated);
 
   const Stack = createStackNavigator();
 
   return (
     <NavigationContainer>
-      <Context.Provider value={{ setToken, token, setIsAuthenticated }}>
+      <Context.Provider
+        value={{
+          setToken,
+          token,
+          setIsAuthenticated,
+         
+        }}
+      >
         <SafeAreaProvider>
           <Stack.Navigator
           // initialRouteName="PendingTransactionScreen"

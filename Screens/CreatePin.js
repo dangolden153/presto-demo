@@ -16,11 +16,11 @@ const CreatePin = ({ navigation }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const value = await AsyncStorage.getItem("@userToken");
+        const value = await AsyncStorage.getItem("@prestoToken");
         if (value !== null) {
           // value previously stored
           setToken(value);
-          console.log("@userToken", value);
+          console.log("@prestoToken", value);
         }
       } catch (e) {
         console.log(e);

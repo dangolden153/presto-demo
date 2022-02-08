@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -9,14 +8,28 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import { AntDesign, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import NavBar from "../components/NavBar";
 import * as ImagePicker from "expo-image-picker";
+import { handleSellUsdt } from "../Redux/Actions/crptoTransaction";
+import { ModalComponent } from "../components/Modal";
+import BitcoinModalScreen from "../components/BitcoinModal";
 
 const SellUsdtScreen = ({ navigation }) => {
   const [image, setImage] = useState("");
-
+  const [openModal, setOpenModal] = useState(true);
+  const [openResModal, setOpenResModal] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setModalMessage] = useState("");
+  const { token } = useContext(Context);
+  const dispatch = useDispatch();
+  const USD = 450;
+  const UsdToNaira = USD * parseInt(amount);
+  const handleToggleModal = () => {
+    setOpenModal(!openModal);
+  };
   // console.log(`image`, image);
 
   /// pick image from photo library
@@ -24,8 +37,8 @@ const SellUsdtScreen = ({ navigation }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      // aspect: [6, 10],  
-      aspect: [4, 4],  
+      // aspect: [6, 10],
+      aspect: [4, 4],
       quality: 1,
     });
 
@@ -35,97 +48,138 @@ const SellUsdtScreen = ({ navigation }) => {
     }
   };
 
+  ///*******************submit card function *********************
+  const handleSubmit = () => {
+    dispatch(
+      handleSellUsdt(
+        image,
+        amount,
+        token,
+        setModalMessage,
+        setOpenResModal,
+        setLoading
+      )
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      {/* up section container */}
+    <>
+      <SafeAreaView style={styles.container}>
+        {/* up section container */}
 
-      <NavBar navigation={navigation} title="Select USDT"  />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.body}>
-        <TouchableOpacity>
-          <AntDesign
-            style={styles.code}
-            name="qrcode"
-            size={200}
-            color="black"
-          />
-        </TouchableOpacity>
-        <Text style={styles.btc_address}>BTC Wallet Details</Text>
-        <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
-        <Button
-          containerStyle={styles.btn}
-          buttonStyle={{
-            backgroundColor: "#0084F4",
-            padding: 15,
-            borderRadius: 10,
-            width: 350,
-            fontSize: 17,
-            marginTop: 5,
-          }}
-          title="Click to copy"
-          // raised
-          // loading={loading}
-          //   onPress={() => navigation.navigate("CheckVerification")}
-        />
-
-
-        <Text style={styles.btc_text}>
-          the address and the barcode are yours you can recieve bitcoin and
-          please provide proof
-        </Text>
-        <View style={styles.upload_container}>
-          <Text style={styles.upload_textI}>Kindly upload Proof</Text>
-          <TouchableOpacity style={styles.upload_btn} onPress={() =>pickImage()}>
-            <Feather name="upload" size={24} color="black" />
-            <Text style={styles.upload_text}> Upload Proof</Text>
+        <NavBar navigation={navigation} title="Select USDT" />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.body}
+        >
+          <TouchableOpacity>
+            <AntDesign
+              style={styles.code}
+              name="qrcode"
+              size={200}
+              color="black"
+            />
           </TouchableOpacity>
-        </View>
-
-        {image ? (
-          <View style={{ position: "relative" }}>
-          <TouchableOpacity
-            style={styles.icon_container}
-            onPress={() => setImage("")}
-          >
-            <Ionicons name="close" color="white" size={25} />
-          </TouchableOpacity>
-          <Image
-            source={{ uri: image }}
-            style={{ width: 170, height: 170, margin: 10, }}
+          <Text style={styles.btc_address}>BTC Wallet Details</Text>
+          <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
+          <Button
+            containerStyle={styles.btn}
+            buttonStyle={{
+              backgroundColor: "#0084F4",
+              padding: 15,
+              borderRadius: 10,
+              width: 350,
+              fontSize: 17,
+              marginTop: 5,
+            }}
+            title="Click to copy"
+            // raised
+            // loading={loading}
+            //   onPress={() => navigation.navigate("CheckVerification")}
           />
-        </View>
-      
-        ) : (
-          <View style={styles.btc_table}>
-            <Text style={styles.rate_header}>Sell Bitcoin</Text>
 
-            <View style={styles.value_table}>
-              <View style={styles.value_rates}>
-                <Text style={styles.value_header}>Value</Text>
-                <Text style={styles.value_header}>Rate </Text>
-              </View>
+          <Text style={styles.btc_text}>
+            the address and the barcode are yours you can recieve bitcoin and
+            please provide proof
+          </Text>
+          <View style={styles.upload_container}>
+            <Text style={styles.upload_textI}>Kindly upload Proof</Text>
+            <TouchableOpacity
+              style={styles.upload_btn}
+              onPress={() => pickImage()}
+            >
+              <Feather name="upload" size={24} color="black" />
+              <Text style={styles.upload_text}> Upload Proof</Text>
+            </TouchableOpacity>
+          </View>
 
-              <View style={styles.value_rates}>
-                <Text style={styles.value}>less that 100</Text>
-                <Text style={styles.value}>520</Text>
-              </View>
+          {image ? (
+            <View style={{ position: "relative" }}>
+              <TouchableOpacity
+                style={styles.icon_container}
+                onPress={() => setImage("")}
+              >
+                <Ionicons name="close" color="white" size={25} />
+              </TouchableOpacity>
+              <Image
+                source={{ uri: image }}
+                style={{ width: 170, height: 170, margin: 10 }}
+              />
+            </View>
+          ) : (
+            <View style={styles.btc_table}>
+              <Text style={styles.rate_header}>Sell Bitcoin</Text>
 
-              <View style={styles.value_rates}>
-                <Text style={styles.value}>100+ to 1,000</Text>
-                <Text style={styles.value}>535</Text>
-              </View>
+              <View style={styles.value_table}>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value_header}>Value</Text>
+                  <Text style={styles.value_header}>Rate </Text>
+                </View>
 
-              <View style={styles.value_rates}>
-                <Text style={styles.value}>Above 1,000</Text>
-                <Text style={styles.value}>550</Text>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>less that 100</Text>
+                  <Text style={styles.value}>520</Text>
+                </View>
+
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>100+ to 1,000</Text>
+                  <Text style={styles.value}>535</Text>
+                </View>
+
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>Above 1,000</Text>
+                  <Text style={styles.value}>550</Text>
+                </View>
               </View>
             </View>
-          </View>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+
+      {/* *********Bitcoin  modal************************** */}
+      {openModal && (
+        <BitcoinModalScreen
+          open={openModal}
+          close={setOpenModal}
+          handleToggleModal={handleToggleModal}
+          amount={amount}
+          setAmount={setAmount}
+          UsdToNaira={UsdToNaira}
+          usdt
+        />
+      )}
+
+      {/* *********response modal************************** */}
+      {openResModal && (
+        <ModalComponent
+          modalVisible={openResModal}
+          setModalVisible={setOpenResModal}
+          message={message}
+        />
+      )}
+    </>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -204,7 +258,6 @@ const styles = StyleSheet.create({
     color: "#999999",
     textAlign: "center",
     marginTop: 10,
-    
   },
   upload_container: {
     marginTop: 20,
@@ -283,5 +336,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-export default SellUsdtScreen
+export default SellUsdtScreen;
