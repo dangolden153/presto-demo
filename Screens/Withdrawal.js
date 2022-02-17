@@ -12,7 +12,7 @@ import {
 import { Button } from "react-native-elements";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import pics from "../images/bg.png";
-import { Context } from "../AuthContext";
+import { Context } from "../context";
 import {ModalComponent} from '../components/Modal'
 
 const Withdrawal = ({ navigation }) => {

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
-} from "react-native";
+} from "react-native"; 
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
@@ -19,7 +19,7 @@ import { Context } from "../context";
 import { ModalComponent } from "../components/Modal";
 import LinearButton from "../components/LinearButton";
 
-const ChangePasswordScreen = ({ navigation }) => {
+const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState("");
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
@@ -27,7 +27,6 @@ const ChangePasswordScreen = ({ navigation }) => {
   });
   const dispatch = useDispatch();
   const {
-    token,
     openModal,
     setOpenModal,
     loading,
@@ -36,9 +35,10 @@ const ChangePasswordScreen = ({ navigation }) => {
     setModalMessage,
   } = useContext(Context);
 
-  const handlePasswordUpdate = () => {
+
+  const handleReset = () => {
     dispatch(
-      updatePassword(email, token, setModalMessage, setOpenModal, setLoading)
+      updatePassword(email, setModalMessage, setOpenModal, setLoading)
     );
   };
 
@@ -47,7 +47,7 @@ const ChangePasswordScreen = ({ navigation }) => {
   }
   return (
     <>
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         {/* up section container */}
 
         <View style={styles.nav}>
@@ -63,7 +63,7 @@ const ChangePasswordScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
 
-          <Text style={styles.header}>Change Password</Text>
+          <Text style={styles.header}>Forgot Password</Text>
         </View>
 
         {/* <Text style={styles.text}>how do you want to recieve a reset code?</Text> */}
@@ -73,7 +73,7 @@ const ChangePasswordScreen = ({ navigation }) => {
           <TextInput
             value={setEmail}
             onChangeText={(text) => setEmail(text)}
-            placeholderTextColor="red"
+            placeholderTextColor="#e8e6ea"
             placeholder="adenikeSola@gmail.com"
             style={styles.input}
           />
@@ -85,10 +85,10 @@ const ChangePasswordScreen = ({ navigation }) => {
         <LinearButton
           title="Reset password"
           loading={loading}
-          onPress={handlePasswordUpdate}
+          onPress={handleReset}
         />
        
-      </SafeAreaView>
+      </View>
 
       {/* *********response modal************************** */}
       {openModal && (
@@ -96,13 +96,14 @@ const ChangePasswordScreen = ({ navigation }) => {
           modalVisible={openModal}
           setModalVisible={setOpenModal}
           message={message}
+          navigate="LoginScreen"
         />
       )}
     </>
   );
 };
 
-export default ChangePasswordScreen;
+export default ForgotPassword
 
 const styles = StyleSheet.create({
   container: {
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   input: {
-    borderColor: "red",
+     borderColor: "#e8e6ea",
     borderWidth: 1,
     padding: 10,
     marginVertical: 10,
@@ -162,3 +163,5 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
+
+

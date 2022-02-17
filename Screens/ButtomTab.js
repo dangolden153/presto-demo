@@ -1,59 +1,65 @@
-import React, { useContext , useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
 
 import Dashboard from "../components/Dashboard";
 import Settings from "../components/Settings";
-import {
-  AntDesign,
-} from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import Wallet from "../components/Wallet";
 import TransactionCheck from "../components/TransactionCheck";
-import { Context } from "../AuthContext";
-import { useDispatch,useSelector } from "react-redux";
+import { Context } from "../context";
+import { useDispatch, useSelector } from "react-redux";
 import { USER_DATA } from "../Redux/Types/type";
+import { fetchCardTransactions } from "../Redux/Actions/crptoTransaction";
 const Tab = createBottomTabNavigator();
 
-
-
-
 const ButtomTab = () => {
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { token,setModalMessage, } = useContext(Context);
+  const { transaction } = useSelector((state) => state.TransactionReducer);
 
 
-  // ********************get user's details function *********************************
-  const { token } = useContext(Context);
-
+  // *************get user's details  **************************
   useEffect(() => {
     fetchUserDetails();
-  }, [token]);
+  }, []);
 
+ // *************fetch card transaction **************************
+  useEffect(() => {
+    dispatch(fetchCardTransactions(token,setModalMessage,));
+  }, []); 
+
+
+ // *************user details function**************************
   const fetchUserDetails = () => {
     let myHeaders = new Headers();
-    console.log("token", token);
-  
-    myHeaders.append("Authorization", "Bearer " + token);
+    // console.log("fetchUserDetails token", token);
+
+    myHeaders.append("Authorization", "Bearer " + token); 
     let requestOptions = {
       method: "GET",
       headers: myHeaders,
       redirect: "follow",
     };
 
-    fetch("https://api.prestohq.io/api/auth/profile", requestOptions) 
+    fetch("https://api.prestohq.io/api/auth/profile", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         // console.log("users details", result);
-        if(result){
-          dispatch({type:USER_DATA , payload: result})
-          return
+        if (result) {
+          dispatch({ type: USER_DATA, payload: result });
+          return;
         }
       })
       .catch((error) => {
-        setValidate("unable to process transaction");
-        console.log("error", error);
+        // setValidate("unable to process users details");
+        console.log("users details error", error);
       });
   };
+
+ 
+
   return (
     <Tab.Navigator
       // tabBarOptions={{

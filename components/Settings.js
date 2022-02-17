@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
+import React, { useContext, } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,12 +14,11 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { Button } from "react-native-elements";
 import pics from "../images/Memoji.png";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
-import { Context } from "../AuthContext";
+import { Context } from "../context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Settings = ({ navigation }) => {
@@ -30,7 +28,7 @@ const Settings = ({ navigation }) => {
     try {
       await AsyncStorage.removeItem("@prestoToken");
       console.log("@card token", "logout");
-      setIsAuthenticated(false);  
+      setIsAuthenticated(false);
     } catch (e) {
       console.log("token remove error", e);
     }
@@ -42,7 +40,7 @@ const Settings = ({ navigation }) => {
   });
 
   if (!firstLoaded) {
-    return <AppLoading />; 
+    return <AppLoading />;
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -91,11 +89,10 @@ const Settings = ({ navigation }) => {
         />
       </TouchableOpacity>
 
-      {/* <profile accout Bvn> */}
-
+      {/* ***********   profile account Bvn ***************** * */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.body}>
-          {/* <profile accout Bvn> */}
+          {/* ***********   Edit profile ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
             onPress={() => navigation.navigate("EditProfile")}
@@ -111,8 +108,7 @@ const Settings = ({ navigation }) => {
             <Ionicons name="ios-chevron-forward" size={24} color="black" />
           </TouchableOpacity>
 
-          {/* < accout > */}
-
+          {/* ***********   account ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
             onPress={() => navigation.navigate("Accounts")}
@@ -128,7 +124,7 @@ const Settings = ({ navigation }) => {
             <Ionicons name="ios-chevron-forward" size={24} color="black" />
           </TouchableOpacity>
 
-          {/* <Text>Bvn verification</Text> */}
+          {/* ***********  Bvn verification ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
             // onPress={() => navigation.navigate("Bvn")}
@@ -145,10 +141,15 @@ const Settings = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* <changen password and change pin> */}
+
+
+{/* ***********  change password and change pin ***************** * */}
         <Text style={styles.heading}>Security</Text>
 
         <View style={styles.body}>
+
+
+{/* ***********  Change Password ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
             onPress={() => navigation.navigate("ChangePasswordScreen")}
@@ -164,11 +165,11 @@ const Settings = ({ navigation }) => {
             <Ionicons name="ios-chevron-forward" size={24} color="black" />
           </TouchableOpacity>
 
-          {/* < accout > */}
 
+{/* ***********  Change Pin ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
-            // onPress={() => navigation.navigate("ComfirmPa")}
+            onPress={() => navigation.navigate("ChangePin")}
           >
             <View style={styles.box_text}>
               <LinearGradient
@@ -182,14 +183,16 @@ const Settings = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Account and support */}
 
+{/* ***********  Account and support ***************** * */}
         <Text style={styles.heading}>Account and Support</Text>
 
         <View style={styles.body}>
+
+  {/* *********** Rate Us ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
-            // onPress={() => navigation.navigate("EditProfile")}
+            onPress={() => navigation.navigate("RateUsScreen")}
           >
             <View style={styles.box_text}>
               <LinearGradient
@@ -202,11 +205,10 @@ const Settings = ({ navigation }) => {
             <Ionicons name="ios-chevron-forward" size={24} color="black" />
           </TouchableOpacity>
 
-          {/* < Help & Support > */}
-
+{/* ***********Help & Support***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
-            // onPress={() => navigation.navigate("Accounts")}
+            onPress={() => navigation.navigate("SupportScreen")}
           >
             <View style={styles.box_text}>
               <LinearGradient
@@ -219,8 +221,9 @@ const Settings = ({ navigation }) => {
             <Ionicons name="ios-chevron-forward" size={24} color="black" />
           </TouchableOpacity>
 
-          {/* About Us */}
-          <TouchableOpacity
+
+{/* *********** About Us ***************** * */}
+        <TouchableOpacity
             style={styles.Settings_items}
             // onPress={() => navigation.navigate("Accounts")}
             onPress={() => Logout()}

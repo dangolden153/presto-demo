@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,9 @@ import * as ImagePicker from "expo-image-picker";
 import { handleSellUsdt } from "../Redux/Actions/crptoTransaction";
 import { ModalComponent } from "../components/Modal";
 import BitcoinModalScreen from "../components/BitcoinModal";
+import { Context } from "../context";
+import { useDispatch } from "react-redux";
+import LinearButton from "../components/LinearButton";
 
 const SellUsdtScreen = ({ navigation }) => {
   const [image, setImage] = useState("");
@@ -72,37 +75,29 @@ const SellUsdtScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.body}
         >
-          <TouchableOpacity>
-            <AntDesign
-              style={styles.code}
-              name="qrcode"
-              size={200}
-              color="black"
-            />
-          </TouchableOpacity>
-          <Text style={styles.btc_address}>BTC Wallet Details</Text>
-          <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
-          <Button
-            containerStyle={styles.btn}
-            buttonStyle={{
-              backgroundColor: "#0084F4",
-              padding: 15,
-              borderRadius: 10,
-              width: 350,
-              fontSize: 17,
-              marginTop: 5,
-            }}
-            title="Click to copy"
-            // raised
-            // loading={loading}
-            //   onPress={() => navigation.navigate("CheckVerification")}
-          />
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity>
+              <AntDesign
+                style={styles.code}
+                name="qrcode"
+                size={180}
+                color="black"
+              />
+            </TouchableOpacity>
+
+            <Text style={styles.btc_address}>BTC Wallet Details</Text>
+            <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
+          </View>
+          
+          <LinearButton title="Click to copy" onPress={handleToggleModal} />
 
           <Text style={styles.btc_text}>
             the address and the barcode are yours you can recieve bitcoin and
             please provide proof
           </Text>
-          <View style={styles.upload_container}>
+
+  {/* ***************upload container************************** */}
+         {!image && <View style={styles.upload_container}>
             <Text style={styles.upload_textI}>Kindly upload Proof</Text>
             <TouchableOpacity
               style={styles.upload_btn}
@@ -111,19 +106,29 @@ const SellUsdtScreen = ({ navigation }) => {
               <Feather name="upload" size={24} color="black" />
               <Text style={styles.upload_text}> Upload Proof</Text>
             </TouchableOpacity>
-          </View>
+          </View>}
 
           {image ? (
-            <View style={{ position: "relative" }}>
-              <TouchableOpacity
-                style={styles.icon_container}
-                onPress={() => setImage("")}
-              >
-                <Ionicons name="close" color="white" size={25} />
-              </TouchableOpacity>
-              <Image
-                source={{ uri: image }}
-                style={{ width: 170, height: 170, margin: 10 }}
+            <View
+              style={{ position: "relative", width: "100%", marginBottom: 20 }}
+            >
+              <View style={{ position: "relative", alignSelf: "center" }}>
+                <TouchableOpacity
+                  style={styles.icon_container}
+                  onPress={() => setImage("")}
+                >
+                  <Ionicons name="close" color="white" size={25} />
+                </TouchableOpacity>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 170, height: 170, margin: 10 }}
+                />
+              </View>
+
+              <LinearButton
+                title="Sell USDT"
+                loading={loading}
+                onPress={handleSubmit}
               />
             </View>
           ) : (
@@ -183,7 +188,7 @@ const SellUsdtScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     padding: 15,
     backgroundColor: "white",
   },
@@ -209,11 +214,12 @@ const styles = StyleSheet.create({
 
   body: {
     backgroundColor: "#f4fafe",
-    alignItems: "center",
-    marginTop: 20,
+    // alignItems: "center",
+    marginTop: 10,
     borderRadius: 20,
     width: "100%",
     paddingHorizontal: 10,
+    paddingVertical:5
   },
   title: {
     fontSize: 17,

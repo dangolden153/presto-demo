@@ -15,10 +15,11 @@ import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import NavBar from "../components/NavBar";
-import { Context } from "../AuthContext";
 import LinearButton from "../components/LinearButton";
 import { ModalComponent } from "../components/Modal";
 import { Dimensions } from "react-native";
+import { useSelector } from "react-redux";
+import { Context } from "../context";
 const deviceHeight = Dimensions.get('window').height
 
 const Accounts = ({ navigation }) => {
@@ -30,8 +31,10 @@ const Accounts = ({ navigation }) => {
   const [message, setModalMessage] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const { token } = useContext(Context);
+  const { user } = useSelector(state => state.UserReducer); 
+
 // console.log('deviceHeight', deviceHeight/20);
-  console.log(" add bank token", token);
+  // console.log(" add bank token", token);
 
   const handleValidation = () => {
     if (!bank) {
@@ -119,14 +122,14 @@ const Accounts = ({ navigation }) => {
             }}
           />
           <View style={styles.title_time}>
-            <Text style={styles.title}>Adenike Sola</Text>
-            <Text style={styles.time}>1234567890</Text>
+            <Text style={styles.title}>{user?.accountname}</Text>
+            <Text style={styles.time}>{user?.accountno}</Text>
           </View>
         </View>
 
-        <TouchableOpacity style={styles.trash}>
+        {/* <TouchableOpacity style={styles.trash}>
           <Feather name="trash-2" size={27} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <ScrollView style={styles.body}>

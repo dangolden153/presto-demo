@@ -1,15 +1,37 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity,ActivityIndicator } from "react-native";
-
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
-const LinearButton = ({ navigation, title, onPress ,loading}) => {
-  console.log('loading', loading);
+const LinearButton = ({ navigation, title, onPress, loading }) => {
+  const handleSubmit = () => {
+    if (!onPress || loading) return;
+    onPress();
+  };
+  let [firstLoaded, error] = useFonts({
+    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
+    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
+    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
+  });
+
+  if (!firstLoaded) {
+    return <AppLoading />;
+  }
+
+  // console.log('loading', loading);
   return (
     <View>
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => onPress()}
+        onPress={() => handleSubmit()}
         style={styles.container}
       >
         <LinearGradient
@@ -36,6 +58,7 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     fontSize: 17,
+    fontFamily: "medium",
   },
   btn: {
     marginTop: 20,
@@ -43,6 +66,5 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 10,
     alignSelf: "center",
-
   },
 });

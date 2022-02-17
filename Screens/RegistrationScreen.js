@@ -56,10 +56,10 @@ const RegistrationScreen = ({ navigation }) => {
         console.log("res", res)
         setLoading(false);
       })
-      // .catch((error) => {
-      //   console.log("error", error);
-      //   setLoading(false);
-      // });
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
   };
   return (
     <View

@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 import AppNavigator from "./AppNavigator";
 import { Provider } from "react-redux";
 import { store } from "./Redux/Store";
+import { ContextProvider } from "./context";
 
 export default function App() {
   return (
     <View style={{ flex: 1 }}>
-      <Provider store={store}>
-        <AppNavigator />
-      </Provider>
+      <NavigationContainer>
+        <ContextProvider>
+          <Provider store={store}>
+            <AppNavigator />
+          </Provider>
+        </ContextProvider>
+      </NavigationContainer>
     </View>
   );
 }
@@ -48,10 +54,36 @@ export default function App() {
 // download moment ../
 // get users details and store to redux state ../
 // date AND time on dashboard ../
-// set up navvigation and context api and sign out ../ ✅✅ 
-// tell boss that we dont have screen for widthdraw history
+// set up navigation and context api and sign out ../ ✅✅
+// tell boss that we dont have screen for withdraw history
 
-// usdt transaction and modal
-// btc transaction and madal
-// update pin and password 
-// after connecting the transaction pending and add/get bank and widthdraw. login to test the endpoints
+// usdt transaction and modal ✅
+// btc transaction and modal ✅
+// update pin and password
+// update time and date ✅
+// check the login and logout for smooth process ✅
+// work on the transactions ✅
+//start --- 7:30
+//  finish up the screens setting .. [
+//  account, ✅ a dropdown is required to unable the user to choose a specific back with respect to the back image, a json file should be create for bank name and picture
+//  change password ✅
+//  rate us ..✅
+//  help us support,✅
+// copy text  ✅
+// refresh app ..30min - make a check-transaction icon at the top of the transaction component tht leads to check-transaction screen at where user can refresh, and if failed ...you should be taken back to the start screen process and a function to delete a transaction should be available.
+//  and should filter out the or empty the page if we dont have any pending transaction available ✅
+//  change pin ✅ ask ahmed the login behind updating the pin 30min ..
+// reset password ..
+// make the dashboard/bottom-tab sliding
+// download cards images 30min
+// use yup 30min
+// bvn : i dont think its detailed from the design and its necessary for now
+// check verify screen, ChangePin and ValidatePinScreen
+
+// after connecting the transaction pending and add/get bank and withdraw. login to test the endpoints
+
+// stop ----- ?
+
+// agbaje
+// updating the card transaction endpoint to receive the card image url
+// hes also updating the transaction status to send a failure message and a number of 2.

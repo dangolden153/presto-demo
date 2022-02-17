@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {  createStackNavigator,
+  TransitionPresets,
+  CardStyleInterpolators, } from "@react-navigation/stack";
 import Demo from "./Screens/DemoScreen";
 import RegisterScreen from "./Screens/RegistrationScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
@@ -29,18 +31,21 @@ import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import OtpScreen from "./Screens/OtpScreen";
 import SellGiftCardScreen from "./Screens/SellGiftCardScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Context } from "./AuthContext";
 import ValidatePinSreen from "./Screens/ValidatePinScreen";
 import ValidatePinScreen from "./Screens/ValidatePinScreen";
 import UploadGiftcardScreen from "./Screens/UploadGiftcardScreen";
 import CryptoScreen from "./Screens/CryptoScreen";
 import SellUsdtScreen from "./Screens/SellUsdtScreen";
 import PendingTransactionScreen from "./Screens/PendingTransactionScreen";
+import { Context } from "./context";
+import RateUsScreen from "./Screens/RateUsScreen";
+import SupportScreen from "./Screens/SupportScreen";
+import ChangePin from "./Screens/ChangePin";
+import ConfirmPin from "./Screens/ConfirmPin";
+import ForgotPassword from "./Screens/ForgotPassword";
 
 const AppNavigator = () => {
-  const [token, setToken] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const { token, setToken, isAuthenticated } = useContext(Context);
 
   // *************user token check*********************************
   useEffect(() => {
@@ -54,136 +59,178 @@ const AppNavigator = () => {
       }
     };
 
-    getData(); 
-  }, [isAuthenticated,setIsAuthenticated]);
+    getData();
+  }, [isAuthenticated, token]);
 
-  // console.log("Apptoken", token);
-  // console.log("isAuthenticated", isAuthenticated);
+  // console.log("AppToken", token);
 
   const Stack = createStackNavigator();
 
+  const config = {
+    animation: "spring",
+    config: {
+      stiffness: 500,
+      damping: 50,
+      mass: 3,
+      overShootingClamping: false,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  };
+  
+  const closeConfig = {
+    animation: "timing",
+    config: {
+      duration: 500,
+      // easing: Easing.linear,
+    },
+  };
+
   return (
-    <NavigationContainer>
-      <Context.Provider
-        value={{
-          setToken,
-          token,
-          setIsAuthenticated,
+    <Stack.Navigator
+    // initialRouteName="PendingTransactionScreen"
+
+    // mode="modal"
+    screenOptions={{
+      gestureEnabled: true,
+      gestureDirection: "horizontal",
+      transitionSpec: {
+        open: config,
+        close: closeConfig,
+      },
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    }}
+    >
+      {token !== null ? ( 
+        <>
+          <Stack.Screen
+            name="ButtomTab"
+            component={ButtomTab}
+            options={{ headerShown: false ,
+              // gestureDirection: "vertical",
+            }}
+          />
+          <Stack.Screen
+            name="HomeScreen"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="ChangePin"
+            component={ChangePin}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="ConfirmPin"
+            component={ConfirmPin}
+            options={{ headerShown: false }}
+          />
+          {/* <Stack.Screen
+            name="CreatePin"
+            component={CreatePin}
+            options={{ headerShown: false }}
+          />
+
          
-        }}
-      >
-        <SafeAreaProvider>
-          <Stack.Navigator
-          // initialRouteName="PendingTransactionScreen"
-          >
-            {token !== null ? (
-              <>
-                {/* <Stack.Screen
-    name="LoginScreen"
-    component={LoginScreen}
-    options={{ headerShown: false }}
-  />
-   <Stack.Screen
-    name="CreatePin"
-    component={CreatePin}
-    options={{ headerShown: false }}
-  />
-     <Stack.Screen
-    name="ValidatePinScreen"
-    component={ValidatePinScreen}
-    options={{ headerShown: false }}
-  />
-   <Stack.Screen
-    name="VerifiedScreen"
-    component={VerifiedScreen}
-    options={{ headerShown: false }}
-  />  */}
 
-                <Stack.Screen
-                  name="ButtomTab"
-                  component={ButtomTab}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="HomeScreen"
-                  component={HomeScreen}
-                  options={{ headerShown: false }}
-                />
+          <Stack.Screen
+            name="ValidatePinScreen"
+            component={ValidatePinScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="VerifiedScreen"
+            component={VerifiedScreen}
+            options={{ headerShown: false }}
+          /> */}
 
-                <Stack.Screen
-                  name="TransactionImage"
-                  component={TransactionImage}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Withdrawal"
-                  component={Withdrawal}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="AddBankAccount"
-                  component={AddBankAccount}
-                  options={{ headerShown: false }}
-                />
+          <Stack.Screen
+            name="TransactionImage"
+            component={TransactionImage}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Withdrawal"
+            component={Withdrawal}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AddBankAccount"
+            component={AddBankAccount}
+            options={{ headerShown: false }}
+          />
 
-                <Stack.Screen
-                  name="SellBitcoin"
-                  component={SellBitcoin}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="EditProfile"
-                  component={EditProfile}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Accounts"
-                  component={Accounts}
-                  options={{ headerShown: false }}
-                />
+          <Stack.Screen
+            name="SellBitcoin"
+            component={SellBitcoin}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Accounts"
+            component={Accounts}
+            options={{ headerShown: false }}
+          />
 
-                <Stack.Screen
-                  name="OtpScreen"
-                  component={OtpScreen}
-                  options={{ headerShown: false }}
-                />
+          <Stack.Screen
+            name="OtpScreen"
+            component={OtpScreen}
+            options={{ headerShown: false }}
+          />
 
-                <Stack.Screen
-                  name="SellGiftCardScreen"
-                  component={SellGiftCardScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="UploadGiftcardScreen"
-                  component={UploadGiftcardScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="ChangePasswordScreen"
-                  component={ChangePasswordScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="CryptoScreen"
-                  component={CryptoScreen}
-                  options={{ headerShown: false }}
-                />
+          <Stack.Screen
+            name="SellGiftCardScreen"
+            component={SellGiftCardScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="UploadGiftcardScreen"
+            component={UploadGiftcardScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ChangePasswordScreen"
+            component={ChangePasswordScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="CryptoScreen"
+            component={CryptoScreen}
+            options={{ headerShown: false }}
+          />
 
-                <Stack.Screen
-                  name="SellUsdtScreen"
-                  component={SellUsdtScreen}
-                  options={{ headerShown: false }}
-                />
+          <Stack.Screen
+            name="SellUsdtScreen"
+            component={SellUsdtScreen}
+            options={{ headerShown: false }}
+          />
 
-                <Stack.Screen
-                  name="PendingTransactionScreen"
-                  component={PendingTransactionScreen}
-                  options={{ headerShown: false }}
-                />
-              </>
-            ) : (
-              <>
-                {/* <Stack.Screen
+          <Stack.Screen
+            name="PendingTransactionScreen"
+            component={PendingTransactionScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="RateUsScreen"
+            component={RateUsScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SupportScreen"
+            component={SupportScreen}
+            options={{ headerShown: false }}
+          />
+        </>
+      ) : (
+        <>
+          {/* <Stack.Screen
                   name="OnboardingScreen"
                   component={OnboardingScreen}
                   options={{ headerShown: false }}
@@ -199,47 +246,47 @@ const AppNavigator = () => {
                   options={{ headerShown: false }}
                 /> */}
 
-                <Stack.Screen
-                  name="LoginScreen"
-                  component={LoginScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="RegistrationScreen"
-                  component={RegistrationScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="CheckVerification"
-                  component={CheckVerification}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="VerifiedScreen"
-                  component={VerifiedScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="CreatePin"
-                  component={CreatePin}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="ValidatePinScreen"
-                  component={ValidatePinScreen}
-                  options={{ headerShown: false }}
-                />
-              </>
-            )}
-          </Stack.Navigator>
-        </SafeAreaProvider>
-      </Context.Provider>
-    </NavigationContainer>
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />  
+          
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RegistrationScreen"
+            component={RegistrationScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="CheckVerification"
+            component={CheckVerification}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="VerifiedScreen"
+            component={VerifiedScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="CreatePin"
+            component={CreatePin}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ValidatePinScreen"
+            component={ValidatePinScreen}
+            options={{ headerShown: false }}
+          />
+        </>
+      )}
+    </Stack.Navigator>
   );
 };
 
 export default AppNavigator;
 
-const styles = StyleSheet.create({
-  flex: 1,
-});

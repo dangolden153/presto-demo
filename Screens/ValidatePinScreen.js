@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
 import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Context } from "../AuthContext";
+import { Context } from "../context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ValidatePinScreen = ({ navigation }) => {

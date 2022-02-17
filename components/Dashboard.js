@@ -20,13 +20,30 @@ import { useFonts } from "expo-font";
 import { useSelector } from "react-redux";
 
 const Dashboard = ({ navigation }) => {
-  const { user } = useSelector(state => state.UserReducer); 
-  console.log('user', user); 
-  const date = new Date()
-  const getMonth = date.getMonth()
-  const getDay = date.getDay()
-  const getDate = date.getDate()
-  console.log('getDay getMonth', getDay,getDate, getMonth);
+  const { user } = useSelector((state) => state.UserReducer);
+  // console.log('user', user);
+  const date = new Date();
+  const getMonth = date.getMonth();
+  const getDay = date.getDay();
+  const getDate = date.getDate();
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+  const alphaMonth = months[getMonth];
+  const alphaDay = days[getDay];
+
   const [fontLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
@@ -38,19 +55,6 @@ const Dashboard = ({ navigation }) => {
     return <AppLoading />;
   }
 
-  // const { setToken } = useContext(Context);
-
-  // const logout = async () => {
-  //   try {
-  //     await AsyncStorage.removeItem("@userToken");
-  //     setToken("");
-  //     console.log("removed!", token);
-  //     // navigation.navigate("LoginScreen")
-  //   } catch (e) {
-  //     console.log("remove token error", e);
-  //   }
-  // };
-
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
@@ -58,7 +62,9 @@ const Dashboard = ({ navigation }) => {
       <View style={styles.nav_container}>
         <Text style={styles.boldVav_text}>Hello {user?.firstname},</Text>
         <View style={styles.text_icon}>
-          <Text style={styles.nav_text}>Today Thu, 30 September,</Text>
+          <Text style={styles.nav_text}>
+            Today {alphaDay}, {getDate} {alphaMonth},
+          </Text>
           <TouchableOpacity
           // onPress={()=> logout()}
           >
@@ -142,7 +148,10 @@ const Dashboard = ({ navigation }) => {
       </View>
 
       {/* down section container */}
-      <TouchableOpacity style={styles.bottom_section}>
+      <TouchableOpacity
+        style={styles.bottom_section}
+        // onPress={() => navigation.navigate("PendingTransactionScreen")}
+      >
         <View style={styles.bttm_txt_container}>
           <Text style={styles.bottom_bold_text}>Refer and earn</Text>
           <Text style={styles.bottom_text}>
@@ -190,10 +199,11 @@ const styles = StyleSheet.create({
   },
   nav_text: {
     fontFamily: "regular",
+    textTransform: "capitalize",
   },
   boldVav_text: {
     fontFamily: "semibold",
-    textTransform: "capitalize"
+    textTransform: "capitalize",
   },
   up_section: {
     width: "100%",

@@ -5,27 +5,37 @@ import {
   View,
   TouchableOpacity,
   Image,
+  FlatList,
   ActivityIndicator,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
-import { Context } from "../AuthContext";
+import { Context } from "../context";
 import * as ImagePicker from "expo-image-picker";
 import Transaction from "../components/Transaction";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCardTransactions } from "../Redux/Actions/crptoTransaction";
 
 // const fs = require("fs");
 
 const PendingTransactionScreen = ({ route, navigation, giftcardData }) => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
-  const [token, setToken] = useState(null);
   const [validate, setValidate] = useState("");
+  const dispatch = useDispatch();
+  const { transaction } = useSelector((state) => state.TransactionReducer);
+  const { token, setModalMessage } = useContext(Context);
+  const [refresh, setRefresh] = useState(false);
 
-  // const { ctry, tpe, amount, value } = route?.params?.giftcardData;
+  console.log("transaction", transaction);
+  const lastTransaction = transaction[transaction.length - 1];
+  // console.log("lastTransaction", typeof lastTransaction);
 
-  // console.log("image", image);
- 
+  // *************fetch card transaction **************************
+  useEffect(() => {
+    dispatch(fetchCardTransactions(token, setModalMessage));
+  }, []);
 
   /// pick image from photo library
   const pickImage = async () => {
@@ -55,13 +65,13 @@ const PendingTransactionScreen = ({ route, navigation, giftcardData }) => {
 
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
-   
+
     formdata.append("picture", {
       name: "dan",
       type: "image/jpeg",
       uri: image,
     });
-  
+
     let requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -114,7 +124,6 @@ const PendingTransactionScreen = ({ route, navigation, giftcardData }) => {
               />
             </View>
           ) : null}
- 
         </View>
       );
     } else {
@@ -130,29 +139,27 @@ const PendingTransactionScreen = ({ route, navigation, giftcardData }) => {
 
   return (
     <View style={styles.container}>
-      <NavBar title="Transaction" navigation={navigation} />
+      <NavBar
+        title="Transaction"
+        navigation={navigation}
+        navigate="ButtomTab"
+      />
       {/* <View style={styles.body}> */}
-       
 
-      <Transaction />
-      
-       
+      <Transaction lastTransaction={lastTransaction} />
 
-
-        {/* <View style={{ width: "70%", alignSelf: "center" }}>
-          <LinearButton
-            title="Upload"
-            navigation={navigation}
-            // onPress={handleSellGiftcard}
-            loading={loading}
-          />
-        </View> */}
-
-        {validate !== "" ? (
-          <Text style={{ color: "red", opacity: 0.6, alignSelf: "center", marginTop: 10}}>
-            {validate}
-          </Text>
-        ) : null}
+      {validate !== "" ? (
+        <Text
+          style={{
+            color: "red",
+            opacity: 0.6,
+            alignSelf: "center",
+            marginTop: 10,
+          }}
+        >
+          {validate}
+        </Text>
+      ) : null}
       {/* </View> */}
     </View>
   );
@@ -166,7 +173,4 @@ const styles = StyleSheet.create({
     // padding: 15,
     backgroundColor: "white",
   },
-
 });
-
-

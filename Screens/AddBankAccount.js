@@ -15,7 +15,7 @@ import {
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import { banks } from "../utils/selectBankData";
-import { Context } from "../AuthContext";
+import { Context } from "../context";
 
 const AddBankAccount = ({ navigation }) => {
   const [bank, setBank] = useState("");

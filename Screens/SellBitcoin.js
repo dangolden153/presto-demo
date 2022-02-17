@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Clipboard
 } from "react-native";
 import {
   AntDesign,
@@ -19,11 +20,12 @@ import { Button } from "react-native-elements";
 import NavBar from "../components/NavBar";
 import * as ImagePicker from "expo-image-picker";
 import BitcoinModalScreen from "../components/BitcoinModal";
-import { Context } from "../AuthContext";
+import { Context } from "../context";
 import LinearButton from "../components/LinearButton";
 import { ModalComponent } from "../components/Modal";
 import { useDispatch } from "react-redux";
 import { handleSellBtc } from "../Redux/Actions/crptoTransaction";
+// import * as Clipboard from "expo-clipboard";
 
 const SellBitcoin = ({ navigation }) => {
   const [image, setImage] = useState("");
@@ -32,8 +34,10 @@ const SellBitcoin = ({ navigation }) => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setModalMessage] = useState("");
+  const [copiedText, setCopiedText] = useState("");
+
   const { token } = useContext(Context);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const USD = 450;
   const UsdToNaira = USD * parseInt(amount);
   const handleToggleModal = () => {
@@ -43,6 +47,7 @@ const SellBitcoin = ({ navigation }) => {
   // console.log("set amount btc", amount);
   // console.log("cal btc", UsdToNaira);
 
+  const walletAddress = "3nofvnodslrdt67yuyullgfdXd"
   ///******* */ pick image from photo library ********
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -73,7 +78,16 @@ const SellBitcoin = ({ navigation }) => {
     );
   };
 
-  
+  const copyToClipboard = () => {
+    Clipboard.setString(walletAddress);
+  };
+
+  const fetchCopiedText = async () => {
+    const text = await Clipboard.getString();
+    setCopiedText(text);
+  };
+
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -99,37 +113,27 @@ const SellBitcoin = ({ navigation }) => {
             <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
           </View>
 
-          {/* <Button
-            containerStyle={styles.btn}
-            buttonStyle={{
-              backgroundColor: "#0084F4",
-              padding: 15,
-              borderRadius: 10,
-              width: 350,
-              fontSize: 17,
-              marginTop: 5,
-            }}
-            title="Click to copy"
-            // raised
-            // loading={loading}
-            //   onPress={() => navigation.navigate("CheckVerification")}
-            onPress={() => handleModal()}
-          /> */}
-          <LinearButton title="Click to copy" onPress={handleToggleModal} />
+          <LinearButton title="Click to copy" onPress={copyToClipboard} />
+          
+          <Text>{copiedText}</Text>
           <Text style={styles.btc_text}>
             the address and the barcode are yours you can recieve bitcoin and
             please provide proof
           </Text>
-          <View style={styles.upload_container}>
-            <Text style={styles.upload_textI}>Kindly upload Proof</Text>
-            <TouchableOpacity
-              style={styles.upload_btn}
-              onPress={() => pickImage()}
-            >
-              <Feather name="upload" size={24} color="black" />
-              <Text style={styles.upload_text}> Upload Proof</Text>
-            </TouchableOpacity>
-          </View>
+
+          {/* ***************upload container************************** */}
+          {!image && (
+            <View style={styles.upload_container}>
+              <Text style={styles.upload_textI}>Kindly upload Proof</Text>
+              <TouchableOpacity
+                style={styles.upload_btn}
+                onPress={() => pickImage()}
+              >
+                <Feather name="upload" size={24} color="black" />
+                <Text style={styles.upload_text}> Upload Proof</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           {image ? (
             <View
@@ -212,7 +216,7 @@ export default SellBitcoin;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     padding: 15,
     backgroundColor: "white",
     width: "100%",
@@ -240,10 +244,11 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: "#f4fafe",
     // alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
     borderRadius: 20,
     width: "100%",
     paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   title: {
     fontSize: 17,

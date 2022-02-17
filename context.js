@@ -1,6 +1,35 @@
-import React from 'react'
-export const Context = React.createContext()
+import React, { useState, createContext } from "react";
+export const Context = createContext();
+
+export const ContextProvider = ({ children }) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [token, setToken] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setModalMessage] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
 
-
-// const 
+  const handleRefresh = () => {setRefresh(!refresh);}
+  return (
+    <Context.Provider
+      value={{
+        token,
+        setToken,
+        isAuthenticated,
+        setIsAuthenticated,
+        openModal,
+        setOpenModal,
+        loading,
+        setLoading,
+        message,
+        setModalMessage,
+        handleRefresh,
+        refresh,
+        setRefresh
+      }}
+    >
+      {children}
+    </Context.Provider>
+  );
+};

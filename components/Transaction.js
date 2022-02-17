@@ -9,11 +9,34 @@ import {
   Image,
 } from "react-native";
 import { MaterialIcons, Feather, Ionicons } from "@expo/vector-icons";
+import moment from "moment";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
-const Transaction = ({ navigation }) => {
-const [uploadCard, setUploadCard] = useState(false)
+const Transaction = ({ navigation, lastTransaction }) => {
+  const [uploadCard, setUploadCard] = useState(false);
+  const togglePickCard = () => setUploadCard(!uploadCard);
 
-const togglePickCard = () => setUploadCard(!uploadCard)
+  
+
+  const [fontLoaded, error] = useFonts({
+    Italic: require("../assets/fonts/raleway/Raleway-Italic.ttf"),
+    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
+    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
+  });
+
+  if (!fontLoaded) {
+    return <AppLoading />;
+  }
+
+  if (!lastTransaction) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex:1, }}>
+        <Text style={{fontSize:20,  fontFamily:"Italic"}}>no pending transaction...</Text>
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -30,27 +53,32 @@ const togglePickCard = () => setUploadCard(!uploadCard)
                 style={{ height: 70, width: 70 }}
               />
               <View style={styles.title_time}>
-                <Text style={styles.title}>Gift card</Text>
-                <Text style={styles.time}>2:30pm</Text>
+                <Text style={styles.title}>{lastTransaction?.type}</Text>
+                <Text style={styles.time}>
+                  {moment(lastTransaction?.created_at).format("ll")}
+                </Text>
               </View>
             </View>
 
             <View style={styles.price_del}>
-              <Text style={styles.price}>#33,000.00</Text>
-              <Text style={styles.del}>Need clear image</Text>
+              <Text style={styles.price}>{lastTransaction?.value}</Text>
+              <Text
+                style={
+                  lastTransaction.status === "0"
+                    ? styles.status_fail
+                    : styles.status_success
+                }
+              >
+                {lastTransaction?.status === "0" ? "pending" : "complete"}
+              </Text>
             </View>
           </View>
 
           {/* ****************************Card container ************************* */}
 
-          {uploadCard ?
-          
-          (
-            
-            <View style={styles.upload_container}> 
-              <Text style={styles.upload_textI}>
-                Kindly upload clear image
-              </Text>
+          {uploadCard ? (
+            <View style={styles.upload_container}>
+              <Text style={styles.upload_textI}>Kindly upload clear image</Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate("TransactionImage")}
               >
@@ -62,9 +90,7 @@ const togglePickCard = () => setUploadCard(!uploadCard)
                 </View>
               </TouchableOpacity>
             </View>
-          
-        )
-          :(
+          ) : (
             <View
               style={{
                 width: "100%",
@@ -77,13 +103,14 @@ const togglePickCard = () => setUploadCard(!uploadCard)
                 }}
                 style={{ height: 200, width: "100%" }}
               />
-              <TouchableOpacity onPress={() => togglePickCard()}
+              <TouchableOpacity
+                onPress={() => togglePickCard()}
                 style={{ position: "absolute", bottom: -10, right: 30 }}
               >
                 <Ionicons name="ios-download-outline" size={24} color="black" />
               </TouchableOpacity>
             </View>
-          ) }
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -161,8 +188,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#999999",
   },
-  del: {
+  status_fail: {
     color: "red",
-    // opacity
+    opacity: 0.4,
+  },
+  status_success: {
+    color: "#00C48C",
+    // opacity: 0.4,
+  },
+  price_del: {
+    alignItems: "flex-end",
   },
 });

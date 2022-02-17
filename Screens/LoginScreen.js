@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect,useContext } from "react";
+import React, { useState, useLayoutEffect, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -15,48 +15,51 @@ import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Context } from "../AuthContext";
-import {useSelector, useDispatch} from 'react-redux'
+import { Context } from "../context";
+import { useSelector, useDispatch } from "react-redux";
 import { USER_TOKEN } from "../Redux/Types/type";
+import { ModalComponent } from "../components/Modal";
+
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [validate, setValidate] = useState("")
-  const {setIsAuthenticated ,setToken} = useContext( Context )
-  const dispatch = useDispatch()
-  const {user, userToken} = useSelector(state=> state.UserReducer)
+  const [validate, setValidate] = useState("");
+  const dispatch = useDispatch();
+  const { user, userToken } = useSelector((state) => state.UserReducer);
+  const {
+    openModal,
+    setOpenModal,
+    loading,
+    setLoading,
+    message,
+    setModalMessage,
+    setIsAuthenticated,
+    setToken,
+  } = useContext(Context);
 
+  let trimEmail = email.trim();
+  let trimPassword = password.trim();
 
-
- 
-  let trimEmail = email.trim()
-  let trimPassword = password.trim()
-  
-  console.log('user', user); 
-  const handleValidation =()=>{  
-    if(!email){
-      setValidate("please use a valid email address!")
-      alert("please use a valid email address!")
-      return false
+  // console.log("user", user);
+  const handleValidation = () => {
+    if (!email) {
+      setValidate("please use a valid email address!");
+      alert("please use a valid email address!");
+      return false;
+    } else if (!password && password.length < 6) {
+      setValidate("password too short!");
+      alert("password too short!");
+      return false;
+    } else {
+      return true;
     }
+  };
 
-    else if(!password && password.length < 6){
-      setValidate("password too short!")
-      alert("password too short!")
-      return false
-    }
-    else {
-      return true
-    }
-  }
-
-  
   const handleLogin = () => {
-    if (!handleValidation()){
-      return null
-  }
-    
+    if (!handleValidation()) {
+      return null;
+    }
+
     setLoading(true);
     var formdata = new FormData();
     formdata.append("email", trimEmail);
@@ -72,37 +75,35 @@ const LoginScreen = ({ navigation }) => {
       .then((response) => response.json())
 
       .then((result) => {
-        // console.log(result);
-        console.log("result",result);
+        console.log("login result", result);
         setLoading(false);
-        setIsAuthenticated(true)
-        if(result?.error){
+        setIsAuthenticated(true);
+        if (result?.error) {
+          console.log("catching login error", result?.error);
           setLoading(false);
-          // setValidate("Unauthorized, please make sure your account is verified")
-          setValidate(result?.error)
-          setIsAuthenticated(true)
-          return null
+          setModalMessage(result?.error);
+          setOpenModal(true); 
+          return;
         }
 
-        if (result?.access_token &&  result?.user?.pin) {
+        if (result?.access_token && result?.user?.pin) {
+          console.log("result?.access_token && result?.user?.pin");
           storeData(result?.access_token);
-          // dispatch({type: USER_TOKEN, payload:result?.access_token})
-          setIsAuthenticated(true)
+          setIsAuthenticated(true);
           setLoading(false);
-        } else{
-          storeData(result?.access_token);
-          dispatch({type: USER_TOKEN, payload:result?.access_token})
-          navigation.navigate("VerifiedScreen")
+        }
+        else {
+          storeData(result?.user?.pin);
+          dispatch({ type: USER_TOKEN, payload: result?.access_token });
+          navigation.navigate("VerifiedScreen");
           setLoading(false);
+          console.log("result?.user?.pin")
         }
       })
       .catch((error) => {
-        console.log("catching error", error);
+        console.log("catching login error", error);
         setLoading(false);
       });
-
-    
-
   };
 
   ////store user's token
@@ -118,97 +119,128 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="padding"
-      // keyboardVerticalOffset={90}
-    >
-      <StatusBar style="dark" />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.inner_container}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <MaterialIcons
-              name="arrow-back-ios"
-              style={{ marginTop: 50, marginLeft: 15 }}
-              size={24}
-              color="black"
-            />
-          </TouchableOpacity>
-          <View style={styles.header_container}>
-            <Text style={styles.header}>Welcome</Text>
-            <Text style={styles.Sub_header}>
-              Sign in with your Email and continue
-            </Text>
-          </View>
-
-          <View style={styles.input_container}>
-            <View style={styles.inputTextContainer}>
-              <Text style={styles.input_text}>Email</Text>
-              <TextInput
-                placeholderTextColor={"black"}
-                style={styles.input}
-                value={email}
-                onChangeText={(text) => setEmail(text)}
-                type="text"
-                autoFocus
+    <>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+        // keyboardVerticalOffset={90}
+      >
+        <StatusBar style="dark" />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.inner_container}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <MaterialIcons
+                name="arrow-back-ios"
+                style={{ marginTop: 50, marginLeft: 15 }}
+                size={24}
+                color="black"
               />
-            </View>
-
-            <View style={styles.inputTextContainer}>
-              <Text style={styles.input_text}>Password</Text>
-              <TextInput
-                placeholderTextColor={"black"}
-                style={styles.input}
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-                type="password"
-                secureTextEntry
-                autoFocus
-              />
-            </View>
-            <Text
-              style={{
-                fontSize: 15,
-                textAlign: "right",
-                color: "#0084F4",
-                marginVertical: 10,
-              }}
-            >
-              Forgot password?
-            </Text>
-          </View>
-
-          <TouchableOpacity activeOpacity={0.7} onPress={() => handleLogin()}>
-            <LinearGradient
-              // Button Linear Gradient
-              colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
-              style={styles.btn}
-            >
-              {loading ? (
-                <ActivityIndicator size="small" color="white" />
-              ) : (
-                <Text style={styles.btn_text}>Next</Text>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
-          {/* //CheckVerification */}
-
-          <TouchableOpacity>
-            <Text style={{ paddingTop: 20, fontSize: 16, color: "#999999" }}>
-              New user?{" "}
-              <Text
-                style={{ color: "#666666" }}
-                onPress={() => navigation.navigate("RegistrationScreen")}
-              >
-                Create account
+            </TouchableOpacity>
+            <View style={styles.header_container}>
+              <Text style={styles.header}>Welcome</Text>
+              <Text style={styles.Sub_header}>
+                Sign in with your Email and continue
               </Text>
-            </Text>
-          </TouchableOpacity>
+            </View>
 
-          {validate === "" ? null : <Text style={{ fontSize:13, color:"red", opacity:.6, marginTop:20, alignSelf: "center"}}>{validate}</Text> }
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+            <View style={styles.input_container}>
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>Email</Text>
+                <TextInput
+                  placeholderTextColor={"black"}
+                  style={styles.input}
+                  value={email}
+                  onChangeText={(text) => setEmail(text)}
+                  type="text"
+                  autoFocus
+                />
+              </View>
+
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>Password</Text>
+                <TextInput
+                  placeholderTextColor={"black"}
+                  style={styles.input}
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
+                  type="password"
+                  secureTextEntry
+                  autoFocus
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ForgotPassword")}
+                activeOpacity={0.5}
+                style={{
+                  marginVertical: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 15,
+                    textAlign: "right",
+                    color: "#0084F4",
+                  }}
+                >
+                  Forgot password?
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity activeOpacity={0.7} onPress={() => handleLogin()}>
+              <LinearGradient
+                // Button Linear Gradient
+                colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+                style={styles.btn}
+              >
+                {loading ? (
+                  <ActivityIndicator size="small" color="white" />
+                ) : (
+                  <Text style={styles.btn_text}>Next</Text>
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
+            {/* //CheckVerification */}
+
+            <TouchableOpacity>
+              <Text style={{ paddingTop: 20, fontSize: 16, color: "#999999" }}>
+                New user?{" "}
+                <Text
+                  style={{ color: "#666666" }}
+                  onPress={() => navigation.navigate("RegistrationScreen")}
+                >
+                  Create account
+                </Text>
+              </Text>
+            </TouchableOpacity>
+
+            {validate === "" ? null : (
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: "red",
+                  opacity: 0.6,
+                  marginTop: 20,
+                  alignSelf: "center",
+                }}
+              >
+                {validate}
+              </Text>
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+
+      {/* *********response modal************************** */}
+      {openModal && (
+        <ModalComponent
+          modalVisible={openModal}
+          setModalVisible={setOpenModal}
+          message={message}
+          navigate="LoginScreen"
+        />
+      )}
+    </>
   );
 };
 
@@ -320,6 +352,3 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-
-
-

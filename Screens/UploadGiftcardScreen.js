@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
-import { Context } from "../AuthContext";
+import { Context } from "../context";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ModalComponent } from "../components/Modal";
@@ -18,7 +18,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
 
   const { ctry, tpe, amount, value } = route?.params?.giftcardData;
 
-  console.log("routes", route?.params?.giftcardData);
+  // console.log("routes", route?.params?.giftcardData);
 
   const { token } = useContext(Context);
 
@@ -214,7 +214,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
 
           <View style={{ marginTop: 10 }}>{handleImagePreview()}</View>
 
-          <View style={{ width: "70%", alignSelf: "center" }}>
+          <View style={{ width: "100%", alignSelf: "center" }}>
             <LinearButton
               title="Upload"
               navigation={navigation}
@@ -240,7 +240,12 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
 
       {/* *********response modal************************** */}
       {openModal && (
-        <ModalComponent modalVisible={openModal} message={message} />
+        <ModalComponent
+          modalVisible={openModal}
+          message={message}
+          setModalVisible={setOpenModal}
+          navigate="PendingTransactionScreen"
+        />
       )}
     </>
   );

@@ -169,7 +169,7 @@ function BitcoinModalScreen({
                     </View>
                   </View>
 
-                  <LinearButton title="Sell Btc" onPress={handleToggleModal} />
+                  <LinearButton title={usdt ? "Sell USDT" : "Sell Btc"} onPress={handleToggleModal} />
                 </View>
               </Modal.Body>
             </Modal.Content>
