@@ -123,7 +123,7 @@ export const handleSellUsdt =
     fetch(`https://api.prestohq.io/api/selectcardtransaction`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log("get card transaction", result?.cardtransactions);
+        // console.log("get card transaction", result?.cardtransactions);
         dispatch({type: GET_TRANSACTION, payload: result?.cardtransactions})
       })
       .catch((error) => {

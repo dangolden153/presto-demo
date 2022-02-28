@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import {  createStackNavigator,
+import {
+  createStackNavigator,
   TransitionPresets,
-  CardStyleInterpolators, } from "@react-navigation/stack";
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
 import Demo from "./Screens/DemoScreen";
 import RegisterScreen from "./Screens/RegistrationScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
@@ -43,6 +45,8 @@ import SupportScreen from "./Screens/SupportScreen";
 import ChangePin from "./Screens/ChangePin";
 import ConfirmPin from "./Screens/ConfirmPin";
 import ForgotPassword from "./Screens/ForgotPassword";
+import MediaScreen from "./Screens/MediaScreen";
+// import TransactionsTopTab from "./Screens/TransactionsTopTab";
 
 const AppNavigator = () => {
   const { token, setToken, isAuthenticated } = useContext(Context);
@@ -77,7 +81,7 @@ const AppNavigator = () => {
       restSpeedThreshold: 0.01,
     },
   };
-  
+
   const closeConfig = {
     animation: "timing",
     config: {
@@ -88,25 +92,25 @@ const AppNavigator = () => {
 
   return (
     <Stack.Navigator
-    // initialRouteName="PendingTransactionScreen"
-
-    // mode="modal"
-    screenOptions={{
-      gestureEnabled: true,
-      gestureDirection: "horizontal",
-      transitionSpec: {
-        open: config,
-        close: closeConfig,
-      },
-      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-    }}
+      // initialRouteName="TransactionsTopTab"
+      // mode="modal"
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
+        transitionSpec: {
+          open: config,
+          close: closeConfig,
+        },
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
     >
-      {token !== null ? ( 
+      {token !== null ? (
         <>
           <Stack.Screen
             name="ButtomTab"
             component={ButtomTab}
-            options={{ headerShown: false ,
+            options={{
+              headerShown: false,
               // gestureDirection: "vertical",
             }}
           />
@@ -127,6 +131,11 @@ const AppNavigator = () => {
             component={ConfirmPin}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="MediaScreen"
+            component={MediaScreen}
+            options={{ headerShown: false }}
+          />
           {/* <Stack.Screen
             name="CreatePin"
             component={CreatePin}
@@ -135,22 +144,18 @@ const AppNavigator = () => {
 
          
 
-          <Stack.Screen
-            name="ValidatePinScreen"
-            component={ValidatePinScreen}
-            options={{ headerShown: false }}
-          />
+          
           <Stack.Screen
             name="VerifiedScreen"
             component={VerifiedScreen}
             options={{ headerShown: false }}
           /> */}
 
-          <Stack.Screen
+          {/* <Stack.Screen
             name="TransactionImage"
             component={TransactionImage}
             options={{ headerShown: false }}
-          />
+          /> */}
           <Stack.Screen
             name="Withdrawal"
             component={Withdrawal}
@@ -227,6 +232,12 @@ const AppNavigator = () => {
             component={SupportScreen}
             options={{ headerShown: false }}
           />
+          
+          {/* <Stack.Screen
+            name="TransactionsTopTab"
+            component={TransactionsTopTab}
+            options={{ headerShown: false }}
+          /> */}
         </>
       ) : (
         <>
@@ -245,13 +256,13 @@ const AppNavigator = () => {
                   component={ThirdOnboardingScreen}
                   options={{ headerShown: false }}
                 /> */}
-
+         
           <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
             options={{ headerShown: false }}
-          />  
-          
+          />
+
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPassword}
@@ -289,4 +300,3 @@ const AppNavigator = () => {
 };
 
 export default AppNavigator;
-

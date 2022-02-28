@@ -11,13 +11,13 @@ import {
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Button } from "react-native-elements";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import pics from "../images/bg.png";
 import card from "../images/Payment.png";
 import coin from "../images/Coin.png";
 import gift from "../images/gift.png";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { useSelector } from "react-redux";
+import Card from "./Card";
 
 const Dashboard = ({ navigation }) => {
   const { user } = useSelector((state) => state.UserReducer);
@@ -74,42 +74,8 @@ const Dashboard = ({ navigation }) => {
       </View>
 
       {/* ******************* up section container******************************* */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate("ButtomTab")}
-        style={styles.up_section}
-      >
-        <Image
-          source={pics}
-          style={{
-            width: 250,
-            height: 250,
-            resizeMode: "contain",
-            position: "absolute",
-          }}
-        />
-        <Text style={styles.up_section_text}>Your available balance</Text>
-        <View style={styles.price_icon}>
-          <Text style={styles.price}>{user?.balance} .00k</Text>
-          <Feather name="eye" size={24} color="black" />
-        </View>
-        <Button
-          containerStyle={styles.btn}
-          buttonStyle={{
-            backgroundColor: "#0084F4",
-            paddingVertical: 10,
-            width: 160,
-            fontFamily: "semibold",
-
-            borderRadius: 10,
-            marginTop: 10,
-          }}
-          title="withdraw"
-          // raised
-          // loading={loading}
-          onPress={() => navigation.navigate("Withdrawal")} // this button should navigate to AddBankAccount or Withdrawal
-        />
-      </TouchableOpacity>
-      {/* middle section container */}
+        <Card />
+      {/* *************middle section container*********************** */}
       <View style={styles.mid_section}>
         <TouchableOpacity
           onPress={() => navigation.navigate("SellGiftCardScreen")}
@@ -147,10 +113,10 @@ const Dashboard = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      {/* down section container */}
+      {/* ************ Refer a friend down section container *******************/}
       <TouchableOpacity
         style={styles.bottom_section}
-        // onPress={() => navigation.navigate("PendingTransactionScreen")}
+        onPress={() => navigation.navigate("TransactionsTopTab")} //MediaScreen
       >
         <View style={styles.bttm_txt_container}>
           <Text style={styles.bottom_bold_text}>Refer and earn</Text>
@@ -181,7 +147,7 @@ export default Dashboard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 20, 
     position: "relative",
     alignItems: "center",
     backgroundColor: "white",
@@ -205,39 +171,22 @@ const styles = StyleSheet.create({
     fontFamily: "semibold",
     textTransform: "capitalize",
   },
-  up_section: {
-    width: "100%",
-    height: 170,
-    backgroundColor: "#8CC3F2",
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
 
   up_section_text: {
     fontFamily: "regular",
   },
-  price_icon: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    // backgroundColor: "gray",
-    width: 130,
-    marginBottom: 7,
-  },
+ 
   price: {
     fontFamily: "semibold",
     fontSize: 16,
   },
   mid_section: {
-    width: "100%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    // marginHorizontal: 40,
-    marginTop: 40,
-
-    paddingHorizontal: 5,
+    marginTop: 20,
+    flexGrow: 1,
+    marginVertical: 10,
   },
   section_text: {
     fontSize: 22,
@@ -248,35 +197,34 @@ const styles = StyleSheet.create({
   },
   right_section: {
     backgroundColor: "#FFCBD3",
-    marginHorizontal: 5,
-    height: 220,
-    width: "50%",
+    marginLeft: 5,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     borderRadius: 15,
-    // marginRight: 10,
+    paddingVertical: 40,
+    flex: 1,
   },
   left_section: {
     backgroundColor: "#FBDDC3",
-    marginHorizontal: 5,
-    width: "50%",
-    height: 220,
+    marginRight: 5,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    // marginLeft: 10,
+    flex: 1,
+
+    paddingVertical: 40,
   },
   bottom_section: {
     width: "100%",
-    height: 180,
+    // height: 160,
+    flexGrow: 1,
     backgroundColor: "#DDD6ED",
     borderRadius: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    marginTop: 20,
   },
   bttm_txt_container: {
     alignItems: "flex-start",

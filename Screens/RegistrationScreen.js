@@ -50,11 +50,13 @@ const RegistrationScreen = ({ navigation }) => {
     fetch("https://api.prestohq.io/api/auth/register", requestOptions)
       .then((response) => response.json())
       .then((res) => {
+        // console.log("res", res)
+        setLoading(false);
         if (res?.status === "201") {
           return navigation.navigate("CheckVerification"); 
         }
         console.log("res", res)
-        setLoading(false);
+        
       })
       .catch((error) => {
         console.log("error", error);
@@ -63,7 +65,7 @@ const RegistrationScreen = ({ navigation }) => {
   };
   return (
     <View
-      style={styles.container}
+      style={styles.container} 
       // behavior="padding"
       // keyboardVerticalOffset={90}
     >

@@ -12,12 +12,25 @@ import { MaterialIcons, Feather, Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import { useNavigation } from "@react-navigation/native";
 
-const Transaction = ({ navigation, lastTransaction }) => {
+const Transaction = ({  lastTransaction }) => {
   const [uploadCard, setUploadCard] = useState(false);
   const togglePickCard = () => setUploadCard(!uploadCard);
+  const navigation = useNavigation()
+  const status =
+    lastTransaction?.status === 0
+      ? "pending"
+      : lastTransaction?.status === 1
+      ? "successful"
+      : "failed";
 
-  
+  const colors =
+    lastTransaction?.status === 0
+      ? "#ff9d3a"
+      : lastTransaction?.status === 1
+      ? "green"
+      : "#f9886c";
 
   const [fontLoaded, error] = useFonts({
     Italic: require("../assets/fonts/raleway/Raleway-Italic.ttf"),
@@ -31,8 +44,10 @@ const Transaction = ({ navigation, lastTransaction }) => {
 
   if (!lastTransaction) {
     return (
-      <View style={{ alignItems: "center", justifyContent: "center", flex:1, }}>
-        <Text style={{fontSize:20,  fontFamily:"Italic"}}>no pending transaction...</Text>
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Text style={{ fontSize: 20, fontFamily: "Italic" }}>
+          no pending transaction...
+        </Text>
       </View>
     );
   }
@@ -62,15 +77,7 @@ const Transaction = ({ navigation, lastTransaction }) => {
 
             <View style={styles.price_del}>
               <Text style={styles.price}>{lastTransaction?.value}</Text>
-              <Text
-                style={
-                  lastTransaction.status === "0"
-                    ? styles.status_fail
-                    : styles.status_success
-                }
-              >
-                {lastTransaction?.status === "0" ? "pending" : "complete"}
-              </Text>
+              <Text style={{ color: colors }}>{status}</Text>
             </View>
           </View>
 
@@ -80,7 +87,7 @@ const Transaction = ({ navigation, lastTransaction }) => {
             <View style={styles.upload_container}>
               <Text style={styles.upload_textI}>Kindly upload clear image</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate("TransactionImage")}
+                onPress={() => navigation.navigate("TransactionImage")} //SellGiftCardScreen
               >
                 <View style={styles.upload_btn}>
                   <Feather name="upload" size={24} color="#999999" />
@@ -93,21 +100,23 @@ const Transaction = ({ navigation, lastTransaction }) => {
           ) : (
             <View
               style={{
-                width: "100%",
+                // width: "100%",
                 position: "relative",
+                alignItems: "center"
+
               }}
             >
               <Image
                 source={{
                   uri: "https://www-konga-com-res.cloudinary.com/w_auto,f_auto,fl_lossy,dpr_auto,q_auto/media/catalog/product/Q/B/56261_1561559385.jpg",
                 }}
-                style={{ height: 200, width: "100%" }}
+                style={{ height: 100, width: 200, marginVertical:10 }}
               />
               <TouchableOpacity
                 onPress={() => togglePickCard()}
-                style={{ position: "absolute", bottom: -10, right: 30 }}
+                style={{ alignSelf:"flex-end" }}
               >
-                <Ionicons name="ios-download-outline" size={24} color="black" />
+                <Ionicons name="ios-download-outline" size={24} color="black" /> 
               </TouchableOpacity>
             </View>
           )}
@@ -122,7 +131,6 @@ export default Transaction;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
     backgroundColor: "white",
   },
 
@@ -153,7 +161,7 @@ const styles = StyleSheet.create({
   },
   card: {
     // width: "80%",
-    padding: 15,
+    padding: 5,
     marginHorizontal: 10,
     marginVertical: 20,
     backgroundColor: "white",

@@ -2,41 +2,27 @@ import React, { useState, useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import SmoothPinCodeInput from "react-native-smooth-pincode-input";
-import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Context } from "../context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LinearButton from "../components/LinearButton";
+import NavBar from "../components/NavBar";
 
 const CreatePin = ({ navigation }) => {
   const [code, setCode] = useState("");
-  const [error, setError] = useState(null);
-  const [token, setToken] = useState(null);
-  const {setIsAuthenticated } = useContext( Context )
-  // console.log("code", typeof code);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@prestoToken");
-        if (value !== null) {
-          // value previously stored
-          setToken(value);
-          console.log("@prestoToken", value);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    getData();
-  }, []);
+  const { setIsAuthenticated, accessToken, loading, setLoading } =
+    useContext(Context);
+  // console.log("accessToken", accessToken);
 
   const handlePin = () => {
-    var myHeaders = new Headers();
-    if (!token) {
+    if (!accessToken) {
       return null;
     }
-    console.log("pin token", token);
-    myHeaders.append("Authorization", `Bearer` + `${token}`);
+
+    setLoading(true);
+    // console.log("create pin token", accessToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer` + `${accessToken}`);
 
     var formdata = new FormData();
     formdata.append("pin", code);
@@ -51,44 +37,39 @@ const CreatePin = ({ navigation }) => {
 
     fetch("https://api.prestohq.io/api/auth/updatepin", requestOptions)
       .then((response) => response.json())
-      .then((result) =>{
-        console.log(result)
-        console.log(result?.message)
-      if(result?.message === "Pin updated"){
-        setIsAuthenticated(true)
-        return
-      }
+      .then((result) => {
+        setLoading(false);
+        console.log(result);
+
+        if (result?.status == "201") {
+          setIsAuthenticated(true);
+          storeData(accessToken);
+          return;
+        }
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        setLoading(false);
+        console.log("error", error);
+      });
   };
+
+  //  ****************store user's token ***********
+  const storeData = async (value) => {
+    try {
+      const jsonValue = value;
+      // console.log("user token", jsonValue);
+      await AsyncStorage.setItem("@prestoToken", jsonValue);
+      // setToken(jsonValue)
+    } catch (e) {
+      console.log("token error", e);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {error && (
-        <TouchableOpacity onPress={() => setError(false)}>
-          <Text
-            style={{
-              color: "red",
-              textAlign: "center",
-              marginTop: 30,
-            }}
-          >
-            {error}
-          </Text>
-        </TouchableOpacity>
-      )}
-      <View style={styles.nav}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <MaterialIcons
-            name="arrow-back-ios"
-            // style={{ marginLeft: 15 }}
-            size={24}
-            color="black"
-          />
-        </TouchableOpacity>
+     
 
-        <Text style={styles.header}>Create Pin</Text>
-      </View>
-
+      <NavBar title="Create Pin" navigation={navigation} />
       <View style={styles.sub_container}>
         <View style={styles.pin_text}>
           <SmoothPinCodeInput
@@ -111,20 +92,13 @@ const CreatePin = ({ navigation }) => {
           />
           <Text style={styles.Sub_header}>Create new Pin</Text>
         </View>
-
-        <Button
-          containerStyle={styles.btn}
-          buttonStyle={{
-            backgroundColor: "#0084F4",
-            padding: 20,
-            borderRadius: 10,
-          }}
-          title="Login"
-          // raised
-          // loading={loading}
-          onPress={() => handlePin()}
-        />
       </View>
+      <LinearButton
+        title={loading ? "creating pin" : "create pin"}
+        loading={loading}
+        onPress={handlePin}
+      />
+      <View style={{ marginBottom: 40 }} />
     </View>
   );
 };

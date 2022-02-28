@@ -13,21 +13,31 @@ import { Button } from "react-native-elements";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import pics from "../images/bg.png";
 import { Context } from "../context";
-import {ModalComponent} from '../components/Modal'
+import { ModalComponent } from "../components/Modal";
+import { useSelector } from "react-redux";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
+import NavBar from "../components/NavBar";
+import LinearButton from "../components/LinearButton";
 
 const Withdrawal = ({ navigation }) => {
   const [amount, setAmount] = useState("");
-  const [message, setModalMessage] = useState("");
-  const [openModal, setOpenModal] = useState(false);
+  const { user } = useSelector((state) => state.UserReducer);
 
-  const [loading, setLoading] = useState(false);
-  const { token } = useContext(Context);
-
-
+  const {
+    token,
+    message,
+    setModalMessage,
+    openModal,
+    setOpenModal,
+    setLoading,
+    loading,
+  } = useContext(Context);
+  console.log("user", user);
 
   const handleWithdraw = () => {
     if (!amount) {
-      alert("please enter an amount"); 
+      alert("please enter an amount");
       return null;
     }
     setLoading(true);
@@ -51,8 +61,8 @@ const Withdrawal = ({ navigation }) => {
       .then((result) => {
         setLoading(false);
         console.log("bank result", result);
-        setModalMessage( result?.message ||result?.result )
-        setOpenModal( true)
+        setModalMessage(result?.message || result?.result);
+        setOpenModal(true);
       })
       .catch((error) => {
         setLoading(false);
@@ -61,66 +71,90 @@ const Withdrawal = ({ navigation }) => {
       });
   };
 
+  let [firstLoaded, error] = useFonts({
+    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
+    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
+    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
+  });
+
+  if (!firstLoaded) {
+    return <AppLoading />;
+  }
+
+  if (!user?.accountno) {
+    return (
+      <View style={styles.noAcct}>
+        <NavBar title="Wallet" navigation={navigation} />
+        <Text style={styles.noAcctText}>
+          {user?.firstname}, you don't have a bank account on Presto, please
+          kindly add a bank account and proceed with your transactions
+        </Text>
+
+        <View style={{ marginVertical: 30 }} />
+        <LinearButton
+          navigation={navigation}
+          title="Add Account"
+          navigate="Accounts"
+        />
+      </View>
+    );
+  }
   return (
     <>
+      <SafeAreaView style={styles.container}>
+        {/* up section container */}
 
-        <SafeAreaView style={styles.container}>
+        <NavBar title="Wallet" navigation={navigation} />
 
-      {/* up section container */}
- 
-      <View style={styles.nav}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <MaterialIcons
-            name="arrow-back-ios"
-            // style={{ marginLeft: 15 }}
-            size={24}
-            color="black"
-          />
-        </TouchableOpacity>
+        <View style={styles.body}>
+          <Text style={styles.title}>Bank Account</Text>
+          <View style={styles.img_title}>
+            <View style={{ alignItems: "center" }}>
+              <Image
+                source={{
+                  uri: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Polaris-Bank-Limited.png",
+                }}
+                style={{
+                  height: 70,
+                  width: 70,
+                  borderRadius: 10,
+                  marginBottom: 5,
+                }}
+              />
+              <Text>{user?.bank}</Text>
+            </View>
 
-        <Text style={styles.header}>Wallet</Text>
-      </View>
-      <View style={styles.body}>
-        <Text style={styles.title}>Bank Account</Text>
-        <View style={styles.img_title}>
-          <Image
-            source={{
-              uri: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Polaris-Bank-Limited.png",
-            }}
-            style={{ height: 70, width: 70, borderRadius: 10 }}
-          />
-          <View style={styles.title_sub}>
-            <Text style={{ fontSize: 14, width: "75%" }}>
-              302563784779-Akinkunmi Micheal Polaris Bank
-            </Text>
+            <View style={styles.title_sub}>
+              <Text style={{ fontSize: 14 }}>{user?.accountno}</Text>
+              <Text style={{ fontFamily: "medium" }}>
+                {user?.firstname} {user?.lastname}
+              </Text>
+            </View>
           </View>
+
+          <TextInput
+            value={amount}
+            onChangeText={(text) => setAmount(text)}
+            style={styles.input}
+            placeholder="Enter Amount"
+          />
+
+          <LinearButton
+            onPress={handleWithdraw}
+            title="Withdraw"
+            loading={loading}
+          />
         </View>
-
-        <TextInput
-          value={amount}
-          onChangeText={(text) => setAmount(text)}
-          style={styles.input}
-          placeholder="Enter Amount"
-        />
-
-        <Button
-          containerStyle={styles.btn}
-          buttonStyle={{
-            backgroundColor: "#0084F4", 
-            padding: 20,
-            borderRadius: 10,
-            marginTop: 80,
-          }}
-          title="Withdraw"
-          // raised
-          loading={loading} 
-          onPress={() => handleWithdraw()}  
-        />
-      </View>
-      {openModal && <ModalComponent modalVisible={openModal} message={message}  />}
-
-    </SafeAreaView>
-
+        {openModal && (
+          <ModalComponent
+            modalVisible={openModal}
+            message={message}
+            setModalVisible={setOpenModal}
+            loading={loading}
+          />
+        )}
+      </SafeAreaView>
     </>
   );
 };
@@ -167,8 +201,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
-    // marginTop: 40,
+    fontFamily: "bold",
   },
   sub_title: {
     fontSize: 18,
@@ -180,7 +213,7 @@ const styles = StyleSheet.create({
   img_title: {
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "center",
+    justifyContent: "space-between",
     padding: 15,
     // marginHorizontal: 10,
     marginVertical: 20,
@@ -201,5 +234,17 @@ const styles = StyleSheet.create({
     width: "100%",
     alignSelf: "center",
     fontSize: 17,
+  },
+  noAcct: {
+    flex: 1,
+    padding: 15,
+    // alignItems: "center",
+    // justifyContent: "center",
+  },
+  noAcctText: {
+    fontSize: 17,
+    fontFamily: "regular",
+    textAlign: "center",
+    marginTop: 40,
   },
 });

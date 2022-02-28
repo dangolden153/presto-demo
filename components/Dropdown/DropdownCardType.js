@@ -63,7 +63,7 @@ const DropdownCardType = ({navigation}) => {
           <Text style={{fontSize: 16, marginBottom:5, fontFamily:"regular"}}>Giftcard Type</Text>
           <View style={{width: "100%", alignSelf: "center",backgroundColor: "white", paddingHorizontal:10,borderRadius:10,}} >
 
-          <Select
+          <Select 
             // minWidth=""
             accessibilityLabel="Choose Service"
             placeholder="Select card type"

@@ -244,7 +244,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
           modalVisible={openModal}
           message={message}
           setModalVisible={setOpenModal}
-          navigate="PendingTransactionScreen"
+          // navigate="PendingTransactionScreen"
         />
       )}
     </>

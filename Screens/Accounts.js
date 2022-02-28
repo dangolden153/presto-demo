@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
@@ -20,20 +20,23 @@ import { ModalComponent } from "../components/Modal";
 import { Dimensions } from "react-native";
 import { useSelector } from "react-redux";
 import { Context } from "../context";
-const deviceHeight = Dimensions.get('window').height
+const deviceHeight = Dimensions.get("window").height;
 
 const Accounts = ({ navigation }) => {
   const [bank, setBank] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [accountName, setAccountName] = useState("");
-  const [validate, setValidate] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setModalMessage] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const { token } = useContext(Context);
-  const { user } = useSelector(state => state.UserReducer); 
-
-// console.log('deviceHeight', deviceHeight/20);
+  const { user } = useSelector((state) => state.UserReducer);
+  const {
+    token,
+    message,
+    setModalMessage,
+    openModal,
+    setOpenModal,
+    setLoading,
+    loading,
+  } = useContext(Context);
+  // console.log('deviceHeight', deviceHeight/20);
   // console.log(" add bank token", token);
 
   const handleValidation = () => {
@@ -47,13 +50,13 @@ const Accounts = ({ navigation }) => {
       alert("please enter your account number!");
       return true;
     }
-    if (!accountName) { 
+    if (!accountName) {
       setValidate("please enter your account name!");
       alert("please enter your account name!");
       return true;
     }
     if (!token) {
-      setValidate("invalid token!"); 
+      setValidate("invalid token!");
       alert("invalid token!");
       return true;
     }
@@ -84,8 +87,8 @@ const Accounts = ({ navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setLoading(false);
-        setModalMessage(result?.message)
-        setOpenModal( true)
+        setModalMessage(result?.message);
+        setOpenModal(true);
         // console.log("bank result", result);
       })
       .catch((error) => {
@@ -104,35 +107,36 @@ const Accounts = ({ navigation }) => {
   }
   return (
     <>
-    <SafeAreaView style={styles.container}>
-      {/* up section container */}
-      <NavBar title="Account" navigation={navigation} />
+      <SafeAreaView style={styles.container}>
+        {/* up section container */}
+        <NavBar title="Account" navigation={navigation} />
 
-      <View style={styles.gift_card}>
-        <View style={styles.img_title}>
-          <Image
-            source={{
-              uri: "https://startcredits.com/wp-content/uploads/2019/04/Access-bank.png",
-            }}
-            style={{
-              height: 90,
-              width: 70,
-              borderRadius: 20,
-              marginRight: 20,
-            }}
-          />
-          <View style={styles.title_time}>
-            <Text style={styles.title}>{user?.accountname}</Text>
-            <Text style={styles.time}>{user?.accountno}</Text>
-          </View>
-        </View>
+        {user?.accountno && (
+          <View style={styles.gift_card}>
+            <View style={styles.img_title}>
+              <Image
+                source={{
+                  uri: "https://startcredits.com/wp-content/uploads/2019/04/Access-bank.png",
+                }}
+                style={{
+                  height: 90,
+                  width: 70,
+                  borderRadius: 20,
+                  marginRight: 20,
+                }}
+              />
+              <View style={styles.title_time}>
+                <Text style={styles.title}>{user?.accountname}</Text>
+                <Text style={styles.time}>{user?.accountno}</Text>
+              </View>
+            </View>
 
-        {/* <TouchableOpacity style={styles.trash}>
+            {/* <TouchableOpacity style={styles.trash}>
           <Feather name="trash-2" size={27} color="white" />
         </TouchableOpacity> */}
-      </View>
-
-      <ScrollView style={styles.body}>
+          </View>
+        )}
+        <ScrollView style={styles.body}>
           <Text style={styles.input_text}>Add Account</Text>
           <TextInput
             value={bank}
@@ -142,21 +146,31 @@ const Accounts = ({ navigation }) => {
           />
 
           <TextInput
-          value={accountNumber}
-          onChangeText={(text) => setAccountNumber(text)}
-           style={styles.input} placeholder="Acount number" />
+            value={accountNumber}
+            onChangeText={(text) => setAccountNumber(text)}
+            style={styles.input}
+            placeholder="Acount number"
+          />
 
           <TextInput
-          value={accountName}
-          onChangeText={(text) => setAccountName(text)}
-          style={styles.input} placeholder="Afeez Olamide" />
-
-      </ScrollView>
-      <LinearButton title="Add Account" onPress={AddBankAccountDetails} loading={loading} />
-
-    </SafeAreaView>
-    {openModal && (
-        <ModalComponent modalVisible={openModal} message={message} />
+            value={accountName}
+            onChangeText={(text) => setAccountName(text)}
+            style={styles.input}
+            placeholder="Afeez Olamide"
+          />
+        </ScrollView>
+        <LinearButton
+          title="Add Account"
+          onPress={AddBankAccountDetails}
+          loading={loading}
+        />
+      </SafeAreaView>
+      {openModal && (
+        <ModalComponent
+          modalVisible={openModal}
+          message={message}
+          setModalVisible={setOpenModal}
+        />
       )}
     </>
   );
@@ -198,7 +212,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: "100%",
     paddingBottom: 70,
-    paddingHorizontal: 10, 
+    paddingHorizontal: 10,
   },
   title: {
     fontSize: 17,
@@ -212,7 +226,7 @@ const styles = StyleSheet.create({
   input_text: {
     fontFamily: "semiBold",
     fontSize: 16,
-    marginTop:20
+    marginTop: 20,
   },
 
   input: {

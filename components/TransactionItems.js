@@ -4,18 +4,19 @@ import moment from "moment";
 
 const TransactionItems = ({ datas }) => {
   const status =
-    datas?.status === "0"
+    datas?.status == "0"
       ? "pending"
-      : datas?.status === "1"
+      : datas?.status == "1"
       ? "successful"
       : "failed";
 
   const colors =
-    datas?.status === "0"
+    datas?.status == "0"
       ? "#ff9d3a"
-      : datas?.status === "1"
-      ? "#00C48C"
+      : datas?.status == "1" 
+      ? "green"
       : "#f9886c";
+
 
   return (
     <View style={styles.gift_card}>
@@ -25,7 +26,7 @@ const TransactionItems = ({ datas }) => {
             uri: "https://www-konga-com-res.cloudinary.com/w_auto,f_auto,fl_lossy,dpr_auto,q_auto/media/catalog/product/Q/B/56261_1561559385.jpg",
           }}
           style={{
-            height: 90,
+            height: 70,
             width: 70,
             borderRadius: 20,
             marginRight: 10,
@@ -46,7 +47,12 @@ const TransactionItems = ({ datas }) => {
         {datas.failure && (
           <Text style={{ color: "black" }}>{datas.failure}</Text>
         )}
-        <Text style={{ color: colors }}>{status}</Text>
+        <Text style={{ color: colors }}>
+          {status}
+        </Text>
+
+
+    
       </View>
     </View>
   );

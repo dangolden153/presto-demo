@@ -4,13 +4,15 @@ export const Context = createContext();
 export const ContextProvider = ({ children }) => {
   const [openModal, setOpenModal] = useState(false);
   const [token, setToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setModalMessage] = useState("");
   const [refresh, setRefresh] = useState(false);
 
-
-  const handleRefresh = () => {setRefresh(!refresh);}
+  const handleRefresh = () => {
+    setRefresh(!refresh);
+  };
   return (
     <Context.Provider
       value={{
@@ -26,7 +28,9 @@ export const ContextProvider = ({ children }) => {
         setModalMessage,
         handleRefresh,
         refresh,
-        setRefresh
+        setRefresh,
+        accessToken,
+        setAccessToken,
       }}
     >
       {children}

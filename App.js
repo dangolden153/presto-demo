@@ -72,11 +72,13 @@ export default function App() {
 // copy text  ✅
 // refresh app ..30min - make a check-transaction icon at the top of the transaction component tht leads to check-transaction screen at where user can refresh, and if failed ...you should be taken back to the start screen process and a function to delete a transaction should be available.
 //  and should filter out the or empty the page if we dont have any pending transaction available ✅
-//  change pin ✅ ask ahmed the login behind updating the pin 30min ..
-// reset password ..
-// make the dashboard/bottom-tab sliding
+//  change pin ✅ ask ahmed the login behind updating the pin 30min ..✅
+// reset password ..✅
+// make the dashboard/bottom-tab sliding ..✅
+// populate the user account details to withdraw screen ..✅
+// get btc and usdt transactions 
 // download cards images 30min
-// use yup 30min
+// use yup 30min   before 2pm 
 // bvn : i dont think its detailed from the design and its necessary for now
 // check verify screen, ChangePin and ValidatePinScreen
 
@@ -87,3 +89,17 @@ export default function App() {
 // agbaje
 // updating the card transaction endpoint to receive the card image url
 // hes also updating the transaction status to send a failure message and a number of 2.
+
+
+// check the login after error and registration screen ✅
+// the back arrow to the btc and sell usdt ✅
+
+// check the endpoint for image url 
+// validation on the sell card before going to the other screen  ✅
+// - hide balance ✅
+// -  auth token flow 
+// - add images url ..
+// - sliding transaction ..
+// need bank images and a dropDown for add banks--talk to boss
+// - multiple selected images ..✅
+// - recipes should be hidden for cards thats not required  ✅

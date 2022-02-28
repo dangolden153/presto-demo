@@ -54,7 +54,7 @@ const TransactionCheck = ({ navigation }) => {
           ) : (
             <FlatList
               data={transaction}
-              keyExtractor={(item) => item?.id}
+              keyExtractor={(item, index) => item + index.toString()}
               renderItem={({ item }) => <TransactionItems datas={item} />}
               onRefresh={handleTrans}
               refreshing={refresh}

@@ -16,7 +16,7 @@ const CheckVerification = ({ navigation }) => {
         style={{ height: 250, width: 250, resizeMode: "cover" }}
       />
       <Text style={styles.text}>check your email for verification link</Text>
-      <TouchableOpacity onPress={() => navigation.navigate("VerifiedScreen")}>
+      <TouchableOpacity onPress={() => navigation.navigate("VerifiedScreen")}> 
         <Text style={styles.link}>Resend email</Text>
       </TouchableOpacity>
       </View>

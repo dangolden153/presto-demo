@@ -29,6 +29,7 @@ const Settings = ({ navigation }) => {
       await AsyncStorage.removeItem("@prestoToken");
       console.log("@card token", "logout");
       setIsAuthenticated(false);
+      setToken(null)
     } catch (e) {
       console.log("token remove error", e);
     }
@@ -226,7 +227,7 @@ const Settings = ({ navigation }) => {
         <TouchableOpacity
             style={styles.Settings_items}
             // onPress={() => navigation.navigate("Accounts")}
-            onPress={() => Logout()}
+            // onPress={() => Logout()}
           >
             <View style={styles.box_text}>
               <LinearGradient
@@ -235,6 +236,24 @@ const Settings = ({ navigation }) => {
                 style={styles.box}
               />
               <Text style={styles.text}>About Us</Text>
+            </View>
+            <Ionicons name="ios-chevron-forward" size={24} color="black" />
+          </TouchableOpacity>
+
+
+          {/* *********** log out ***************** * */}
+        <TouchableOpacity
+            style={styles.Settings_items}
+            // onPress={() => navigation.navigate("Accounts")}
+            onPress={() => Logout()}
+          >
+            <View style={styles.box_text}>
+              <LinearGradient
+                // Button Linear Gradient
+                colors={["#86c6fd", "#2e9bf7", "#2998f7"]}
+                style={styles.box}
+              />
+              <Text style={styles.text}>Log out</Text>
             </View>
             <Ionicons name="ios-chevron-forward" size={24} color="black" />
           </TouchableOpacity>

@@ -31,9 +31,18 @@ const SellGiftCardScreen = ({ navigation }) => {
   console.log(`country`, country?.countryName);
   console.log(`value`, value);
 
-  const ctry = country?.countryName
-  const tpe = type?.cardName
+  const ctry = country?.countryName;
+  const tpe = type?.cardName;
 
+  const handleNavigation = () => {
+    if (!ctry || !tpe || !value || !amount) {
+      return alert("credentials required!");
+    }
+
+    navigation.navigate("UploadGiftcardScreen", {
+      giftcardData: { ctry, tpe, value, amount },
+    });
+  };
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
@@ -123,24 +132,16 @@ const SellGiftCardScreen = ({ navigation }) => {
           </View>
         </View>
 
-
         <LinearGradient
           // Button Linear Gradient
           colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
-          style={[styles.btn,{marginBottom:30}]}
+          style={[styles.btn, { marginBottom: 30 }]}
         >
           <Text style={styles.text}>Prepaid card</Text>
         </LinearGradient>
       </ScrollView>
 
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() =>
-          navigation.navigate("UploadGiftcardScreen", {
-            giftcardData: { ctry, tpe, value, amount },
-          })
-        }
-      >
+      <TouchableOpacity activeOpacity={0.7} onPress={() => handleNavigation()}>
         <LinearGradient
           // Button Linear Gradient
           colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
@@ -188,7 +189,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     borderRadius: 20,
-    
   },
   text_input: {
     alignItems: "center",

@@ -19,6 +19,7 @@ import { Context } from "../context";
 import { useSelector, useDispatch } from "react-redux";
 import { USER_TOKEN } from "../Redux/Types/type";
 import { ModalComponent } from "../components/Modal";
+import NavBar from "../components/NavBar";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -35,6 +36,8 @@ const LoginScreen = ({ navigation }) => {
     setModalMessage,
     setIsAuthenticated,
     setToken,
+    accessToken,
+    setAccessToken,
   } = useContext(Context);
 
   let trimEmail = email.trim();
@@ -75,29 +78,25 @@ const LoginScreen = ({ navigation }) => {
       .then((response) => response.json())
 
       .then((result) => {
-        console.log("login result", result);
+        // console.log("login result", result);
         setLoading(false);
-        setIsAuthenticated(true);
-        if (result?.error) {
-          console.log("catching login error", result?.error);
-          setLoading(false);
-          setModalMessage(result?.error);
-          setOpenModal(true); 
-          return;
-        }
 
-        if (result?.access_token && result?.user?.pin) {
+        if (result?.status == "200") {
+          if (!result?.user?.pin) {
+            console.log("null pin");
+            setAccessToken(result?.access_token)
+            navigation.navigate("VerifiedScreen");
+            return;
+          }
           console.log("result?.access_token && result?.user?.pin");
           storeData(result?.access_token);
           setIsAuthenticated(true);
           setLoading(false);
-        }
-        else {
-          storeData(result?.user?.pin);
-          dispatch({ type: USER_TOKEN, payload: result?.access_token });
-          navigation.navigate("VerifiedScreen");
+        }  else {
+          console.log("catching login error", result?.error);
           setLoading(false);
-          console.log("result?.user?.pin")
+          setModalMessage(result?.error);
+          setOpenModal(true);
         }
       })
       .catch((error) => {
@@ -106,7 +105,7 @@ const LoginScreen = ({ navigation }) => {
       });
   };
 
-  ////store user's token
+//  ****************store user's token ***********
   const storeData = async (value) => {
     try {
       const jsonValue = value;
@@ -128,14 +127,15 @@ const LoginScreen = ({ navigation }) => {
         <StatusBar style="dark" />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner_container}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            {/* <TouchableOpacity onPress={() => navigation.goBack()}>
               <MaterialIcons
                 name="arrow-back-ios"
                 style={{ marginTop: 50, marginLeft: 15 }}
                 size={24}
                 color="black"
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
             <View style={styles.header_container}>
               <Text style={styles.header}>Welcome</Text>
               <Text style={styles.Sub_header}>
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   header_container: {
     alignItems: "flex-start",
     marginLeft: 15,
-    marginTop: 50,
+    marginTop: 90,
   },
 
   header: {

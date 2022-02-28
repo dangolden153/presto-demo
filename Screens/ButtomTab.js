@@ -17,7 +17,6 @@ const Tab = createBottomTabNavigator();
 const ButtomTab = () => {
   const dispatch = useDispatch();
   const { token,setModalMessage, } = useContext(Context);
-  const { transaction } = useSelector((state) => state.TransactionReducer);
 
 
   // *************get user's details  **************************
@@ -61,6 +60,7 @@ const ButtomTab = () => {
  
 
   return (
+    <View style={{flex: 1,}}>
     <Tab.Navigator
       // tabBarOptions={{
       //   showLabel: false,
@@ -72,7 +72,7 @@ const ButtomTab = () => {
           justifyContent: "space-between",
           borderTopStartRadius: 20,
           borderTopEndRadius: 20,
-          elevation: 20,
+          elevation: 0,
         },
       }}
     >
@@ -128,6 +128,7 @@ const ButtomTab = () => {
         }}
       />
     </Tab.Navigator>
+    </View>
   );
 };
 

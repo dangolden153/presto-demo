@@ -36,7 +36,14 @@ const theme = extendTheme({
   },
 });
 
-const Dropdown = ({ data, item, setItem, placeholder, label,selectItemLabel }) => {
+const Dropdown = ({
+  data,
+  item,
+  setItem,
+  placeholder,
+  label,
+  selectItemLabel,
+}) => {
   // console.log(`card`, card)
   const [error, setError] = useState("");
   const [firstloading, Error] = useFonts({
@@ -49,7 +56,6 @@ const Dropdown = ({ data, item, setItem, placeholder, label,selectItemLabel }) =
     return <AppLoading />;
   }
 
- 
   const dataItems = () => {
     if (!data) {
       return (
@@ -93,7 +99,9 @@ const Dropdown = ({ data, item, setItem, placeholder, label,selectItemLabel }) =
 
   return (
     <>
-            {error !== "" ? <Text style={{color:"red", fontSize:20}}>{error}</Text> : null}
+      {error !== "" ? (
+        <Text style={{ color: "red", fontSize: 20 }}>{error}</Text>
+      ) : null}
 
       <View
         style={{
@@ -102,9 +110,7 @@ const Dropdown = ({ data, item, setItem, placeholder, label,selectItemLabel }) =
           width: "95%",
           alignSelf: "center",
         }}
-        
       >
-
         <NativeBaseProvider theme={theme}>
           <FormControl isRequired>
             <Text

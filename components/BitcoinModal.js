@@ -81,8 +81,8 @@ function BitcoinModalScreen({
                     Enter the crypto Amount you want to sell
                   </Text>
                   <Text style={styles.sub_text}>
-                    $5 is the minimum trade amount accepted, your Presto Wallet
-                    will be credited instantly
+                    The minimum amount is $5 , your Presto Wallet
+                    will be credited after confirmation.
                   </Text>
 
                   {/* **********************selling in dollar container******************** */}

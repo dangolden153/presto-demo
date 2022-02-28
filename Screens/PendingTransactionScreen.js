@@ -89,7 +89,7 @@ const PendingTransactionScreen = ({ route, navigation, giftcardData }) => {
         } else {
           setValidate("unable to process transaction");
         }
-        console.log("card result", result.result);
+        // console.log("card result", result.result);
       })
       .catch((error) => {
         setLoading(false);
@@ -139,10 +139,10 @@ const PendingTransactionScreen = ({ route, navigation, giftcardData }) => {
 
   return (
     <View style={styles.container}>
-      <NavBar
+      <NavBar 
         title="Transaction"
         navigation={navigation}
-        navigate="ButtomTab"
+        // navigate="ButtomTab"
       />
       {/* <View style={styles.body}> */}
 
@@ -170,7 +170,7 @@ export default PendingTransactionScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // padding: 15,
+    padding: 15,
     backgroundColor: "white",
   },
 });

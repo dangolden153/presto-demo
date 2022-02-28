@@ -27,7 +27,7 @@ const NavBar = ({ navigation, title, navigate, full }) => {
     <View style={styles.nav}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={{ position: "absolute", left: 10 }}
+        style={{ position: "absolute", left: 0 }}
       >
         <MaterialIcons
           name="arrow-back-ios"

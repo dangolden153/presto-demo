@@ -10,10 +10,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 
-const LinearButton = ({ navigation, title, onPress, loading }) => {
+const LinearButton = ({ navigation, title, onPress, loading, navigate }) => {
   const handleSubmit = () => {
     if (!onPress || loading) return;
     onPress();
+  };
+
+  const handleNavigation = () => {
+    if (!navigate) return;
+    navigation.navigate(navigate);
+    console.log("navigate");
   };
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
@@ -29,23 +35,39 @@ const LinearButton = ({ navigation, title, onPress, loading }) => {
   // console.log('loading', loading);
   return (
     <View>
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => handleSubmit()}
-        style={styles.container}
-      >
-        <LinearGradient
-          // Button Linear Gradient
-          colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
-          style={styles.btn}
+      {navigate  ? (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => handleNavigation()}
+          style={styles.container}
         >
-          {loading ? (
-            <ActivityIndicator size="small" color="#ffff" />
-          ) : (
+          <LinearGradient
+            // Button Linear Gradient
+            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            style={styles.btn}
+          >
             <Text style={styles.text}>{title}</Text>
-          )}
-        </LinearGradient>
-      </TouchableOpacity>
+          </LinearGradient>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => handleSubmit()}
+          style={styles.container}
+        >
+          <LinearGradient
+            // Button Linear Gradient
+            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            style={styles.btn}
+          >
+            {loading ? (
+              <ActivityIndicator size="small" color="#ffff" />
+            ) : (
+              <Text style={styles.text}>{title}</Text>
+            )}
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
