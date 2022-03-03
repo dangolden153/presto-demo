@@ -7,7 +7,7 @@ import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import LinearButton from "../components/LinearButton";
 
-const RateUsScreen = ({ navigation}) => {
+const RateUsScreen = ({ navigation }) => {
   const [message, setMessage] = useState("");
 
   let [firstLoaded, error] = useFonts({
@@ -24,37 +24,37 @@ const RateUsScreen = ({ navigation}) => {
     <View style={styles.container}>
       <NavBar title="Rate Us" navigation={navigation} />
       <View style={styles.content}>
-      <LinearGradient
-        colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
-        style={styles.gradient}
-      >
-        <View style={styles.items}>
-          <Text style={styles.headerText}>Do you like presto</Text>
-          <Text style={styles.text}>
-            Rate your experience{"\n"}using our app{" "}
-          </Text>
+        <LinearGradient
+          colors={["#0B365B", "#0B365B", "#124672"]}
+          style={styles.gradient}
+        >
+          <View style={styles.items}>
+            <Text style={styles.headerText}>Do you like presto</Text>
+            <Text style={styles.text}>
+              Rate your experience{"\n"}using our app{" "}
+            </Text>
 
-          <View style={styles.starContainer}>
-            <FontAwesome name="star" size={24} color="#F6EB30" />
-            <FontAwesome name="star" size={24} color="#F6EB30" />
-            <FontAwesome name="star" size={24} color="#F6EB30" />
-            <FontAwesome name="star" size={24} color="#F6EB30" />
-            <FontAwesome name="star" size={24} color="#F6EB30" />
+            <View style={styles.starContainer}>
+              <FontAwesome name="star" size={24} color="#F6EB30" />
+              <FontAwesome name="star" size={24} color="#F6EB30" />
+              <FontAwesome name="star" size={24} color="#F6EB30" />
+              <FontAwesome name="star" size={24} color="#F6EB30" />
+              <FontAwesome name="star" size={24} color="#F6EB30" />
+            </View>
           </View>
-        </View>
 
-        <Text style={styles.comment}>Leave us your comment</Text> 
-        <TextInput
-          value={message}
-          onChangeText={(text) => setMessage(text)}
-          style={styles.input}
-          multiline={true}
-          placeholder="Type your comment here"
-          placeholderTextColor="#F6F6F6" 
-        />
-      </LinearGradient>
+          <Text style={styles.comment}>Leave us your comment</Text>
+          <TextInput
+            value={message}
+            onChangeText={(text) => setMessage(text)}
+            style={styles.input}
+            multiline={true}
+            placeholder="Type your comment here"
+            placeholderTextColor="#F6F6F6"
+          />
+        </LinearGradient>
 
-      <LinearButton title="Submit" />
+        <LinearButton title="Submit" />
       </View>
     </View>
   );
@@ -67,12 +67,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-    content: {
-      // marginTop: 20,
-      width: "100%",
-      paddingHorizontal: 20,
+  content: {
+    // marginTop: 20,
+    width: "100%",
+    paddingHorizontal: 20,
 
-    },
+  },
   gradient: {
     width: "100%",
     paddingHorizontal: 20,

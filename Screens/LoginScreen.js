@@ -81,21 +81,21 @@ const LoginScreen = ({ navigation }) => {
         // console.log("login result", result);
         setLoading(false);
 
-        if (result?.status == "200") {
-          if (!result?.user?.pin) {
+        if (result ?.status == "200") {
+          if (!result ?.user ?.pin) {
             console.log("null pin");
-            setAccessToken(result?.access_token)
+            setAccessToken(result ?.access_token)
             navigation.navigate("VerifiedScreen");
             return;
           }
           console.log("result?.access_token && result?.user?.pin");
-          storeData(result?.access_token);
+          storeData(result ?.access_token);
           setIsAuthenticated(true);
           setLoading(false);
-        }  else {
-          console.log("catching login error", result?.error);
+        } else {
+          console.log("catching login error", result ?.error);
           setLoading(false);
-          setModalMessage(result?.error);
+          setModalMessage(result ?.error);
           setOpenModal(true);
         }
       })
@@ -105,7 +105,7 @@ const LoginScreen = ({ navigation }) => {
       });
   };
 
-//  ****************store user's token ***********
+  //  ****************store user's token ***********
   const storeData = async (value) => {
     try {
       const jsonValue = value;
@@ -122,7 +122,7 @@ const LoginScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         style={styles.container}
         behavior="padding"
-        // keyboardVerticalOffset={90}
+      // keyboardVerticalOffset={90}
       >
         <StatusBar style="dark" />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -190,14 +190,14 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity activeOpacity={0.7} onPress={() => handleLogin()}>
               <LinearGradient
                 // Button Linear Gradient
-                colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+                colors={["#0B365B", "#0B365B", "#124672"]}
                 style={styles.btn}
               >
                 {loading ? (
                   <ActivityIndicator size="small" color="white" />
                 ) : (
-                  <Text style={styles.btn_text}>Next</Text>
-                )}
+                    <Text style={styles.btn_text}>Next</Text>
+                  )}
               </LinearGradient>
             </TouchableOpacity>
             {/* //CheckVerification */}

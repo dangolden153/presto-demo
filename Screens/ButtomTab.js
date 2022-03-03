@@ -7,16 +7,17 @@ import Dashboard from "../components/Dashboard";
 import Settings from "../components/Settings";
 import { AntDesign } from "@expo/vector-icons";
 import Wallet from "../components/Wallet";
-import TransactionCheck from "../components/TransactionCheck";
 import { Context } from "../context";
 import { useDispatch, useSelector } from "react-redux";
 import { USER_DATA } from "../Redux/Types/type";
-import { fetchCardTransactions } from "../Redux/Actions/crptoTransaction";
+import { fetchCardTransactions, fetchBTCTransactions, fetchUSDTTransactions } from "../Redux/Actions/crptoTransaction";
+import SelectTransaction from "../components/SelectTransaction";
+
 const Tab = createBottomTabNavigator();
 
 const ButtomTab = () => {
   const dispatch = useDispatch();
-  const { token,setModalMessage, } = useContext(Context);
+  const { token, setModalMessage, } = useContext(Context);
 
 
   // *************get user's details  **************************
@@ -24,18 +25,28 @@ const ButtomTab = () => {
     fetchUserDetails();
   }, []);
 
- // *************fetch card transaction **************************
+  // *************fetch card transaction **************************
   useEffect(() => {
-    dispatch(fetchCardTransactions(token,setModalMessage,));
-  }, []); 
+    dispatch(fetchCardTransactions(token, setModalMessage));
+  }, []);
+
+  // *************fetch BTC transaction **************************
+  useEffect(() => {
+    dispatch(fetchBTCTransactions(token, setModalMessage));
+  }, []);
+
+  // *************fetch USDT transaction **************************
+  useEffect(() => {
+    dispatch(fetchUSDTTransactions(token, setModalMessage));
+  }, []);
 
 
- // *************user details function**************************
+  // *************user details function**************************
   const fetchUserDetails = () => {
     let myHeaders = new Headers();
     // console.log("fetchUserDetails token", token);
 
-    myHeaders.append("Authorization", "Bearer " + token); 
+    myHeaders.append("Authorization", "Bearer " + token);
     let requestOptions = {
       method: "GET",
       headers: myHeaders,
@@ -57,77 +68,77 @@ const ButtomTab = () => {
       });
   };
 
- 
+
 
   return (
-    <View style={{flex: 1,}}>
-    <Tab.Navigator
-      // tabBarOptions={{
-      //   showLabel: false,
-      // }}
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderTopStartRadius: 20,
-          borderTopEndRadius: 20,
-          elevation: 0,
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={{
-          headerShown: false,
+    <View style={{ flex: 1, }}>
+      <Tab.Navigator
+        // tabBarOptions={{
+        //   showLabel: false,
+        // }}
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderTopStartRadius: 20,
+            borderTopEndRadius: 20,
+            elevation: 0,
+          },
+        }}
+      >
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            headerShown: false,
 
-          tabBarIcon: ({ focused }) => (
-            <View>
-              <AntDesign name="home" size={24} color="black" />
-            </View>
-          ),
-        }}
-      />
+            tabBarIcon: ({ focused }) => (
+              <View>
+                <AntDesign name="home" size={24} color="black" />
+              </View>
+            ),
+          }}
+        />
 
-      <Tab.Screen
-        name="Wallet"
-        component={Wallet}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <View>
-              <AntDesign name="wallet" size={24} color="black" />
-            </View>
-          ),
-        }}
-      />
+        <Tab.Screen
+          name="Wallet"
+          component={Wallet}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <View>
+                <AntDesign name="wallet" size={24} color="black" />
+              </View>
+            ),
+          }}
+        />
 
-      <Tab.Screen
-        name="TransactionCheck"
-        component={TransactionCheck}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <View>
-              <AntDesign name="clockcircleo" size={24} color="black" />
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={Settings}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <View>
-              <AntDesign name="user" size={24} color="black" />
-            </View>
-          ),
-        }}
-      />
-    </Tab.Navigator>
+        <Tab.Screen
+          name="SelectTransaction"
+          component={SelectTransaction}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <View>
+                <AntDesign name="clockcircleo" size={24} color="black" />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <View>
+                <AntDesign name="user" size={24} color="black" />
+              </View>
+            ),
+          }}
+        />
+      </Tab.Navigator>
     </View>
   );
 };

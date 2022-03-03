@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View, Text,StyleSheet } from "react-native";
+import { Image, View, Text, StyleSheet } from "react-native";
 import {
   Modal,
   Button,
@@ -8,14 +8,16 @@ import {
   Center,
 } from "native-base";
 import pics from "../images/Memoji.png";
+import errorPics from "../images/sad-memoji.png";
+
 import { useNavigation } from "@react-navigation/native";
 
-export function ModalComponent({ modalVisible, setModalVisible, message,navigate }) {
+export function ModalComponent({ modalVisible, setModalVisible, message, navigate }) {
   const navigation = useNavigation();
 
 
-  const handleModal = ()=>{
-    navigation.navigate(navigate || "ButtomTab")
+  const handleModal = () => {
+    navigation.navigate(message.status == "ok" ? navigate : "ButtomTab")
     setModalVisible(false)
   }
 
@@ -27,13 +29,13 @@ export function ModalComponent({ modalVisible, setModalVisible, message,navigate
             isOpen={modalVisible}
             onClose={setModalVisible}
             size="md"
-            style={{ position: "relative"}}
-            // _backdrop={{
-            //   _dark: {
-            //     bg: "coolGray.800",
-            //   },
-            //   bg: "#001e5a13",
-            // }}
+            style={{ position: "relative" }}
+          // _backdrop={{
+          //   _dark: {
+          //     bg: "coolGray.800",
+          //   },
+          //   bg: "#001e5a13",
+          // }}
           >
             <Modal.Content style={styles.container}>
               <Modal.Body
@@ -52,7 +54,7 @@ export function ModalComponent({ modalVisible, setModalVisible, message,navigate
                   }}
                 >
                   <Image
-                    source={pics}
+                    source={message.status == "ok" ? pics : errorPics}
                     style={{
                       height: 100,
                       width: 100,
@@ -70,7 +72,7 @@ export function ModalComponent({ modalVisible, setModalVisible, message,navigate
                       fontWeight: "bold",
                     }}
                   >
-                    {message}
+                    {message.text}
                   </Text>
                 </ScrollView>
               </Modal.Body>
@@ -95,9 +97,9 @@ export function ModalComponent({ modalVisible, setModalVisible, message,navigate
 
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     position: "absolute",
-    
+
     // bottom: 80,
     // width: "90%",
     // backgroundColor:"pink"

@@ -7,13 +7,15 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
-import TransactionItems from "./TransactionItems";
+import TransactionItems from "../components/TransactionItems";
 import { Context } from "../context";
 import { fetchCardTransactions } from "../Redux/Actions/crptoTransaction";
-import NavBar from "./NavBar";
-const TransactionCheck = ({ navigation }) => {
+import NavBar from "../components/NavBar";
+
+
+const TransactionHistory = ({ navigation }) => {
   const { transaction } = useSelector((state) => state.TransactionReducer);
   const { token, setModalMessage } = useContext(Context);
   const [refresh, setRefresh] = useState(false);
@@ -33,9 +35,9 @@ const TransactionCheck = ({ navigation }) => {
         {/* up section container */}
         <NavBar
           navigation={navigation}
-          title="Transaction"
-          navigate="PendingTransactionScreen"
-          full
+          title="Card Transaction"
+        // navigate="PendingTransactionScreen"
+        // full
         />
 
         <View style={styles.body} showsVerticalScrollIndicator={false}>
@@ -52,21 +54,22 @@ const TransactionCheck = ({ navigation }) => {
               <Text style={{ fontSize: 20 }}>No transaction found</Text>
             </View>
           ) : (
-            <FlatList
-              data={transaction}
-              keyExtractor={(item, index) => item + index.toString()}
-              renderItem={({ item }) => <TransactionItems datas={item} />}
-              onRefresh={handleTrans}
-              refreshing={refresh}
-            />
-          )}
+              <FlatList
+                data={transaction}
+                keyExtractor={(item, index) => item + index.toString()}
+                renderItem={({ item }) => <TransactionItems card datas={item} />}
+                onRefresh={handleTrans}
+                refreshing={refresh}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
         </View>
       </SafeAreaView>
     </>
   );
 };
 
-export default TransactionCheck;
+export default TransactionHistory;
 
 const styles = StyleSheet.create({
   container: {

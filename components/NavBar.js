@@ -3,14 +3,16 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
+import { useNavigation } from "@react-navigation/core";
 
-const NavBar = ({ navigation, title, navigate, full }) => {
+const NavBar = ({ title, navigate, full }) => {
   const [fontLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
   });
 
+  const navigation = useNavigation()
   const handleNavigation = () => {
     if (!navigate) {
       navigation.goBack();
@@ -41,7 +43,7 @@ const NavBar = ({ navigation, title, navigate, full }) => {
 
       {full && (
         <TouchableOpacity
-          onPress={()  => handleNavigation()}
+          onPress={() => handleNavigation()}
           style={{ position: "absolute", right: 0 }}
         >
           <AntDesign name="wallet" size={24} color="black" />

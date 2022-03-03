@@ -26,13 +26,13 @@ const SellGiftCardScreen = ({ navigation }) => {
   const [value, setValue] = useState("");
 
   let emptyArray = [];
-  console.log(`type`, type?.cardName);
+  console.log(`type`, type ?.cardName);
   // console.log(`type`, type.country);
-  console.log(`country`, country?.countryName);
+  console.log(`country`, country ?.countryName);
   console.log(`value`, value);
 
-  const ctry = country?.countryName;
-  const tpe = type?.cardName;
+  const ctry = country ?.countryName;
+  const tpe = type ?.cardName;
 
   const handleNavigation = () => {
     if (!ctry || !tpe || !value || !amount) {
@@ -132,19 +132,19 @@ const SellGiftCardScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <LinearGradient
+        {/* <LinearGradient
           // Button Linear Gradient
           colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
           style={[styles.btn, { marginBottom: 30 }]}
         >
           <Text style={styles.text}>Prepaid card</Text>
-        </LinearGradient>
+        </LinearGradient> */}
       </ScrollView>
 
       <TouchableOpacity activeOpacity={0.7} onPress={() => handleNavigation()}>
         <LinearGradient
           // Button Linear Gradient
-          colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+          colors={["#0B365B", "#0B365B", "#124672"]}
           style={styles.btn}
         >
           <Text style={styles.text}>Proceed</Text>

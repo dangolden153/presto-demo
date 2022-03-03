@@ -35,7 +35,7 @@ const LinearButton = ({ navigation, title, onPress, loading, navigate }) => {
   // console.log('loading', loading);
   return (
     <View>
-      {navigate  ? (
+      {navigate ? (
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => handleNavigation()}
@@ -43,31 +43,33 @@ const LinearButton = ({ navigation, title, onPress, loading, navigate }) => {
         >
           <LinearGradient
             // Button Linear Gradient
-            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            colors={["#0B365B", "#0B365B", "#124672"]}
+
+            // colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
             style={styles.btn}
           >
             <Text style={styles.text}>{title}</Text>
           </LinearGradient>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => handleSubmit()}
-          style={styles.container}
-        >
-          <LinearGradient
-            // Button Linear Gradient
-            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
-            style={styles.btn}
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => handleSubmit()}
+            style={styles.container}
           >
-            {loading ? (
-              <ActivityIndicator size="small" color="#ffff" />
-            ) : (
-              <Text style={styles.text}>{title}</Text>
-            )}
-          </LinearGradient>
-        </TouchableOpacity>
-      )}
+            <LinearGradient
+              // Button Linear Gradient
+              colors={["#0B365B", "#0B365B", "#124672"]}
+              style={styles.btn}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="#ffff" />
+              ) : (
+                  <Text style={styles.text}>{title}</Text>
+                )}
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
     </View>
   );
 };

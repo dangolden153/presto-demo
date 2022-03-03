@@ -28,7 +28,7 @@ const Card = () => {
 
   return (
     <TouchableOpacity
-      // onPress={() => navigation.navigate("ButtomTab")}
+      // onPress={() => navigation.navigate("ButtomTab")} 
       style={styles.up_section}
       activeOpacity={0.9}
     >
@@ -43,15 +43,15 @@ const Card = () => {
       />
       <Text style={styles.up_section_text}>Your available balance</Text>
       <View style={styles.price_icon}>
-      {hideBalance &&  <Text style={styles.price}>{user?.balance} .00k</Text>}
-        <TouchableOpacity onPress={() => handleToggle()} style={{alignItems:hideBalance ? "center" : 'center' ,width: '100%'}}>
+        {hideBalance && <Text style={styles.price}>{user ?.balance} .00k</Text>}
+        <TouchableOpacity onPress={() => handleToggle()} style={{ alignItems: hideBalance ? "center" : 'center', width: '100%' }}>
           <Feather name="eye" size={24} color="black" />
         </TouchableOpacity>
       </View>
       <Button
         containerStyle={styles.btn}
         buttonStyle={{
-          backgroundColor: "#0084F4",
+          backgroundColor: "#0B365B",
           paddingVertical: 10,
           width: 160,
           fontFamily: "semibold",
@@ -72,7 +72,7 @@ const Card = () => {
 export default Card;
 
 const styles = StyleSheet.create({
-  
+
   up_section: {
     width: "100%",
     // height: 170,

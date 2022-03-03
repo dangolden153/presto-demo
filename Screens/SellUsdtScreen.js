@@ -88,7 +88,7 @@ const SellUsdtScreen = ({ navigation }) => {
             <Text style={styles.btc_address}>BTC Wallet Details</Text>
             <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
           </View>
-          
+
           <LinearButton title="Click to copy" onPress={handleToggleModal} />
 
           <Text style={styles.btc_text}>
@@ -96,8 +96,8 @@ const SellUsdtScreen = ({ navigation }) => {
             please provide proof
           </Text>
 
-  {/* ***************upload container************************** */}
-         {!image && <View style={styles.upload_container}>
+          {/* ***************upload container************************** */}
+          {!image && <View style={styles.upload_container}>
             <Text style={styles.upload_textI}>Kindly upload Proof</Text>
             <TouchableOpacity
               style={styles.upload_btn}
@@ -132,32 +132,32 @@ const SellUsdtScreen = ({ navigation }) => {
               />
             </View>
           ) : (
-            <View style={styles.btc_table}>
-              <Text style={styles.rate_header}>Sell Bitcoin</Text>
+              <View style={styles.btc_table}>
+                <Text style={styles.rate_header}>Sell Bitcoin</Text>
 
-              <View style={styles.value_table}>
-                <View style={styles.value_rates}>
-                  <Text style={styles.value_header}>Value</Text>
-                  <Text style={styles.value_header}>Rate </Text>
-                </View>
+                <View style={styles.value_table}>
+                  <View style={styles.value_rates}>
+                    <Text style={styles.value_header}>Value</Text>
+                    <Text style={styles.value_header}>Rate </Text>
+                  </View>
 
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>less that 100</Text>
-                  <Text style={styles.value}>520</Text>
-                </View>
+                  <View style={styles.value_rates}>
+                    <Text style={styles.value}>less that 100</Text>
+                    <Text style={styles.value}>520</Text>
+                  </View>
 
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>100+ to 1,000</Text>
-                  <Text style={styles.value}>535</Text>
-                </View>
+                  <View style={styles.value_rates}>
+                    <Text style={styles.value}>100+ to 1,000</Text>
+                    <Text style={styles.value}>535</Text>
+                  </View>
 
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>Above 1,000</Text>
-                  <Text style={styles.value}>550</Text>
+                  <View style={styles.value_rates}>
+                    <Text style={styles.value}>Above 1,000</Text>
+                    <Text style={styles.value}>550</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
+            )}
         </ScrollView>
       </SafeAreaView>
 
@@ -180,6 +180,7 @@ const SellUsdtScreen = ({ navigation }) => {
           modalVisible={openResModal}
           setModalVisible={setOpenResModal}
           message={message}
+          navigate="BtcTransactions"
         />
       )}
     </>
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: "100%",
     paddingHorizontal: 10,
-    paddingVertical:5
+    paddingVertical: 5
   },
   title: {
     fontSize: 17,

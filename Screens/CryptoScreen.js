@@ -1,10 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import NavBar from "../components/NavBar";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
+import Bitcoin from '../images/btc.png'
+import USDT from '../images/usdt.png'
 
 const CryptoScreen = ({ navigation }) => {
   const [fontLoaded, error] = useFonts({
@@ -27,28 +29,32 @@ const CryptoScreen = ({ navigation }) => {
         >
           <LinearGradient
             // Button Linear Gradient
-            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            colors={["#0B365B", "#0B365B", "#124672"]}
             style={styles.btn}
           >
+
+            {/* <MaterialIcons name="arrow-forward-ios" size={24} color="white" /> */}
+            <Image source={Bitcoin} style={{ width: 100, height: 100 }} />
             <Text style={styles.text}>Sell Bitcoin</Text>
 
-            <MaterialIcons name="arrow-forward-ios" size={24} color="white" />
           </LinearGradient>
         </TouchableOpacity>
 
-        {/* **************** sell bitcoin *************************** */}
+        {/* **************** sell usdt *************************** */}
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.navigate("SellUsdtScreen")}
         >
           <LinearGradient
             // Button Linear Gradient
-            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            colors={["#0B365B", "#0B365B", "#124672"]}
             style={styles.btn}
           >
+            <Image source={USDT} style={{ width: 100, height: 100 }} />
+
             <Text style={styles.text}>Sell USDT</Text>
 
-            <MaterialIcons name="arrow-forward-ios" size={24} color="white" />
+            {/* <MaterialIcons name="arrow-forward-ios" size={24} color="white" /> */}
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -75,7 +81,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 10,
-    flexDirection: "row",
+    // flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginVertical: 10,

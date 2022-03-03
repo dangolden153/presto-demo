@@ -60,7 +60,7 @@ const Dashboard = ({ navigation }) => {
       {/* up section container */}
 
       <View style={styles.nav_container}>
-        <Text style={styles.boldVav_text}>Hello {user?.firstname},</Text>
+        <Text style={styles.boldVav_text}>Hello {user ?.firstname},</Text>
         <View style={styles.text_icon}>
           <Text style={styles.nav_text}>
             Today {alphaDay}, {getDate} {alphaMonth},
@@ -74,7 +74,7 @@ const Dashboard = ({ navigation }) => {
       </View>
 
       {/* ******************* up section container******************************* */}
-        <Card />
+      <Card />
       {/* *************middle section container*********************** */}
       <View style={styles.mid_section}>
         <TouchableOpacity
@@ -116,7 +116,7 @@ const Dashboard = ({ navigation }) => {
       {/* ************ Refer a friend down section container *******************/}
       <TouchableOpacity
         style={styles.bottom_section}
-        onPress={() => navigation.navigate("TransactionsTopTab")} //MediaScreen
+        onPress={() => navigation.navigate("TransactionDetail")} //MediaScreen PendingTransactionScreen
       >
         <View style={styles.bttm_txt_container}>
           <Text style={styles.bottom_bold_text}>Refer and earn</Text>
@@ -147,7 +147,7 @@ export default Dashboard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20, 
+    padding: 20,
     position: "relative",
     alignItems: "center",
     backgroundColor: "white",
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   up_section_text: {
     fontFamily: "regular",
   },
- 
+
   price: {
     fontFamily: "semibold",
     fontSize: 16,

@@ -99,7 +99,14 @@ export default function App() {
 // - hide balance ✅
 // -  auth token flow 
 // - add images url ..
-// - sliding transaction ..
 // need bank images and a dropDown for add banks--talk to boss
 // - multiple selected images ..✅
-// - recipes should be hidden for cards thats not required  ✅
+// - recipes should be hidden for cards thats not required  ✅ 
+
+// select trasaction screen..✅
+//  trasaction details screens ✅
+// navigate to trasaction screens after trasactions 
+// find another memoji for trasaction failed ..
+// -covert and add images url -- ahamed
+// change user avatar by covertig to url-- ahamed
+// -  transaction options screen..

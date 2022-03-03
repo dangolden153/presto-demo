@@ -114,7 +114,7 @@ const SellBitcoin = ({ navigation }) => {
           </View>
 
           <LinearButton title="Click to copy" onPress={copyToClipboard} />
-          
+
           <Text>{copiedText}</Text>
           <Text style={styles.btc_text}>
             the address and the barcode are yours you can recieve bitcoin and
@@ -159,32 +159,32 @@ const SellBitcoin = ({ navigation }) => {
               />
             </View>
           ) : (
-            <View style={styles.btc_table}>
-              <Text style={styles.rate_header}>Sell Bitcoin</Text>
+              <View style={styles.btc_table}>
+                <Text style={styles.rate_header}>Sell Bitcoin</Text>
 
-              <View style={styles.value_table}>
-                <View style={styles.value_rates}>
-                  <Text style={styles.value_header}>Value</Text>
-                  <Text style={styles.value_header}>Rate </Text>
-                </View>
+                <View style={styles.value_table}>
+                  <View style={styles.value_rates}>
+                    <Text style={styles.value_header}>Value</Text>
+                    <Text style={styles.value_header}>Rate </Text>
+                  </View>
 
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>less that 100</Text>
-                  <Text style={styles.value}>520</Text>
-                </View>
+                  <View style={styles.value_rates}>
+                    <Text style={styles.value}>less that 100</Text>
+                    <Text style={styles.value}>520</Text>
+                  </View>
 
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>100+ to 1,000</Text>
-                  <Text style={styles.value}>535</Text>
-                </View>
+                  <View style={styles.value_rates}>
+                    <Text style={styles.value}>100+ to 1,000</Text>
+                    <Text style={styles.value}>535</Text>
+                  </View>
 
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>Above 1,000</Text>
-                  <Text style={styles.value}>550</Text>
+                  <View style={styles.value_rates}>
+                    <Text style={styles.value}>Above 1,000</Text>
+                    <Text style={styles.value}>550</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
+            )}
         </ScrollView>
       </SafeAreaView>
 
@@ -206,6 +206,8 @@ const SellBitcoin = ({ navigation }) => {
           modalVisible={openResModal}
           setModalVisible={setOpenResModal}
           message={message}
+          navigate="BtcTransactions"
+
         />
       )}
     </>

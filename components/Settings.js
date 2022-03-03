@@ -126,7 +126,7 @@ const Settings = ({ navigation }) => {
           </TouchableOpacity>
 
           {/* ***********  Bvn verification ***************** * */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.Settings_items}
             // onPress={() => navigation.navigate("Bvn")}
           >
@@ -139,18 +139,18 @@ const Settings = ({ navigation }) => {
               <Text style={styles.text}>Bvn verification</Text>
             </View>
             <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
 
 
-{/* ***********  change password and change pin ***************** * */}
+        {/* ***********  change password and change pin ***************** * */}
         <Text style={styles.heading}>Security</Text>
 
         <View style={styles.body}>
 
 
-{/* ***********  Change Password ***************** * */}
+          {/* ***********  Change Password ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
             onPress={() => navigation.navigate("ChangePasswordScreen")}
@@ -167,7 +167,7 @@ const Settings = ({ navigation }) => {
           </TouchableOpacity>
 
 
-{/* ***********  Change Pin ***************** * */}
+          {/* ***********  Change Pin ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
             onPress={() => navigation.navigate("ChangePin")}
@@ -185,12 +185,12 @@ const Settings = ({ navigation }) => {
         </View>
 
 
-{/* ***********  Account and support ***************** * */}
+        {/* ***********  Account and support ***************** * */}
         <Text style={styles.heading}>Account and Support</Text>
 
         <View style={styles.body}>
 
-  {/* *********** Rate Us ***************** * */}
+          {/* *********** Rate Us ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
             onPress={() => navigation.navigate("RateUsScreen")}
@@ -206,7 +206,7 @@ const Settings = ({ navigation }) => {
             <Ionicons name="ios-chevron-forward" size={24} color="black" />
           </TouchableOpacity>
 
-{/* ***********Help & Support***************** * */}
+          {/* ***********Help & Support***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
             onPress={() => navigation.navigate("SupportScreen")}
@@ -223,11 +223,11 @@ const Settings = ({ navigation }) => {
           </TouchableOpacity>
 
 
-{/* *********** About Us ***************** * */}
-        <TouchableOpacity
+          {/* *********** About Us ***************** * */}
+          <TouchableOpacity
             style={styles.Settings_items}
-            // onPress={() => navigation.navigate("Accounts")}
-            // onPress={() => Logout()}
+          // onPress={() => navigation.navigate("Accounts")}
+          // onPress={() => Logout()}
           >
             <View style={styles.box_text}>
               <LinearGradient
@@ -242,7 +242,7 @@ const Settings = ({ navigation }) => {
 
 
           {/* *********** log out ***************** * */}
-        <TouchableOpacity
+          <TouchableOpacity
             style={styles.Settings_items}
             // onPress={() => navigation.navigate("Accounts")}
             onPress={() => Logout()}

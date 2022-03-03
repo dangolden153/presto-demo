@@ -16,7 +16,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
   const [message, setModalMessage] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
-  const { ctry, tpe, amount, value } = route?.params?.giftcardData;
+  const { ctry, tpe, amount, value } = route ?.params ?.giftcardData;
 
   // console.log("routes", route?.params?.giftcardData);
 
@@ -65,7 +65,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     formdata.append("amount", amount);
     formdata.append("value", value);
     formdata.append("type", tpe);
-    formdata.append("picture", {
+    formdata.append("image", {
       name: "dan",
       type: "image/jpeg",
       uri: image,
@@ -75,6 +75,11 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
       type: "image/jpeg",
       uri: receipt,
     });
+    // formdata.append("picture_1", {
+    //   name: "dan",
+    //   type: "image/jpeg",
+    //   uri: receipt,
+    // });
     // formdata.append("receipt", receipt);
 
     let requestOptions = {
@@ -88,19 +93,20 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setLoading(false);
-        if (result?.result === "Transaction Sent") {
-          setModalMessage(result?.result);
+        console.log("card result", result);
+        if (result ?.result === "Transaction Sent") {
+          setModalMessage({ status: "ok", text: result ?.result});
           setOpenModal(true);
         } else {
           setOpenModal(true);
-          setModalMessage("unable to process transaction");
+          setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
         }
         console.log("card result", result);
       })
       .catch((error) => {
         setLoading(false);
         setOpenModal(true);
-        setModalMessage("unable to process transaction");
+        setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
         console.log("error", error);
       });
   };
@@ -244,7 +250,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
           modalVisible={openModal}
           message={message}
           setModalVisible={setOpenModal}
-          // navigate="PendingTransactionScreen"
+          navigate="TransactionHistory"
         />
       )}
     </>

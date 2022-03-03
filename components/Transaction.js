@@ -8,29 +8,42 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { MaterialIcons, Feather, Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import { useNavigation } from "@react-navigation/native";
+import Bitcoin from '../images/Bitcoin.png'
+import USDT from '../images/usdt.png'
+import CARD from '../images/Amazon.png'
 
-const Transaction = ({  lastTransaction }) => {
+
+const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
   const [uploadCard, setUploadCard] = useState(false);
   const togglePickCard = () => setUploadCard(!uploadCard);
+  // console.log("datas", datas);
+
+  const Address = ""
+
   const navigation = useNavigation()
   const status =
-    lastTransaction?.status === 0
+    datas ?.status === 0
       ? "pending"
-      : lastTransaction?.status === 1
-      ? "successful"
-      : "failed";
+      : datas ?.status === 1
+        ? "successful"
+        : "failed";
 
   const colors =
-    lastTransaction?.status === 0
+    datas ?.status === 0
       ? "#ff9d3a"
-      : lastTransaction?.status === 1
-      ? "green"
-      : "#f9886c";
+      : datas ?.status === 1
+        ? "green"
+        : "#f9886c";
+
+  const amount =
+    card ? datas ?.value :
+      datas ?.amount ;
+
+  const img = btc ? Bitcoin : usdt ? USDT : CARD;
 
   const [fontLoaded, error] = useFonts({
     Italic: require("../assets/fonts/raleway/Raleway-Italic.ttf"),
@@ -42,7 +55,7 @@ const Transaction = ({  lastTransaction }) => {
     return <AppLoading />;
   }
 
-  if (!lastTransaction) {
+  if (!datas) {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
         <Text style={{ fontSize: 20, fontFamily: "Italic" }}>
@@ -59,31 +72,63 @@ const Transaction = ({  lastTransaction }) => {
       {/* *************************the body of transaction screen ************************* */}
       <View style={styles.body}>
         <View style={styles.card}>
+          <TouchableOpacity
+            style={{
+              width: "100%",
+              position: "relative",
+              alignItems: "center",
+              backgroundColor: "white",
+              marginBottom: 10
+            }}
+          >
+            <Image
+              source={img}
+              style={{ height: 200, width: card ? "100%" : 200, marginVertical: 10 }}
+            />
+
+          </TouchableOpacity>
           <View style={styles.gift_card}>
+            {/* ******************Amount************************ */}
             <View style={styles.img_title}>
-              <Image
-                source={{
-                  uri: "https://www-konga-com-res.cloudinary.com/w_auto,f_auto,fl_lossy,dpr_auto,q_auto/media/catalog/product/Q/B/56261_1561559385.jpg",
-                }}
-                style={{ height: 70, width: 70 }}
-              />
-              <View style={styles.title_time}>
-                <Text style={styles.title}>{lastTransaction?.type}</Text>
-                <Text style={styles.time}>
-                  {moment(lastTransaction?.created_at).format("ll")}
-                </Text>
-              </View>
+              <Text style={styles.title}>Amount</Text>
+              <Text style={styles.upload_text}>${amount}</Text>
             </View>
 
-            <View style={styles.price_del}>
-              <Text style={styles.price}>{lastTransaction?.value}</Text>
+            {/* ******************status************************ */}
+            <View style={styles.img_title}>
+              <Text style={styles.title}>status</Text>
               <Text style={{ color: colors }}>{status}</Text>
             </View>
+
+            {/* ******************Time************************ */}
+            <View style={styles.img_title}>
+              <Text style={styles.title}>Time</Text>
+              <Text style={styles.time}>
+                {moment(datas ?.created_at).format("ll")}
+              </Text>
+            </View>
+
+            {/* ******************Error detail************************ */}
+            {datas ?.failure ? <View style={styles.img_title}>
+              <Text style={styles.title}> Error detail</Text>
+              <Text style={styles.time}>
+                {datas.failure}
+              </Text>
+            </View> : null}
+
+            {/* ******************Address************************ */}
+            {Address ? <View style={styles.img_title}>
+              <Text style={styles.title}>Address</Text>
+              <Text style={styles.time}>
+                {Address}
+              </Text>
+            </View> : null}
+
           </View>
 
           {/* ****************************Card container ************************* */}
 
-          {uploadCard ? (
+          {/* {uploadCard ? (
             <View style={styles.upload_container}>
               <Text style={styles.upload_textI}>Kindly upload clear image</Text>
               <TouchableOpacity
@@ -98,28 +143,28 @@ const Transaction = ({  lastTransaction }) => {
               </TouchableOpacity>
             </View>
           ) : (
-            <View
-              style={{
-                // width: "100%",
-                position: "relative",
-                alignItems: "center"
+              <View
+                style={{
+                  // width: "100%",
+                  position: "relative",
+                  alignItems: "center"
 
-              }}
-            >
-              <Image
-                source={{
-                  uri: "https://www-konga-com-res.cloudinary.com/w_auto,f_auto,fl_lossy,dpr_auto,q_auto/media/catalog/product/Q/B/56261_1561559385.jpg",
                 }}
-                style={{ height: 100, width: 200, marginVertical:10 }}
-              />
-              <TouchableOpacity
-                onPress={() => togglePickCard()}
-                style={{ alignSelf:"flex-end" }}
               >
-                <Ionicons name="ios-download-outline" size={24} color="black" /> 
-              </TouchableOpacity>
-            </View>
-          )}
+                <Image
+                  source={{
+                    uri: "https://www-konga-com-res.cloudinary.com/w_auto,f_auto,fl_lossy,dpr_auto,q_auto/media/catalog/product/Q/B/56261_1561559385.jpg",
+                  }}
+                  style={{ height: 100, width: 200, marginVertical: 10 }}
+                />
+                <TouchableOpacity
+                  onPress={() => togglePickCard()}
+                  style={{ alignSelf: "flex-end" }}
+                >
+                  <Ionicons name="ios-download-outline" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+            )} */}
         </View>
       </View>
     </SafeAreaView>
@@ -159,23 +204,31 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
+  title: {
+    fontSize: 18,
+    color: "black",
+    // fontWeight: "bold",
+    textTransform: "capitalize"
+  },
   card: {
     // width: "80%",
     padding: 5,
     marginHorizontal: 10,
     marginVertical: 20,
-    backgroundColor: "white",
+    // backgroundColor: "white",
     borderRadius: 20,
   },
   gift_card: {
-    flexDirection: "row",
+    // flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   img_title: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    marginVertical: 5
   },
   upload_container: {
     margin: 10,
