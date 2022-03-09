@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/core";
@@ -9,10 +9,10 @@ const NavBar = ({ title, navigate, full }) => {
   const [fontLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
+    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf")
   });
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const handleNavigation = () => {
     if (!navigate) {
       navigation.goBack();
@@ -31,12 +31,7 @@ const NavBar = ({ title, navigate, full }) => {
         onPress={() => navigation.goBack()}
         style={{ position: "absolute", left: 0 }}
       >
-        <MaterialIcons
-          name="arrow-back-ios"
-          // style={{ marginLeft: 15 }}
-          size={24}
-          color="black"
-        />
+        <MaterialIcons name="arrow-back-ios" size={24} color="black" />
       </TouchableOpacity>
 
       <Text style={styles.header}>{title}</Text>
@@ -46,7 +41,7 @@ const NavBar = ({ title, navigate, full }) => {
           onPress={() => handleNavigation()}
           style={{ position: "absolute", right: 0 }}
         >
-          <AntDesign name="wallet" size={24} color="black" />
+          <Ionicons name="notifications-outline" size={24} color="black" />
         </TouchableOpacity>
       )}
     </View>
@@ -63,17 +58,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 10,
     marginBottom: 10,
-    position: "relative",
+    position: "relative"
     // paddingHorizontal:20
   },
 
   header: {
     color: "black",
-    fontSize: 23,
+    fontSize: 20,
     letterSpacing: 1,
     fontWeight: "200",
-    fontFamily: "medium",
+    fontFamily: "semibold"
     // textAlign: "center",
     // alignItems: "center",
-  },
+  }
 });

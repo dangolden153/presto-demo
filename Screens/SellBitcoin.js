@@ -25,23 +25,26 @@ import LinearButton from "../components/LinearButton";
 import { ModalComponent } from "../components/Modal";
 import { useDispatch } from "react-redux";
 import { handleSellBtc } from "../Redux/Actions/crptoTransaction";
+import { useToast } from "react-native-toast-notifications";
+
 // import * as Clipboard from "expo-clipboard";
 
 const SellBitcoin = ({ navigation }) => {
   const [image, setImage] = useState("");
-  const [openModal, setOpenModal] = useState(true);
-  const [openResModal, setOpenResModal] = useState(false);
+  const [openBtcModal, setOpenBtcModal] = useState(true);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setModalMessage] = useState("");
   const [copiedText, setCopiedText] = useState("");
-
-  const { token } = useContext(Context);
+  const { token, openModal, setOpenModal, setModalMessage } = useContext(Context);
   const dispatch = useDispatch();
   const USD = 450;
   const UsdToNaira = USD * parseInt(amount);
+  const toast = useToast();
+
+
+
   const handleToggleModal = () => {
-    setOpenModal(!openModal);
+    setOpenBtcModal(!openBtcModal);
   };
   // console.log(`image`, image);
   // console.log("set amount btc", amount);
@@ -72,14 +75,27 @@ const SellBitcoin = ({ navigation }) => {
         amount,
         token,
         setModalMessage,
-        setOpenResModal,
-        setLoading
+        setOpenModal,
+        setLoading,
+        setImage
       )
     );
   };
 
+  // ************notification ***********
+  const handleToast = () => {
+    toast.show("address copied!", {
+      type: "custom",
+      placement: "top",
+      duration: 4000,
+      offset: 30,
+      animationType: "slide-in",
+    });
+  }
+
   const copyToClipboard = () => {
     Clipboard.setString(walletAddress);
+    handleToast()
   };
 
   const fetchCopiedText = async () => {
@@ -109,7 +125,7 @@ const SellBitcoin = ({ navigation }) => {
                 color="black"
               />
             </TouchableOpacity>
-            <Text style={styles.btc_address}>BTC Wallet Details</Text>
+            <Text style={[styles.btc_address, { fontWeight: "bold" }]}>BTC Wallet Details</Text>
             <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
           </View>
 
@@ -159,40 +175,40 @@ const SellBitcoin = ({ navigation }) => {
               />
             </View>
           ) : (
-              <View style={styles.btc_table}>
-                <Text style={styles.rate_header}>Sell Bitcoin</Text>
+            <View style={styles.btc_table}>
+              <Text style={styles.rate_header}>Sell Bitcoin</Text>
 
-                <View style={styles.value_table}>
-                  <View style={styles.value_rates}>
-                    <Text style={styles.value_header}>Value</Text>
-                    <Text style={styles.value_header}>Rate </Text>
-                  </View>
+              <View style={styles.value_table}>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value_header}>Value</Text>
+                  <Text style={styles.value_header}>Rate </Text>
+                </View>
 
-                  <View style={styles.value_rates}>
-                    <Text style={styles.value}>less that 100</Text>
-                    <Text style={styles.value}>520</Text>
-                  </View>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>less that 100</Text>
+                  <Text style={styles.value}>520</Text>
+                </View>
 
-                  <View style={styles.value_rates}>
-                    <Text style={styles.value}>100+ to 1,000</Text>
-                    <Text style={styles.value}>535</Text>
-                  </View>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>100+ to 1,000</Text>
+                  <Text style={styles.value}>535</Text>
+                </View>
 
-                  <View style={styles.value_rates}>
-                    <Text style={styles.value}>Above 1,000</Text>
-                    <Text style={styles.value}>550</Text>
-                  </View>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>Above 1,000</Text>
+                  <Text style={styles.value}>550</Text>
                 </View>
               </View>
-            )}
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
 
       {/* *********Bitcoin  modal************************** */}
-      {openModal && (
+      {openBtcModal && (
         <BitcoinModalScreen
-          open={openModal}
-          close={setOpenModal}
+          open={openBtcModal}
+          close={setOpenBtcModal}
           handleToggleModal={handleToggleModal}
           amount={amount}
           setAmount={setAmount}
@@ -201,13 +217,9 @@ const SellBitcoin = ({ navigation }) => {
       )}
 
       {/* *********response modal************************** */}
-      {openResModal && (
+      {openModal && (
         <ModalComponent
-          modalVisible={openResModal}
-          setModalVisible={setOpenResModal}
-          message={message}
           navigate="BtcTransactions"
-
         />
       )}
     </>
@@ -218,7 +230,7 @@ export default SellBitcoin;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     padding: 15,
     backgroundColor: "white",
     width: "100%",
@@ -286,7 +298,7 @@ const styles = StyleSheet.create({
     width: "40%",
   },
   btc_address: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "100",
     marginVertical: 2,
     color: "#666666",
@@ -302,7 +314,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   upload_textI: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "500",
   },
   upload_btn: {
@@ -319,7 +331,7 @@ const styles = StyleSheet.create({
     // borderStyle:"do"
   },
   upload_text: {
-    fontSize: 18,
+    fontSize: 15,//
     color: "#999999",
     marginLeft: 10,
     fontWeight: "100",
@@ -333,9 +345,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 30,
     alignItems: "center",
+
   },
   rate_header: {
-    fontSize: 20,
+    fontSize: 17,//
     fontWeight: "600",
     alignSelf: "flex-start",
   },
@@ -349,7 +362,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   value_header: {
-    fontSize: 17,
+    fontSize: 16,//
     fontWeight: "500",
     alignSelf: "flex-start",
     minWidth: 80,
@@ -358,7 +371,7 @@ const styles = StyleSheet.create({
     minWidth: 80,
     marginTop: 10,
     color: "#999999",
-    fontSize: 16,
+    fontSize: 14, //
   },
   icon_container: {
     position: "absolute",

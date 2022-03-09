@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useContext } from "react";
+import React, { useState, useLayoutEffect, useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -10,40 +10,61 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  ImageBackground,
+  Image,
+  Dimensions
 } from "react-native";
-import { Button } from "react-native-elements";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from "../context";
 import { useSelector, useDispatch } from "react-redux";
-import { USER_TOKEN } from "../Redux/Types/type";
 import { ModalComponent } from "../components/Modal";
-import NavBar from "../components/NavBar";
+import Log_in from "../images/Login.svg";
+import { useToast } from "react-native-toast-notifications";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validate, setValidate] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
   const dispatch = useDispatch();
-  const { user, userToken } = useSelector((state) => state.UserReducer);
+  const toast = useToast();
+  const { user, userToken } = useSelector(state => state.UserReducer);
   const {
     openModal,
     setOpenModal,
     loading,
     setLoading,
-    message,
     setModalMessage,
     setIsAuthenticated,
     setToken,
-    accessToken,
-    setAccessToken,
+    setAccessToken
   } = useContext(Context);
 
   let trimEmail = email.trim();
   let trimPassword = password.trim();
-
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   // console.log("user", user);
+
+  // ************notification ***********
+  const handleToast = () => {
+    toast.show("Login successfully", {
+      type: "custom",
+      placement: "top",
+      duration: 4000,
+      offset: 30,
+      animationType: "slide-in"
+    });
+  };
+
   const handleValidation = () => {
     if (!email) {
       setValidate("please use a valid email address!");
@@ -58,6 +79,7 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
+  //  ************login function ***********
   const handleLogin = () => {
     if (!handleValidation()) {
       return null;
@@ -68,81 +90,84 @@ const LoginScreen = ({ navigation }) => {
     formdata.append("email", trimEmail);
     formdata.append("password", trimPassword);
 
+    let myHeaders = new Headers();
+    myHeaders.append();
+
     var requestOptions = {
       method: "POST",
       body: formdata,
-      redirect: "follow",
+      redirect: "follow"
     };
 
     fetch("https://api.prestohq.io/api/auth/login", requestOptions)
-      .then((response) => response.json())
+      .then(response => response.json())
 
-      .then((result) => {
+      .then(result => {
         // console.log("login result", result);
         setLoading(false);
 
-        if (result ?.status == "200") {
-          if (!result ?.user ?.pin) {
+        if (result?.status == "200") {
+          if (!result?.user?.pin) {
             console.log("null pin");
-            setAccessToken(result ?.access_token)
+            setAccessToken(result?.access_token);
+            // setToken(result?.access_token)
             navigation.navigate("VerifiedScreen");
             return;
           }
           console.log("result?.access_token && result?.user?.pin");
-          storeData(result ?.access_token);
+          storeData(result?.access_token);
           setIsAuthenticated(true);
           setLoading(false);
+          handleToast();
         } else {
-          console.log("catching login error", result ?.error);
-          setLoading(false);
-          setModalMessage(result ?.error);
           setOpenModal(true);
+          console.log("login error", result?.error);
+          setLoading(false);
+          setModalMessage({ status: "fail", text: result?.error });
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("catching login error", error);
         setLoading(false);
       });
   };
 
   //  ****************store user's token ***********
-  const storeData = async (value) => {
+  const storeData = async value => {
     try {
       const jsonValue = value;
-      // console.log("user token", jsonValue);
       await AsyncStorage.setItem("@prestoToken", jsonValue);
-      // setToken(jsonValue)
+      setToken(jsonValue);
     } catch (e) {
       console.log("token error", e);
     }
   };
 
+  const bgHeight = windowHeight * 0.28;
+
+  const [fontLoaded, error] = useFonts({
+    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
+    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
+    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf")
+  });
+
+  if (!fontLoaded) {
+    return <AppLoading />;
+  }
   return (
     <>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior="padding"
-      // keyboardVerticalOffset={90}
-      >
-        <StatusBar style="dark" />
+      <View style={styles.container}>
+        <StatusBar style="light" />
+
+        <Text style={styles.header}>Welcome</Text>
+
+        <Log_in width={windowWidth} height={bgHeight} style={{ top: -10 }} />
+        {/* </View> */}
+
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner_container}>
-            {/* <TouchableOpacity onPress={() => navigation.goBack()}>
-              <MaterialIcons
-                name="arrow-back-ios"
-                style={{ marginTop: 50, marginLeft: 15 }}
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity> */}
-
-            <View style={styles.header_container}>
-              <Text style={styles.header}>Welcome</Text>
-              <Text style={styles.Sub_header}>
-                Sign in with your Email and continue
-              </Text>
-            </View>
-
+            {/* ************* Email ***************************** */}
             <View style={styles.input_container}>
               <View style={styles.inputTextContainer}>
                 <Text style={styles.input_text}>Email</Text>
@@ -150,36 +175,47 @@ const LoginScreen = ({ navigation }) => {
                   placeholderTextColor={"black"}
                   style={styles.input}
                   value={email}
-                  onChangeText={(text) => setEmail(text)}
+                  onChangeText={text => setEmail(text)}
                   type="text"
                   autoFocus
                 />
               </View>
 
+              {/* ************* Password ***************************** */}
               <View style={styles.inputTextContainer}>
                 <Text style={styles.input_text}>Password</Text>
-                <TextInput
-                  placeholderTextColor={"black"}
-                  style={styles.input}
-                  value={password}
-                  onChangeText={(text) => setPassword(text)}
-                  type="password"
-                  secureTextEntry
-                  autoFocus
-                />
+                <View style={styles.icon_input}>
+                  <TextInput
+                    placeholderTextColor={"black"}
+                    style={{ flex: 1 }}
+                    value={password}
+                    onChangeText={text => setPassword(text)}
+                    type="password"
+                    secureTextEntry={showPassword}
+                    autoFocus
+                  />
+                  <TouchableOpacity onPress={() => handleShowPassword()}>
+                    {showPassword ? (
+                      <FontAwesome name="eye-slash" size={24} color="black" />
+                    ) : (
+                      <FontAwesome name="eye" size={24} color="black" />
+                    )}
+                  </TouchableOpacity>
+                </View>
               </View>
+              {/* *************Forgot Password link***************************** */}
               <TouchableOpacity
                 onPress={() => navigation.navigate("ForgotPassword")}
                 activeOpacity={0.5}
                 style={{
-                  marginVertical: 10,
+                  marginVertical: 10
                 }}
               >
                 <Text
                   style={{
                     fontSize: 15,
                     textAlign: "right",
-                    color: "#0084F4",
+                    color: "#0B365B"
                   }}
                 >
                   Forgot password?
@@ -196,8 +232,8 @@ const LoginScreen = ({ navigation }) => {
                 {loading ? (
                   <ActivityIndicator size="small" color="white" />
                 ) : (
-                    <Text style={styles.btn_text}>Next</Text>
-                  )}
+                  <Text style={styles.btn_text}>Login</Text>
+                )}
               </LinearGradient>
             </TouchableOpacity>
             {/* //CheckVerification */}
@@ -221,7 +257,7 @@ const LoginScreen = ({ navigation }) => {
                   color: "red",
                   opacity: 0.6,
                   marginTop: 20,
-                  alignSelf: "center",
+                  alignSelf: "center"
                 }}
               >
                 {validate}
@@ -229,17 +265,10 @@ const LoginScreen = ({ navigation }) => {
             )}
           </View>
         </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+      </View>
 
       {/* *********response modal************************** */}
-      {openModal && (
-        <ModalComponent
-          modalVisible={openModal}
-          setModalVisible={setOpenModal}
-          message={message}
-          navigate="LoginScreen"
-        />
-      )}
+      {openModal && <ModalComponent />}
     </>
   );
 };
@@ -249,46 +278,49 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffff",
-    paddingHorizontal: 20,
-    // justifyContent: "center",
+    backgroundColor: "white",
+    position: "relative"
   },
   header_container: {
     alignItems: "flex-start",
     marginLeft: 15,
-    marginTop: 90,
+    marginTop: 90
   },
 
   header: {
     // textAlign: "left",
-    color: "black",
-    fontSize: 30,
+    color: "white",
+    fontSize: 24,
     letterSpacing: 1,
-    fontWeight: "bold",
+    zIndex: 100,
+    position: "absolute",
+    top: 50,
+    left: 20,
+    fontFamily: "medium"
   },
 
   Sub_header: {
     color: "#999999",
     fontSize: 15,
-    marginTop: 10,
+    marginTop: 10
   },
-
+  inner_container: {
+    paddingHorizontal: 20,
+    justifyContent: "center"
+  },
   input_container: {
-    marginTop: 10,
+    marginTop: 10
   },
   inputTextContainer: {
-    marginTop: 5,
+    marginTop: 5
   },
   input_text: {
-    marginLeft: 30,
-    top: 10,
+    marginBottom: 5,
     paddingHorizontal: 10,
-    backgroundColor: "#ffff",
     zIndex: 200,
-    width: 100,
-    textAlign: "center",
     color: "gray",
-    fontSize: 15,
+    fontSize: 14,
+    fontWeight: "bold"
   },
   input_textNumber: {
     marginLeft: 30,
@@ -299,14 +331,23 @@ const styles = StyleSheet.create({
     width: 140,
     textAlign: "center",
     color: "gray",
-    fontSize: 15,
+    fontSize: 15
+  },
+  icon_input: {
+    borderWidth: 1,
+    borderColor: "#e8e6ea",
+    padding: 15,
+    borderRadius: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   input: {
     // backgroundColor: "black",
     borderWidth: 1,
     borderColor: "#e8e6ea",
     padding: 15,
-    borderRadius: 20,
+    borderRadius: 20
   },
 
   terms: {
@@ -315,10 +356,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: 15,
-    // backgroundColor: "pink",
-    // width: "100%",
-    // overflow: "hidden",
+    marginHorizontal: 15
   },
   radioBtn: {
     width: 25,
@@ -326,29 +364,27 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: "gray",
-    marginHorizontal: 5,
+    marginHorizontal: 5
   },
   text: {
     color: "gray",
     fontSize: 13,
     fontWeight: "bold",
-    width: "85%",
+    width: "85%"
   },
   btn: {
-    marginTop: 20,
-    // padding: 20,
-    // backgroundColor: "pink",
+    marginTop: 20
   },
 
   btn_text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17,
+    fontSize: 17
   },
   btn: {
     marginTop: 10,
     width: "100%",
     paddingVertical: 15,
-    borderRadius: 10,
-  },
+    borderRadius: 10
+  }
 });

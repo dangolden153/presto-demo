@@ -8,25 +8,22 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
-  ScrollView,
+  ScrollView
 } from "react-native";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
-import { LinearGradient } from "expo-linear-gradient";
 import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
 import { ModalComponent } from "../components/Modal";
 import { Dimensions } from "react-native";
 import { useSelector } from "react-redux";
 import { Context } from "../context";
-const deviceHeight = Dimensions.get("window").height;
 
 const Accounts = ({ navigation }) => {
   const [bank, setBank] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [accountName, setAccountName] = useState("");
-  const { user } = useSelector((state) => state.UserReducer);
+  const { user } = useSelector(state => state.UserReducer);
   const {
     token,
     message,
@@ -34,11 +31,12 @@ const Accounts = ({ navigation }) => {
     openModal,
     setOpenModal,
     setLoading,
-    loading,
+    loading
   } = useContext(Context);
   // console.log('deviceHeight', deviceHeight/20);
   // console.log(" add bank token", token);
 
+  // ***********form validation*********************
   const handleValidation = () => {
     if (!bank) {
       // setValidate("please select a bank!");
@@ -61,6 +59,8 @@ const Accounts = ({ navigation }) => {
       return true;
     }
   };
+
+  // ***********Add Bank Account Details***************
   const AddBankAccountDetails = () => {
     if (handleValidation()) {
       return null;
@@ -80,31 +80,52 @@ const Accounts = ({ navigation }) => {
       method: "POST",
       headers: myHeaders,
       body: formdata,
-      redirect: "follow",
+      redirect: "follow"
     };
 
     fetch("https://api.prestohq.io/api/auth/updateaccount", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
+      .then(response => response.json())
+      .then(result => {
         setLoading(false);
         setModalMessage(result?.message);
         setOpenModal(true);
         // console.log("bank result", result);
       })
-      .catch((error) => {
+      .catch(error => {
         setLoading(false);
         setValidate("unable to process transaction");
         console.log("error", error);
       });
   };
+
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
+    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf")
   });
 
   if (!firstLoaded) {
     return <AppLoading />;
   }
+
+  if (!user?.accountno) {
+    return (
+      <View style={styles.noAcct}>
+        <NavBar title="Wallet" navigation={navigation} />
+        <Text style={styles.noAcctText}>
+          {user?.firstname}, you don't have a bank account on Presto, please
+          kindly add a bank account and proceed with your transactions
+        </Text>
+
+        <View style={{ marginVertical: 30 }} />
+        <LinearButton
+          navigation={navigation}
+          title="Add Account"
+          navigate="Accounts"
+        />
+      </View>
+    );
+  }
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -116,13 +137,14 @@ const Accounts = ({ navigation }) => {
             <View style={styles.img_title}>
               <Image
                 source={{
-                  uri: "https://startcredits.com/wp-content/uploads/2019/04/Access-bank.png",
+                  uri:
+                    "https://startcredits.com/wp-content/uploads/2019/04/Access-bank.png"
                 }}
                 style={{
                   height: 90,
                   width: 70,
                   borderRadius: 20,
-                  marginRight: 20,
+                  marginRight: 20
                 }}
               />
               <View style={styles.title_time}>
@@ -140,21 +162,21 @@ const Accounts = ({ navigation }) => {
           <Text style={styles.input_text}>Add Account</Text>
           <TextInput
             value={bank}
-            onChangeText={(text) => setBank(text)}
+            onChangeText={text => setBank(text)}
             style={styles.input}
             placeholder="Enter bank"
           />
 
           <TextInput
             value={accountNumber}
-            onChangeText={(text) => setAccountNumber(text)}
+            onChangeText={text => setAccountNumber(text)}
             style={styles.input}
             placeholder="Acount number"
           />
 
           <TextInput
             value={accountName}
-            onChangeText={(text) => setAccountName(text)}
+            onChangeText={text => setAccountName(text)}
             style={styles.input}
             placeholder="Afeez Olamide"
           />
@@ -183,7 +205,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: "white",
-    justifyContent: "center",
+    justifyContent: "center"
   },
 
   nav: {
@@ -193,14 +215,14 @@ const styles = StyleSheet.create({
     width: "68%",
     marginTop: 20,
     marginLeft: 10,
-    marginBottom: 30,
+    marginBottom: 30
   },
 
   header: {
     color: "black",
     fontSize: 23,
     letterSpacing: 1,
-    fontWeight: "200",
+    fontWeight: "200"
     // textAlign: "center",
     // alignItems: "center",
   },
@@ -212,21 +234,21 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: "100%",
     paddingBottom: 70,
-    paddingHorizontal: 10,
+    paddingHorizontal: 10
   },
   title: {
     fontSize: 17,
-    fontFamily: "semiBold",
+    fontFamily: "semiBold"
   },
   time: {
     fontFamily: "regular",
 
-    color: "#999999",
+    color: "#999999"
   },
   input_text: {
     fontFamily: "semiBold",
     fontSize: 16,
-    marginTop: 20,
+    marginTop: 20
   },
 
   input: {
@@ -238,7 +260,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignSelf: "center",
     fontSize: 16,
-    fontFamily: "regular",
+    fontFamily: "regular"
   },
 
   gift_card: {
@@ -248,29 +270,29 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4fafe",
     marginVertical: 5,
     borderRadius: 20,
-    padding: 7,
+    padding: 7
   },
   img_title: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   trash: {
     backgroundColor: "#F3002E",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 10
   },
 
   text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17,
+    fontSize: 17
   },
   btn: {
     marginTop: 18,
     width: "100%",
     paddingVertical: 15,
     borderRadius: 10,
-    alignSelf: "center",
-  },
+    alignSelf: "center"
+  }
 });

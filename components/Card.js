@@ -1,20 +1,53 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import pics from "../images/bg.png";
 import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Card = () => {
   const [hideBalance, setHideBalance] = useState(true);
+  const [balance, setBalance] = useState(null)
   const { user } = useSelector((state) => state.UserReducer);
-
   const navigation = useNavigation();
-  const handleToggle = () => setHideBalance(!hideBalance);
+
+  const handleToggle = () => {
+    setHideBalance(!hideBalance)
+    storeData()
+  };
+  // console.log("user hideBalance", hideBalance);
+
+  // *************set hide balance value from storage*********************************
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem("@prestoBalance", JSON.stringify(hideBalance));
+    } catch (e) {
+      console.log("token error", e);
+    }
+  };
+
+  // *************get hide balance value from storage*********************************
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("@prestoBalance");
+        console.log("@prestoBalance", value);
+
+        setBalance(value);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+
+    getData();
+  }, [hideBalance]);
+
   const [fontLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
@@ -43,9 +76,18 @@ const Card = () => {
       />
       <Text style={styles.up_section_text}>Your available balance</Text>
       <View style={styles.price_icon}>
-        {hideBalance && <Text style={styles.price}>{user ?.balance} .00k</Text>}
-        <TouchableOpacity onPress={() => handleToggle()} style={{ alignItems: hideBalance ? "center" : 'center', width: '100%' }}>
-          <Feather name="eye" size={24} color="black" />
+        {balance === "true" ?
+          <View style={styles.icon_price}>
+            <MaterialCommunityIcons name="currency-ngn" size={24} color="black" />
+            <Text style={styles.price}>{user?.balance} .00</Text>
+          </View> :
+          <Text style={{
+            fontSize: 18,
+            color: "black"
+          }}>****</Text>
+        }
+        <TouchableOpacity onPress={() => handleToggle()} >
+          {balance === "true" ? <FontAwesome name="eye" size={24} color="black" /> : <FontAwesome name="eye-slash" size={24} color="black" />}
         </TouchableOpacity>
       </View>
       <Button
@@ -87,17 +129,24 @@ const styles = StyleSheet.create({
   up_section_text: {
     fontFamily: "regular",
   },
+  icon_price: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   price_icon: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     // backgroundColor: "gray",
-    width: 130,
+    width: 120,
     marginBottom: 7,
-    overflow: "hidden",
+    // overflow: "hidden",
+    alignSelf: "center",
   },
   price: {
-    fontFamily: "semibold",
-    fontSize: 16,
+    // fontFamily: "medium",
+    fontSize: 18,
+    color: "black"
   },
 });

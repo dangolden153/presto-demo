@@ -5,16 +5,22 @@ import AppNavigator from "./AppNavigator";
 import { Provider } from "react-redux";
 import { store } from "./Redux/Store";
 import { ContextProvider } from "./context";
+import { ToastProvider } from "react-native-toast-notifications";
+import registerNNPushToken from "native-notify";
+// general padding for all container is 20 pixels
 
 export default function App() {
+  registerNNPushToken(2267, "MyP35yWdfoWlM79sdA0wG3");
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer>
-        <ContextProvider>
-          <Provider store={store}>
-            <AppNavigator />
-          </Provider>
-        </ContextProvider>
+        <ToastProvider>
+          <ContextProvider>
+            <Provider store={store}>
+              <AppNavigator />
+            </Provider>
+          </ContextProvider>
+        </ToastProvider>
       </NavigationContainer>
     </View>
   );
@@ -76,9 +82,9 @@ export default function App() {
 // reset password ..✅
 // make the dashboard/bottom-tab sliding ..✅
 // populate the user account details to withdraw screen ..✅
-// get btc and usdt transactions 
+// get btc and usdt transactions
 // download cards images 30min
-// use yup 30min   before 2pm 
+// use yup 30min   before 2pm
 // bvn : i dont think its detailed from the design and its necessary for now
 // check verify screen, ChangePin and ValidatePinScreen
 
@@ -90,23 +96,52 @@ export default function App() {
 // updating the card transaction endpoint to receive the card image url
 // hes also updating the transaction status to send a failure message and a number of 2.
 
-
 // check the login after error and registration screen ✅
 // the back arrow to the btc and sell usdt ✅
 
-// check the endpoint for image url 
+// check the endpoint for image url
 // validation on the sell card before going to the other screen  ✅
 // - hide balance ✅
-// -  auth token flow 
 // - add images url ..
 // need bank images and a dropDown for add banks--talk to boss
 // - multiple selected images ..✅
-// - recipes should be hidden for cards thats not required  ✅ 
+// - recipes should be hidden for cards thats not required  ✅
 
+// -  auth token flow ✅ temporarily saved to state
 // select trasaction screen..✅
 //  trasaction details screens ✅
-// navigate to trasaction screens after trasactions 
-// find another memoji for trasaction failed ..
-// -covert and add images url -- ahamed
-// change user avatar by covertig to url-- ahamed
-// -  transaction options screen..
+// navigate to trasaction screens after trasactions ✅
+// find another memoji for trasaction failed ..✅
+// -covert and add card images url -- ahamed✅
+// change user avatar by covertig to url-- ahamed✅
+// setting icons ... ✅
+// select avatar screen ..✅
+// setting icons ... ✅
+// work on svg ...✅
+// login screen ✅
+// toast notification install
+//avatar to the server -- ahamed ✅
+
+// show pass ..✅
+// login message modal ..✅
+// edit user profile ..✅
+// transaction modal ✅
+// send multiple images to the server
+// and why the card transaction fails
+// the eye icon ✅✅
+// passing card url ahamed
+// btc transaction history not showing price ..ahamed✅
+
+// change the btc picture and usdt to svg including details transactionscreeen ✅
+// usdt different wallet address in a modal..✅
+// check the add account screen, the emppty space  when the user dont have an account yet✅ test
+// inputting of email existing user ✅
+// splash screen ✅
+// bank verification through flutter wave ✅
+// check notification ...
+// change the settings icon to svg
+// check the modal after transaction on the profile screen
+// the modal after the tranaction fails
+// tell bosss that the app should have had a prototype.
+// registration process
+// push to gitlab

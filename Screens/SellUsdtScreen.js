@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Clipboard,
+  Dimensions
 } from "react-native";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
@@ -18,20 +20,29 @@ import BitcoinModalScreen from "../components/BitcoinModal";
 import { Context } from "../context";
 import { useDispatch } from "react-redux";
 import LinearButton from "../components/LinearButton";
+import { useToast } from "react-native-toast-notifications";
+import WalletModal from "../components/WalletModal";
 
 const SellUsdtScreen = ({ navigation }) => {
   const [image, setImage] = useState("");
-  const [openModal, setOpenModal] = useState(true);
-  const [openResModal, setOpenResModal] = useState(false);
+  const [openUsdtModal, setOpenUsdtModal] = useState(true);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setModalMessage] = useState("");
-  const { token } = useContext(Context);
+  const [openAddress, setOpenAddress] = useState(false);
+  const { token, openModal, setOpenModal, setModalMessage } = useContext(
+    Context
+  );
   const dispatch = useDispatch();
   const USD = 450;
   const UsdToNaira = USD * parseInt(amount);
+  const toast = useToast();
+
   const handleToggleModal = () => {
-    setOpenModal(!openModal);
+    setOpenUsdtModal(!openUsdtModal);
+  };
+
+  const handleToggleAdress = () => {
+    setOpenAddress(!openAddress);
   };
   // console.log(`image`, image);
 
@@ -42,7 +53,7 @@ const SellUsdtScreen = ({ navigation }) => {
       allowsEditing: true,
       // aspect: [6, 10],
       aspect: [4, 4],
-      quality: 1,
+      quality: 1
     });
 
     if (!result.cancelled) {
@@ -59,10 +70,27 @@ const SellUsdtScreen = ({ navigation }) => {
         amount,
         token,
         setModalMessage,
-        setOpenResModal,
-        setLoading
+        setOpenModal,
+        setLoading,
+        setImage
       )
     );
+  };
+
+  // ************notification ***********
+  const handleToast = () => {
+    toast.show("address copied!", {
+      type: "custom",
+      placement: "top",
+      duration: 4000,
+      offset: 30,
+      animationType: "slide-in"
+    });
+  };
+
+  const copyToClipboard = address => {
+    Clipboard.setString(address);
+    handleToast();
   };
 
   return (
@@ -85,11 +113,15 @@ const SellUsdtScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
 
-            <Text style={styles.btc_address}>BTC Wallet Details</Text>
-            <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
+            {/* <Text style={styles.btc_address}>BTC Wallet Details</Text>
+            <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text> */}
           </View>
 
-          <LinearButton title="Click to copy" onPress={handleToggleModal} />
+          <LinearButton
+            title="Select wallet address"
+            onPress={handleToggleAdress}
+          />
+          {openAddress && <WalletModal copyToClipboard={copyToClipboard} />}
 
           <Text style={styles.btc_text}>
             the address and the barcode are yours you can recieve bitcoin and
@@ -97,16 +129,18 @@ const SellUsdtScreen = ({ navigation }) => {
           </Text>
 
           {/* ***************upload container************************** */}
-          {!image && <View style={styles.upload_container}>
-            <Text style={styles.upload_textI}>Kindly upload Proof</Text>
-            <TouchableOpacity
-              style={styles.upload_btn}
-              onPress={() => pickImage()}
-            >
-              <Feather name="upload" size={24} color="black" />
-              <Text style={styles.upload_text}> Upload Proof</Text>
-            </TouchableOpacity>
-          </View>}
+          {!image && (
+            <View style={styles.upload_container}>
+              <Text style={styles.upload_textI}>Kindly upload Proof</Text>
+              <TouchableOpacity
+                style={styles.upload_btn}
+                onPress={() => pickImage()}
+              >
+                <Feather name="upload" size={24} color="black" />
+                <Text style={styles.upload_text}> Upload Proof</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           {image ? (
             <View
@@ -132,40 +166,40 @@ const SellUsdtScreen = ({ navigation }) => {
               />
             </View>
           ) : (
-              <View style={styles.btc_table}>
-                <Text style={styles.rate_header}>Sell Bitcoin</Text>
+            <View style={styles.btc_table}>
+              <Text style={styles.rate_header}>Sell USDT</Text>
 
-                <View style={styles.value_table}>
-                  <View style={styles.value_rates}>
-                    <Text style={styles.value_header}>Value</Text>
-                    <Text style={styles.value_header}>Rate </Text>
-                  </View>
+              <View style={styles.value_table}>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value_header}>Value</Text>
+                  <Text style={styles.value_header}>Rate </Text>
+                </View>
 
-                  <View style={styles.value_rates}>
-                    <Text style={styles.value}>less that 100</Text>
-                    <Text style={styles.value}>520</Text>
-                  </View>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>less that 100</Text>
+                  <Text style={styles.value}>520</Text>
+                </View>
 
-                  <View style={styles.value_rates}>
-                    <Text style={styles.value}>100+ to 1,000</Text>
-                    <Text style={styles.value}>535</Text>
-                  </View>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>100+ to 1,000</Text>
+                  <Text style={styles.value}>535</Text>
+                </View>
 
-                  <View style={styles.value_rates}>
-                    <Text style={styles.value}>Above 1,000</Text>
-                    <Text style={styles.value}>550</Text>
-                  </View>
+                <View style={styles.value_rates}>
+                  <Text style={styles.value}>Above 1,000</Text>
+                  <Text style={styles.value}>550</Text>
                 </View>
               </View>
-            )}
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
 
       {/* *********Bitcoin  modal************************** */}
-      {openModal && (
+      {openUsdtModal && (
         <BitcoinModalScreen
-          open={openModal}
-          close={setOpenModal}
+          open={openUsdtModal}
+          close={setOpenUsdtModal}
           handleToggleModal={handleToggleModal}
           amount={amount}
           setAmount={setAmount}
@@ -175,23 +209,17 @@ const SellUsdtScreen = ({ navigation }) => {
       )}
 
       {/* *********response modal************************** */}
-      {openResModal && (
-        <ModalComponent
-          modalVisible={openResModal}
-          setModalVisible={setOpenResModal}
-          message={message}
-          navigate="BtcTransactions"
-        />
-      )}
+      {openModal && <ModalComponent navigate="BtcTransactions" />}
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     padding: 15,
     backgroundColor: "white",
+    position: "relative"
   },
 
   nav: {
@@ -200,7 +228,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "68%",
     marginTop: 20,
-    marginLeft: 10,
+    marginLeft: 10
     // marginBottom: 10,
   },
 
@@ -208,7 +236,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 23,
     letterSpacing: 1,
-    fontWeight: "200",
+    fontWeight: "200"
     // textAlign: "center",
     // alignItems: "center",
   },
@@ -223,10 +251,10 @@ const styles = StyleSheet.create({
     paddingVertical: 5
   },
   title: {
-    fontSize: 17,
+    fontSize: 17
   },
   time: {
-    color: "#999999",
+    color: "#999999"
   },
 
   gift_card: {
@@ -236,43 +264,43 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginVertical: 5,
     borderRadius: 20,
-    padding: 7,
+    padding: 7
   },
   img_title: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   status_fail: {
     color: "red",
-    opacity: 0.4,
+    opacity: 0.4
   },
   status_success: {
-    color: "#00C48C",
+    color: "#00C48C"
     // opacity: 0.4,
   },
   price_status: {
-    width: "40%",
+    width: "40%"
   },
   btc_address: {
     fontSize: 18,
     fontWeight: "100",
     marginVertical: 2,
-    color: "#666666",
+    color: "#666666"
   },
   btc_text: {
     fontSize: 14,
     color: "#999999",
     textAlign: "center",
-    marginTop: 10,
+    marginTop: 10
   },
   upload_container: {
     marginTop: 20,
-    width: "100%",
+    width: "100%"
   },
   upload_textI: {
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: "500"
   },
   upload_btn: {
     borderWidth: 2,
@@ -284,14 +312,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 15,
     backgroundColor: "white",
-    borderColor: "#999999",
+    borderColor: "#999999"
     // borderStyle:"do"
   },
   upload_text: {
-    fontSize: 18,
+    fontSize: 15, //
     color: "#999999",
     marginLeft: 10,
-    fontWeight: "100",
+    fontWeight: "100"
   },
 
   btc_table: {
@@ -301,33 +329,33 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 10,
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 30
   },
   rate_header: {
-    fontSize: 20,
+    fontSize: 17, //
     fontWeight: "600",
-    alignSelf: "flex-start",
+    alignSelf: "flex-start"
   },
   value_table: {
     width: "70%",
-    marginTop: 7,
+    marginTop: 7
   },
   value_rates: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   value_header: {
-    fontSize: 17,
+    fontSize: 16, //
     fontWeight: "500",
     alignSelf: "flex-start",
-    minWidth: 80,
+    minWidth: 80
   },
   value: {
     minWidth: 80,
     marginTop: 10,
     color: "#999999",
-    fontSize: 16,
+    fontSize: 14 //
   },
   icon_container: {
     position: "absolute",
@@ -339,8 +367,8 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 100,
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });
 
 export default SellUsdtScreen;

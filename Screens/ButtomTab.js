@@ -17,13 +17,14 @@ const Tab = createBottomTabNavigator();
 
 const ButtomTab = () => {
   const dispatch = useDispatch();
-  const { token, setModalMessage, } = useContext(Context);
+  const { token, setModalMessage, refresh } = useContext(Context);
 
 
   // *************get user's details  **************************
   useEffect(() => {
     fetchUserDetails();
-  }, []);
+    console.log("refresh")
+  }, [refresh]);
 
   // *************fetch card transaction **************************
   useEffect(() => {

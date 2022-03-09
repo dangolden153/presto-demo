@@ -2,7 +2,7 @@ import { GET_TRANSACTION, BTC_TRANSACTION, USDT_TRANSACTION } from "../Types/typ
 
 // ***************sell btc********************
 export const handleSellBtc =
-  (image, amount, token, setModalMessage, setOpenResModal, setLoading) =>
+  (image, amount, token, setModalMessage, setOpenResModal, setLoading, setImage) =>
     (dispatch) => {
       setLoading(true);
 
@@ -33,16 +33,20 @@ export const handleSellBtc =
         .then((result) => {
           setLoading(false);
           console.log("card result", result);
-          if (result ?.result === "Transaction Sent") {
-            setModalMessage({ status: "ok", text: result ?.result});
+          if (result?.result === "Transaction Sent") {
+            setImage("")
             setOpenResModal(true);
-          } else {
-            setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
+            setModalMessage({ status: "ok", text: result?.result });
           }
-          setOpenResModal(true);
-          console.log("card result", result);
+          //  else {
+          //   setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
+          //   setOpenResModal(true)
+          // }
+          // setOpenResModal(true);
+          // console.log("card result", result);
         })
         .catch((error) => {
+          setImage("")
           setLoading(false);
           setOpenResModal(true);
           setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
@@ -54,7 +58,7 @@ export const handleSellBtc =
 
 // ***************sell usdt********************
 export const handleSellUsdt =
-  (image, amount, token, setModalMessage, setOpenResModal, setLoading) =>
+  (image, amount, token, setModalMessage, setOpenResModal, setLoading, setImage) =>
     (dispatch) => {
       setLoading(true);
 
@@ -85,16 +89,20 @@ export const handleSellUsdt =
         .then((result) => {
           setLoading(false);
           console.log("usdt result", result);
-          if (result ?.result === "Transaction Sent") {
-            setModalMessage({ status: "ok", text: result ?.result});
+          if (result?.result === "Transaction Sent") {
+            setModalMessage({ status: "ok", text: result?.result });
             setOpenResModal(true);
+            setImage("")
           } else {
             setOpenResModal(true);
             setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
+            setImage("")
+
           }
 
         })
         .catch((error) => {
+          setImage("")
           setLoading(false);
           setOpenResModal(true);
           setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
@@ -124,7 +132,7 @@ export const fetchCardTransactions = (token, setModalMessage) => (dispatch) => {
     .then((response) => response.json())
     .then((result) => {
       // console.log("get card transaction", result?.cardtransactions);
-      dispatch({ type: GET_TRANSACTION, payload: result ?.cardtransactions})
+      dispatch({ type: GET_TRANSACTION, payload: result?.cardtransactions })
     })
     .catch((error) => {
       // setLoading(false);
@@ -151,7 +159,7 @@ export const fetchBTCTransactions = (token, setModalMessage) => (dispatch) => {
     .then((response) => response.json())
     .then((result) => {
       // console.log("get BTC_TRANSACTION", typeof result ?.btctransactions ?.length);
-      dispatch({ type: BTC_TRANSACTION, payload: result ?.btctransactions })
+      dispatch({ type: BTC_TRANSACTION, payload: result?.btctransactions })
     })
     .catch((error) => {
       // setLoading(false);
@@ -179,7 +187,7 @@ export const fetchUSDTTransactions = (token, setModalMessage) => (dispatch) => {
     .then((response) => response.json())
     .then((result) => {
       // console.log("get card transaction", result?.cardtransactions);
-      dispatch({ type: USDT_TRANSACTION, payload: result ?.usdttransactions})
+      dispatch({ type: USDT_TRANSACTION, payload: result?.usdttransactions })
     })
     .catch((error) => {
       // setLoading(false);

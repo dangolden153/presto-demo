@@ -6,11 +6,9 @@ import {
   View,
   Image,
   TouchableOpacity,
-  SafeAreaView,
+  SafeAreaView
 } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Button } from "react-native-elements";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import card from "../images/Payment.png";
 import coin from "../images/Coin.png";
 import gift from "../images/gift.png";
@@ -18,9 +16,11 @@ import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { useSelector } from "react-redux";
 import Card from "./Card";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Context } from "../context";
 
 const Dashboard = ({ navigation }) => {
-  const { user } = useSelector((state) => state.UserReducer);
+  const { user } = useSelector(state => state.UserReducer);
   // console.log('user', user);
   const date = new Date();
   const getMonth = date.getMonth();
@@ -38,29 +38,92 @@ const Dashboard = ({ navigation }) => {
     "September",
     "October",
     "November",
-    "December",
+    "December"
   ];
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const alphaMonth = months[getMonth];
   const alphaDay = days[getDay];
+  const { setIsAuthenticated, isAuthenticated, setExistinguser } = useContext(
+    Context
+  );
+
+  // **************set username to the local storage*****************
+  useEffect(() => {
+    if (!user) return;
+
+    const setUsername = async () => {
+      try {
+        await AsyncStorage.setItem("@username", user?.firstname);
+        console.log("username updated");
+      } catch (error) {
+        console.log("username cant be updated", error);
+      }
+    };
+    setUsername();
+  }, [user]);
+
+  // **************set profile profile_pic to the local storage*****************
+  useEffect(() => {
+    if (!user) return;
+
+    const setUsername = async () => {
+      try {
+        await AsyncStorage.setItem("@pics", user?.profile_pic);
+        console.log("profile_pic updated");
+      } catch (error) {
+        // console.log("username cant be updated", error);
+      }
+    };
+    setUsername();
+  }, [user]);
+
+  // **************set email to the local storage*****************
+  useEffect(() => {
+    if (!user) return;
+
+    const EmailToStorage = async () => {
+      try {
+        await AsyncStorage.setItem("@email", user?.email);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.log("username cant be updated", error);
+      }
+    };
+    EmailToStorage();
+  }, [user]);
+
+  // ***************check for existing user*********************
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        const value = await AsyncStorage.getItem("@email");
+        setExistinguser(value);
+        console.log("existing username fetched", value);
+      } catch (error) {
+        console.log("username cant be updated", error);
+      }
+    };
+    getItems();
+  }, [isAuthenticated]);
 
   const [fontLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf")
   });
 
   if (!fontLoaded) {
     return <AppLoading />;
   }
+  // console.log("user", user);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
 
       <View style={styles.nav_container}>
-        <Text style={styles.boldVav_text}>Hello {user ?.firstname},</Text>
+        <Text style={styles.boldVav_text}>Hello {user?.firstname},</Text>
         <View style={styles.text_icon}>
           <Text style={styles.nav_text}>
             Today {alphaDay}, {getDate} {alphaMonth},
@@ -89,7 +152,7 @@ const Dashboard = ({ navigation }) => {
               position: "absolute",
               resizeMode: "contain",
               top: -100,
-              transform: [{ rotate: "120deg" }],
+              transform: [{ rotate: "120deg" }]
             }}
           />
           <Text style={styles.section_text}>Sell{"\n"}Giftcard</Text>
@@ -106,7 +169,7 @@ const Dashboard = ({ navigation }) => {
               resizeMode: "contain",
               position: "absolute",
               resizeMode: "contain",
-              top: -100,
+              top: -100
             }}
           />
           <Text style={styles.section_text}>Sell{"\n"}Crypto</Text>
@@ -116,7 +179,7 @@ const Dashboard = ({ navigation }) => {
       {/* ************ Refer a friend down section container *******************/}
       <TouchableOpacity
         style={styles.bottom_section}
-        onPress={() => navigation.navigate("TransactionDetail")} //MediaScreen PendingTransactionScreen
+        // onPress={() => navigation.navigate("TransactionDetail")} //MediaScreen PendingTransactionScreen
       >
         <View style={styles.bttm_txt_container}>
           <Text style={styles.bottom_bold_text}>Refer and earn</Text>
@@ -130,10 +193,8 @@ const Dashboard = ({ navigation }) => {
             width: 250,
             height: 150,
             resizeMode: "contain",
-            // position: "absolute",
             resizeMode: "contain",
-            // top: 20,
-            right: 70,
+            right: 70
           }}
         />
       </TouchableOpacity>
@@ -150,35 +211,35 @@ const styles = StyleSheet.create({
     padding: 20,
     position: "relative",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "white"
     // justifyContent: "center",
   },
 
   nav_container: {
     marginVertical: 20,
-    width: "100%",
+    width: "100%"
   },
   text_icon: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "center"
   },
   nav_text: {
     fontFamily: "regular",
-    textTransform: "capitalize",
+    textTransform: "capitalize"
   },
   boldVav_text: {
     fontFamily: "semibold",
-    textTransform: "capitalize",
+    textTransform: "capitalize"
   },
 
   up_section_text: {
-    fontFamily: "regular",
+    fontFamily: "regular"
   },
 
   price: {
     fontFamily: "semibold",
-    fontSize: 16,
+    fontSize: 16
   },
   mid_section: {
     flexDirection: "row",
@@ -186,14 +247,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
     flexGrow: 1,
-    marginVertical: 10,
+    marginVertical: 10
   },
   section_text: {
     fontSize: 22,
     letterSpacing: 0.5,
     marginTop: 80,
     textAlign: "center",
-    fontFamily: "medium",
+    fontFamily: "medium"
   },
   right_section: {
     backgroundColor: "#FFCBD3",
@@ -203,7 +264,7 @@ const styles = StyleSheet.create({
     position: "relative",
     borderRadius: 15,
     paddingVertical: 40,
-    flex: 1,
+    flex: 1
   },
   left_section: {
     backgroundColor: "#FBDDC3",
@@ -214,7 +275,7 @@ const styles = StyleSheet.create({
     position: "relative",
     flex: 1,
 
-    paddingVertical: 40,
+    paddingVertical: 40
   },
   bottom_section: {
     width: "100%",
@@ -224,19 +285,19 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-end",
+    alignItems: "flex-end"
   },
   bttm_txt_container: {
     alignItems: "flex-start",
     margin: 20,
-    width: "50%",
+    width: "50%"
   },
   bottom_bold_text: {
     fontSize: 18,
-    fontFamily: "bold",
+    fontFamily: "bold"
   },
   bottom_text: {
     fontSize: 12,
-    fontFamily: "medium",
-  },
+    fontFamily: "medium"
+  }
 });

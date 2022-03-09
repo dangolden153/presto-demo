@@ -13,7 +13,7 @@ export default Loading;
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor:"",
+    // backgroundColor: "#1e1a1a",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

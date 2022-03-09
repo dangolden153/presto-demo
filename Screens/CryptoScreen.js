@@ -5,8 +5,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
-import Bitcoin from '../images/btc.png'
-import USDT from '../images/usdt.png'
+import Bitcoin from '../images/Bitcoin.svg'
+import USDT from '../images/usdt.svg'
 
 const CryptoScreen = ({ navigation }) => {
   const [fontLoaded, error] = useFonts({
@@ -20,7 +20,6 @@ const CryptoScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <NavBar navigation={navigation} />
-
       <View style={styles.btn_container}>
         {/* **************** sell bitcoin *************************** */}
         <TouchableOpacity
@@ -34,7 +33,7 @@ const CryptoScreen = ({ navigation }) => {
           >
 
             {/* <MaterialIcons name="arrow-forward-ios" size={24} color="white" /> */}
-            <Image source={Bitcoin} style={{ width: 100, height: 100 }} />
+            <Bitcoin height={80} width={80} />
             <Text style={styles.text}>Sell Bitcoin</Text>
 
           </LinearGradient>
@@ -45,17 +44,15 @@ const CryptoScreen = ({ navigation }) => {
           activeOpacity={0.7}
           onPress={() => navigation.navigate("SellUsdtScreen")}
         >
-          <LinearGradient
-            // Button Linear Gradient
-            colors={["#0B365B", "#0B365B", "#124672"]}
-            style={styles.btn}
+          <View
+            style={[styles.btn, styles.usdt]}
           >
-            <Image source={USDT} style={{ width: 100, height: 100 }} />
+            <USDT height={80} width={80} />
 
-            <Text style={styles.text}>Sell USDT</Text>
+            <Text style={[styles.text, { color: "#0B365B" }]}>Sell USDT</Text>
 
             {/* <MaterialIcons name="arrow-forward-ios" size={24} color="white" /> */}
-          </LinearGradient>
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -73,7 +70,7 @@ const styles = StyleSheet.create({
   },
   btn_container: {
     width: "100%",
-    marginTop: 40,
+    marginTop: 20,
   },
   btn: {
     // marginTop: 50,
@@ -84,12 +81,18 @@ const styles = StyleSheet.create({
     // flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginVertical: 10,
+    // marginVertical: 10,
+  },
+  usdt: {
+    borderColor: "#0B365B",
+    borderWidth: 3,
+    borderRadius: 10,
+    marginTop: 40,
   },
   text: {
     color: "white",
     textAlign: "center",
     fontSize: 17,
-    fontFamily: "semibold",
+    fontFamily: "bold",
   },
 });

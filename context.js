@@ -9,6 +9,7 @@ export const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [message, setModalMessage] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const [existinguser, setExistinguser] = useState(null);
 
   const handleRefresh = () => {
     setRefresh(!refresh);
@@ -31,6 +32,8 @@ export const ContextProvider = ({ children }) => {
         setRefresh,
         accessToken,
         setAccessToken,
+        existinguser,
+        setExistinguser
       }}
     >
       {children}

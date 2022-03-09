@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Image, View, Text, StyleSheet } from "react-native";
 import {
   Modal,
@@ -11,14 +11,23 @@ import pics from "../images/Memoji.png";
 import errorPics from "../images/sad-memoji.png";
 
 import { useNavigation } from "@react-navigation/native";
+import { Context } from "../context";
 
-export function ModalComponent({ modalVisible, setModalVisible, message, navigate }) {
+export function ModalComponent({ modalVisible, setModalVisible, navigate }) {
+  const { message, openModal, setOpenModal, setModalMessage } = useContext(Context);
   const navigation = useNavigation();
 
 
   const handleModal = () => {
-    navigation.navigate(message.status == "ok" ? navigate : "ButtomTab")
-    setModalVisible(false)
+    if (!navigate) {
+      // navigation.navigate(navigate || "ButtomTab")
+      setOpenModal(false)
+      return;
+    }
+    // navigation.navigate(message.status == "ok" ? navigate : "ButtomTab")
+    navigation.navigate(navigate || "ButtomTab")
+    // setModalMessage("")
+    console.log("messg", message)
   }
 
   return (
@@ -26,8 +35,8 @@ export function ModalComponent({ modalVisible, setModalVisible, message, navigat
       <NativeBaseProvider>
         <Center flex={1}>
           <Modal
-            isOpen={modalVisible}
-            onClose={setModalVisible}
+            isOpen={openModal || modalVisible}
+            onClose={setOpenModal || setModalVisible}
             size="md"
             style={{ position: "relative" }}
           // _backdrop={{

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
-} from "react-native"; 
+} from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { Context } from "../context";
 import { ModalComponent } from "../components/Modal";
 import LinearButton from "../components/LinearButton";
+import NavBar from "../components/NavBar";
 
 const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -49,26 +50,12 @@ const ForgotPassword = ({ navigation }) => {
     <>
       <View style={styles.container}>
         {/* up section container */}
+        <NavBar title="Forgot Password" />
 
-        <View style={styles.nav}>
-          <TouchableOpacity
-            style={{ position: "absolute", left: 0, top: 8 }}
-            onPress={() => navigation.goBack()}
-          >
-            <MaterialIcons
-              name="arrow-back-ios"
-              // style={{ marginLeft: 15 }}
-              size={24}
-              color="black"
-            />
-          </TouchableOpacity>
-
-          <Text style={styles.header}>Forgot Password</Text>
-        </View>
 
         {/* <Text style={styles.text}>how do you want to recieve a reset code?</Text> */}
 
-        <View>
+        <View style={{ marginTop: 70 }}>
           <Text style={styles.text}>Enter your email address</Text>
           <TextInput
             value={setEmail}
@@ -87,7 +74,7 @@ const ForgotPassword = ({ navigation }) => {
           loading={loading}
           onPress={handleReset}
         />
-       
+
       </View>
 
       {/* *********response modal************************** */}
@@ -137,7 +124,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   input: {
-     borderColor: "#e8e6ea",
+    borderColor: "#e8e6ea",
     borderWidth: 1,
     padding: 10,
     marginVertical: 10,

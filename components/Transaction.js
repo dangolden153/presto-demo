@@ -6,49 +6,42 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  Image,
+  Image
 } from "react-native";
 import moment from "moment";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import { useNavigation } from "@react-navigation/native";
-import Bitcoin from '../images/Bitcoin.png'
-import USDT from '../images/usdt.png'
-import CARD from '../images/Amazon.png'
-
+import Bitcoin from "../images/btc.svg";
+import USDT from "../images/usdt.svg";
+import CARD from "../images/cards.svg";
 
 const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
   const [uploadCard, setUploadCard] = useState(false);
   const togglePickCard = () => setUploadCard(!uploadCard);
   // console.log("datas", datas);
 
-  const Address = ""
+  const Address = "";
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const status =
-    datas ?.status === 0
+    datas?.status === 0
       ? "pending"
-      : datas ?.status === 1
-        ? "successful"
-        : "failed";
+      : datas?.status === 1
+      ? "successful"
+      : "failed";
 
   const colors =
-    datas ?.status === 0
-      ? "#ff9d3a"
-      : datas ?.status === 1
-        ? "green"
-        : "#f9886c";
+    datas?.status === 0 ? "#ff9d3a" : datas?.status === 1 ? "green" : "#f9886c";
 
-  const amount =
-    card ? datas ?.value :
-      datas ?.amount ;
+  const amount = card ? datas?.value : datas?.amount;
 
-  const img = btc ? Bitcoin : usdt ? USDT : CARD;
+  const Img = btc ? Bitcoin : usdt ? USDT : CARD;
 
   const [fontLoaded, error] = useFonts({
     Italic: require("../assets/fonts/raleway/Raleway-Italic.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
+    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf")
   });
 
   if (!fontLoaded) {
@@ -81,11 +74,7 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
               marginBottom: 10
             }}
           >
-            <Image
-              source={img}
-              style={{ height: 200, width: card ? "100%" : 200, marginVertical: 10 }}
-            />
-
+            <Img height={150} width={150} />
           </TouchableOpacity>
           <View style={styles.gift_card}>
             {/* ******************Amount************************ */}
@@ -104,26 +93,25 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
             <View style={styles.img_title}>
               <Text style={styles.title}>Time</Text>
               <Text style={styles.time}>
-                {moment(datas ?.created_at).format("ll")}
+                {moment(datas?.created_at).format("ll")}
               </Text>
             </View>
 
             {/* ******************Error detail************************ */}
-            {datas ?.failure ? <View style={styles.img_title}>
-              <Text style={styles.title}> Error detail</Text>
-              <Text style={styles.time}>
-                {datas.failure}
-              </Text>
-            </View> : null}
+            {datas?.failure ? (
+              <View style={styles.img_title}>
+                <Text style={styles.title}> Error detail</Text>
+                <Text style={styles.time}>{datas.failure}</Text>
+              </View>
+            ) : null}
 
             {/* ******************Address************************ */}
-            {Address ? <View style={styles.img_title}>
-              <Text style={styles.title}>Address</Text>
-              <Text style={styles.time}>
-                {Address}
-              </Text>
-            </View> : null}
-
+            {Address ? (
+              <View style={styles.img_title}>
+                <Text style={styles.title}>Address</Text>
+                <Text style={styles.time}>{Address}</Text>
+              </View>
+            ) : null}
           </View>
 
           {/* ****************************Card container ************************* */}
@@ -176,7 +164,7 @@ export default Transaction;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
 
   nav: {
@@ -185,7 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "65%",
     marginTop: 20,
-    marginLeft: 10,
+    marginLeft: 10
   },
 
   header: {
@@ -194,7 +182,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     fontWeight: "bold",
     textAlign: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   body: {
     backgroundColor: "#f4fafe",
@@ -202,7 +190,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 20,
     flex: 1,
-    width: "100%",
+    width: "100%"
   },
   title: {
     fontSize: 18,
@@ -216,12 +204,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 20,
     // backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: 20
   },
   gift_card: {
     // flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   img_title: {
     flexDirection: "row",
@@ -231,7 +219,7 @@ const styles = StyleSheet.create({
     marginVertical: 5
   },
   upload_container: {
-    margin: 10,
+    margin: 10
   },
   upload_btn: {
     borderWidth: 2,
@@ -242,22 +230,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 10,
-    padding: 20,
+    padding: 20
     // borderStyle:"do"
   },
   upload_text: {
     fontSize: 18,
-    color: "#999999",
+    color: "#999999"
   },
   status_fail: {
     color: "red",
-    opacity: 0.4,
+    opacity: 0.4
   },
   status_success: {
-    color: "#00C48C",
+    color: "#00C48C"
     // opacity: 0.4,
   },
   price_del: {
-    alignItems: "flex-end",
-  },
+    alignItems: "flex-end"
+  }
 });
