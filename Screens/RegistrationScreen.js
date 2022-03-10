@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -21,6 +21,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import Log_in from "../images/Login.svg";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import { ModalComponent } from "../components/Modal";
+import { Context } from "../context";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -33,10 +35,19 @@ const RegistrationScreen = ({ navigation }) => {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneno, setPhoneno] = useState("");
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(true);
   const toggleRadio = () => setRadioBtn(!radioBtn);
+  const {
+    openModal,
+    setOpenModal,
+    loading,
+    setLoading,
+    setModalMessage,
+    setIsAuthenticated,
+    setToken,
+    setAccessToken
+  } = useContext(Context);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -73,9 +84,12 @@ const RegistrationScreen = ({ navigation }) => {
           return navigation.navigate("CheckVerification");
         }
         console.log("res", res);
+        setModalMessage({ status: "fail", text: res });
+        setOpenModal(true);
       })
       .catch(error => {
         console.log("error", error);
+        setModalMessage({ status: "fail", text: result?.error });
         setLoading(false);
       });
   };
@@ -93,175 +107,191 @@ const RegistrationScreen = ({ navigation }) => {
     return <AppLoading />;
   }
   return (
-    <View
-      style={styles.container}
-      // behavior="padding"
-      // keyboardVerticalOffset={90}
-    >
-      <StatusBar style="light" />
-      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-      <View>
+    <>
+      <View
+        style={styles.container}
+        // behavior="padding"
+        // keyboardVerticalOffset={90}
+      >
+        <StatusBar style="light" />
+        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
         <View>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <MaterialIcons
-              name="arrow-back-ios"
-              style={{
-                marginTop: 30,
-                marginLeft: 15,
-                zIndex: 100
-              }}
-              size={24}
-              color="white"
-            />
-          </TouchableOpacity>
-          <View style={styles.header_container}>
-            <Text style={styles.header}>Let's Get Started!</Text>
-            {/* <Text style={styles.Sub_header}>
+          {/* ***************top backgroundColor*************** */}
+          <View
+            style={{
+              backgroundColor: "#0B365B", //#0B365B
+              width: "100%",
+              height: windowHeight * 0.08,
+              position: "absolute"
+              // zIndex: 5
+            }}
+          />
+          <View>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <MaterialIcons
+                name="arrow-back-ios"
+                style={{
+                  marginTop: 30,
+                  marginLeft: 15,
+                  zIndex: 100
+                }}
+                size={24}
+                color="white"
+              />
+            </TouchableOpacity>
+            <View style={styles.header_container}>
+              <Text style={styles.header}>Let's Get Started!</Text>
+              {/* <Text style={styles.Sub_header}>
                 Sign up with Social of fill the form to continue
               </Text>  */}
-          </View>
-        </View>
-
-        <Log_in
-          width={windowWidth}
-          height={bgHeight}
-          style={{
-            position: "absolute",
-            top: -10,
-            zIndex: -1
-          }}
-        />
-      </View>
-      <View style={styles.inner_container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.input_container}
-        >
-          <View style={{ justifyContent: "center" }}>
-            <View style={styles.inputTextContainer}>
-              <Text style={styles.input_text}>First name</Text>
-              <TextInput
-                placeholderTextColor={"black"}
-                style={styles.input}
-                value={firstName}
-                onChangeText={text => setFirstName(text)}
-                type="text"
-                autoFocus
-              />
-            </View>
-
-            {/* ************* Last name ***************************** */}
-            <View style={styles.inputTextContainer}>
-              <Text style={styles.input_text}>Last name</Text>
-              <TextInput
-                placeholderTextColor={"black"}
-                style={styles.input}
-                value={lastName}
-                onChangeText={text => setLastName(text)}
-                type="text"
-                autoFocus
-              />
-            </View>
-
-            {/* *************Email***************************** */}
-            <View style={styles.inputTextContainer}>
-              <Text style={styles.input_text}>Email</Text>
-              <TextInput
-                placeholderTextColor={"black"}
-                style={styles.input}
-                value={email}
-                onChangeText={text => setEmail(text)}
-                type="email"
-                autoFocus
-              />
-            </View>
-
-            {/* *************Phone number***************************** */}
-            <View style={styles.inputTextContainer}>
-              <Text style={styles.input_text}>Phone number</Text>
-              <TextInput
-                placeholderTextColor={"black"}
-                style={styles.input}
-                value={phoneno}
-                onChangeText={text => setPhoneno(text)}
-                type="number"
-                autoFocus
-              />
-            </View>
-
-            {/* *************Password***************************** */}
-            <View style={styles.inputTextContainer}>
-              <Text style={styles.input_text}>Password</Text>
-              <View style={styles.icon_input}>
-                <TextInput
-                  placeholderTextColor={"black"}
-                  style={{ flex: 1 }}
-                  value={password}
-                  onChangeText={text => setPassword(text)}
-                  type="password"
-                  secureTextEntry={showPassword}
-                  autoFocus
-                />
-                <TouchableOpacity onPress={() => handleShowPassword()}>
-                  {showPassword ? (
-                    <FontAwesome name="eye-slash" size={24} color="black" />
-                  ) : (
-                    <FontAwesome name="eye" size={24} color="black" />
-                  )}
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* *************Confirm Password***************************** */}
-            <View style={styles.inputTextContainer}>
-              <Text style={styles.input_text}>Confirm Password</Text>
-              <View style={styles.icon_input}>
-                <TextInput
-                  placeholderTextColor={"black"}
-                  style={{ flex: 1 }}
-                  value={passwordConfirmation}
-                  onChangeText={text => setPasswordConfirmation(text)}
-                  type="password"
-                  secureTextEntry={showConfirmPassword}
-                  autoFocus
-                />
-                <TouchableOpacity onPress={() => handleShowConfirmPassword()}>
-                  {showConfirmPassword ? (
-                    <FontAwesome name="eye-slash" size={24} color="black" />
-                  ) : (
-                    <FontAwesome name="eye" size={24} color="black" />
-                  )}
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
-        </ScrollView>
-        <View style={styles.terms}>
-          <TouchableOpacity onPress={toggleRadio} style={styles.radioBtn}>
-            {radioBtn && <View style={styles.onClicked} />}
-          </TouchableOpacity>
 
-          <Text style={styles.text}>
-            By Signing up, you agree to the Terms of Service and Privacy Policy
-          </Text>
+          <Log_in
+            width={windowWidth}
+            height={bgHeight}
+            style={{
+              position: "absolute",
+              // top: -10,
+              zIndex: -1
+              // backgroundColor: "pink"
+            }}
+          />
         </View>
-
-        <TouchableOpacity activeOpacity={0.7} onPress={() => handleSignup()}>
-          <LinearGradient
-            // Button Linear Gradient
-            colors={["#0B365B", "#0B365B", "#124672"]}
-            style={styles.btn}
+        <View style={styles.inner_container}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.input_container}
           >
-            {loading ? (
-              <ActivityIndicator size="small" color="white" />
-            ) : (
-              <Text style={styles.btn_text}>REGISTER</Text>
-            )}
-          </LinearGradient>
-        </TouchableOpacity>
+            <View style={{ justifyContent: "center" }}>
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>First name</Text>
+                <TextInput
+                  placeholderTextColor={"black"}
+                  style={styles.input}
+                  value={firstName}
+                  onChangeText={text => setFirstName(text)}
+                  type="text"
+                  autoFocus
+                />
+              </View>
+
+              {/* ************* Last name ***************************** */}
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>Last name</Text>
+                <TextInput
+                  placeholderTextColor={"black"}
+                  style={styles.input}
+                  value={lastName}
+                  onChangeText={text => setLastName(text)}
+                  type="text"
+                  autoFocus
+                />
+              </View>
+
+              {/* *************Email***************************** */}
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>Email</Text>
+                <TextInput
+                  placeholderTextColor={"black"}
+                  style={styles.input}
+                  value={email}
+                  onChangeText={text => setEmail(text)}
+                  type="email"
+                  autoFocus
+                />
+              </View>
+
+              {/* *************Phone number***************************** */}
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>Phone number</Text>
+                <TextInput
+                  placeholderTextColor={"black"}
+                  style={styles.input}
+                  value={phoneno}
+                  onChangeText={text => setPhoneno(text)}
+                  type="number"
+                  autoFocus
+                />
+              </View>
+
+              {/* *************Password***************************** */}
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>Password</Text>
+                <View style={styles.icon_input}>
+                  <TextInput
+                    placeholderTextColor={"black"}
+                    style={{ flex: 1 }}
+                    value={password}
+                    onChangeText={text => setPassword(text)}
+                    type="password"
+                    secureTextEntry={showPassword}
+                    autoFocus
+                  />
+                  <TouchableOpacity onPress={() => handleShowPassword()}>
+                    {showPassword ? (
+                      <FontAwesome name="eye-slash" size={24} color="black" />
+                    ) : (
+                      <FontAwesome name="eye" size={24} color="black" />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* *************Confirm Password***************************** */}
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>Confirm Password</Text>
+                <View style={styles.icon_input}>
+                  <TextInput
+                    placeholderTextColor={"black"}
+                    style={{ flex: 1 }}
+                    value={passwordConfirmation}
+                    onChangeText={text => setPasswordConfirmation(text)}
+                    type="password"
+                    secureTextEntry={showConfirmPassword}
+                    autoFocus
+                  />
+                  <TouchableOpacity onPress={() => handleShowConfirmPassword()}>
+                    {showConfirmPassword ? (
+                      <FontAwesome name="eye-slash" size={24} color="black" />
+                    ) : (
+                      <FontAwesome name="eye" size={24} color="black" />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
+          <View style={styles.terms}>
+            <TouchableOpacity onPress={toggleRadio} style={styles.radioBtn}>
+              {radioBtn && <View style={styles.onClicked} />}
+            </TouchableOpacity>
+
+            <Text style={styles.text}>
+              By Signing up, you agree to the Terms of Service and Privacy
+              Policy
+            </Text>
+          </View>
+
+          <TouchableOpacity activeOpacity={0.7} onPress={() => handleSignup()}>
+            <LinearGradient
+              // Button Linear Gradient
+              colors={["#0B365B", "#0B365B", "#124672"]}
+              style={styles.btn}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text style={styles.btn_text}>REGISTER</Text>
+              )}
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+        {/* </TouchableWithoutFeedback> */}
       </View>
-      {/* </TouchableWithoutFeedback> */}
-    </View>
+      {/* *********response modal************************** */}
+      {openModal && <ModalComponent />}
+    </>
   );
 };
 

@@ -110,7 +110,6 @@ const LoginScreen = ({ navigation }) => {
           if (!result?.user?.pin) {
             console.log("null pin");
             setAccessToken(result?.access_token);
-            // setToken(result?.access_token)
             navigation.navigate("VerifiedScreen");
             return;
           }
@@ -161,8 +160,22 @@ const LoginScreen = ({ navigation }) => {
         <StatusBar style="light" />
 
         <Text style={styles.header}>Welcome</Text>
+        {/* ***************top backgroundColor*************** */}
+        <View
+          style={{
+            backgroundColor: "#0B365B",
+            width: "100%",
+            height: windowHeight * 0.08,
+            position: "absolute",
+            zIndex: 100
+          }}
+        />
 
-        <Log_in width={windowWidth} height={bgHeight} style={{ top: -10 }} />
+        <Log_in
+          width={windowWidth}
+          height={bgHeight}
+          // style={{ backgroundColor: "pink" }}
+        />
         {/* </View> */}
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

@@ -201,6 +201,17 @@ const ExistingUserLogin = ({ navigation }) => {
     <>
       <View style={styles.container}>
         <StatusBar style="light" />
+        {/* ***************top backgroundColor*************** */}
+        <View
+          style={{
+            backgroundColor: "#0B365B", //#0B365B
+            width: "100%",
+            height: windowHeight * 0.08,
+            position: "absolute",
+            zIndex: 100
+          }}
+        />
+
         <View
           style={{
             position: "absolute",
@@ -220,7 +231,16 @@ const ExistingUserLogin = ({ navigation }) => {
           <Text style={styles.header}>Presto</Text>
         </View>
 
-        <Log_in width={windowWidth} height={bgHeight} style={{ top: -10 }} />
+        <Log_in
+          width={windowWidth}
+          height={bgHeight}
+          style={
+            {
+              // backgroundColor: "red" //#0B365B
+              // top: -10
+            }
+          }
+        />
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner_container}>

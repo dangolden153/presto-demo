@@ -10,7 +10,12 @@ import Wallet from "../components/Wallet";
 import { Context } from "../context";
 import { useDispatch, useSelector } from "react-redux";
 import { USER_DATA } from "../Redux/Types/type";
-import { fetchCardTransactions, fetchBTCTransactions, fetchUSDTTransactions } from "../Redux/Actions/crptoTransaction";
+import {
+  fetchCardTransactions,
+  fetchBTCTransactions,
+  fetchUSDTTransactions,
+  fetchCardRate
+} from "../Redux/Actions/crptoTransaction";
 import SelectTransaction from "../components/SelectTransaction";
 
 const Tab = createBottomTabNavigator();
@@ -19,11 +24,10 @@ const ButtomTab = () => {
   const dispatch = useDispatch();
   const { token, setModalMessage, refresh } = useContext(Context);
 
-
   // *************get user's details  **************************
   useEffect(() => {
     fetchUserDetails();
-    console.log("refresh")
+    console.log("refresh");
   }, [refresh]);
 
   // *************fetch card transaction **************************
@@ -41,7 +45,6 @@ const ButtomTab = () => {
     dispatch(fetchUSDTTransactions(token, setModalMessage));
   }, []);
 
-
   // *************user details function**************************
   const fetchUserDetails = () => {
     let myHeaders = new Headers();
@@ -51,28 +54,31 @@ const ButtomTab = () => {
     let requestOptions = {
       method: "GET",
       headers: myHeaders,
-      redirect: "follow",
+      redirect: "follow"
     };
 
     fetch("https://api.prestohq.io/api/auth/profile", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
+      .then(response => response.json())
+      .then(result => {
         // console.log("users details", result);
         if (result) {
           dispatch({ type: USER_DATA, payload: result });
           return;
         }
       })
-      .catch((error) => {
+      .catch(error => {
         // setValidate("unable to process users details");
         console.log("users details error", error);
       });
   };
 
-
+  // *************fetch USDT transaction **************************
+  useEffect(() => {
+    dispatch(fetchCardRate(token, setModalMessage));
+  }, []);
 
   return (
-    <View style={{ flex: 1, }}>
+    <View style={{ flex: 1 }}>
       <Tab.Navigator
         // tabBarOptions={{
         //   showLabel: false,
@@ -84,8 +90,8 @@ const ButtomTab = () => {
             justifyContent: "space-between",
             borderTopStartRadius: 20,
             borderTopEndRadius: 20,
-            elevation: 0,
-          },
+            elevation: 0
+          }
         }}
       >
         <Tab.Screen
@@ -98,7 +104,7 @@ const ButtomTab = () => {
               <View>
                 <AntDesign name="home" size={24} color="black" />
               </View>
-            ),
+            )
           }}
         />
 
@@ -111,7 +117,7 @@ const ButtomTab = () => {
               <View>
                 <AntDesign name="wallet" size={24} color="black" />
               </View>
-            ),
+            )
           }}
         />
 
@@ -124,7 +130,7 @@ const ButtomTab = () => {
               <View>
                 <AntDesign name="clockcircleo" size={24} color="black" />
               </View>
-            ),
+            )
           }}
         />
         <Tab.Screen
@@ -136,7 +142,7 @@ const ButtomTab = () => {
               <View>
                 <AntDesign name="user" size={24} color="black" />
               </View>
-            ),
+            )
           }}
         />
       </Tab.Navigator>
@@ -148,7 +154,7 @@ export default ButtomTab;
 
 const styles = StyleSheet.create({
   icon_text: {
-    marginHorizontal: 10,
+    marginHorizontal: 10
   },
   icon_textfocused: {
     flexDirection: "row",
@@ -156,11 +162,11 @@ const styles = StyleSheet.create({
     // backgroundColor: "pink",
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 20,
+    borderRadius: 20
   },
 
   iconFocused: { color: "#F4511E" },
   icon: { color: "black" },
   textFocused: { color: "#F4511E", marginLeft: 5 },
-  text: { fontSize: 16 },
+  text: { fontSize: 16 }
 });

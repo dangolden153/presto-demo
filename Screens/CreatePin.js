@@ -10,8 +10,9 @@ import NavBar from "../components/NavBar";
 
 const CreatePin = ({ navigation }) => {
   const [code, setCode] = useState("");
-  const { setIsAuthenticated, accessToken, loading, setLoading } =
-    useContext(Context);
+  const { setIsAuthenticated, accessToken, loading, setLoading } = useContext(
+    Context
+  );
   // console.log("accessToken", accessToken);
 
   const handlePin = () => {
@@ -32,12 +33,12 @@ const CreatePin = ({ navigation }) => {
       method: "POST",
       headers: myHeaders,
       body: formdata,
-      redirect: "follow",
+      redirect: "follow"
     };
 
     fetch("https://api.prestohq.io/api/auth/updatepin", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
+      .then(response => response.json())
+      .then(result => {
         setLoading(false);
         console.log(result);
 
@@ -47,19 +48,19 @@ const CreatePin = ({ navigation }) => {
           return;
         }
       })
-      .catch((error) => {
+      .catch(error => {
         setLoading(false);
         console.log("error", error);
       });
   };
 
   //  ****************store user's token ***********
-  const storeData = async (value) => {
+  const storeData = async value => {
     try {
       const jsonValue = value;
       // console.log("user token", jsonValue);
       await AsyncStorage.setItem("@prestoToken", jsonValue);
-      // setToken(jsonValue)
+      setToken(jsonValue);
     } catch (e) {
       console.log("token error", e);
     }
@@ -67,23 +68,21 @@ const CreatePin = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-     
-
       <NavBar title="Create Pin" navigation={navigation} />
       <View style={styles.sub_container}>
         <View style={styles.pin_text}>
           <SmoothPinCodeInput
             value={code}
-            onTextChange={(code) => setCode(code)}
+            onTextChange={code => setCode(code)}
             //   onFulfill={this._checkCode}
             //   onBackspace={this._focusePrevInput}
             cellStyle={{
               borderColor: "#0084f4",
               borderWidth: 1,
-              marginHorizontal: 20,
+              marginHorizontal: 20
             }}
             cellStyleFocused={{
-              borderColor: "black",
+              borderColor: "black"
             }}
             // containerStyle={{
 
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    position: "relative",
+    position: "relative"
     // alignItems: "center",
     // justifyContent: "center",
   },
@@ -119,33 +118,33 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "60%",
     marginTop: 60,
-    marginLeft: 10,
+    marginLeft: 10
   },
 
   header: {
     color: "black",
     fontSize: 20,
     letterSpacing: 1,
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   Sub_header: {
     color: "#999999",
     fontSize: 15,
-    marginTop: 10,
+    marginTop: 10
   },
   sub_container: {
     alignItems: "center",
     justifyContent: "space-between",
     flex: 1,
-    marginVertical: 50,
+    marginVertical: 50
   },
   pin_text: {
     height: 200,
     marginTop: 40,
-    alignItems: "center",
+    alignItems: "center"
   },
   btn: {
     marginTop: 50,
-    width: 250,
-  },
+    width: 250
+  }
 });
