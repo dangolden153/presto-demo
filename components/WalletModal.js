@@ -11,11 +11,10 @@ import {
 const windowWidth = Dimensions.get("window").width;
 
 const wallet = [
-  { text: "3nofvnodslrdt67yuyullgfdXd", icon: "copy" },
-  { text: "3nofvnodslrdt67yuyullgfdXd" },
-  { text: "3nofvnodslrdt67yuyullgfdXd" },
-  { text: "3nofvnodslrdt67yuyulltyuiwe" },
-  { text: "3nofvnodslrdt67yuyullfdhgrs" }
+  { type: "ERC20", text: "3nofvnodslrdt67yuyullgfdXd" },
+  { type: "TRC20", text: "3nofvnodslrdt67yuyullgfdXd" },
+  { type: "BEP2", text: "3nofvnodslrdt67yuyullgfdXd" },
+  { type: "BEP20", text: "3nofvnodslrdt67yuyulltyuiwe" }
 ];
 const WalletModal = ({ copyToClipboard }) => {
   return (
@@ -26,6 +25,7 @@ const WalletModal = ({ copyToClipboard }) => {
           style={styles.address}
           onPress={() => copyToClipboard(item.text)}
         >
+          <Text>{item.type}</Text>
           <Text>{item.text}</Text>
           <Ionicons name="ios-copy-outline" size={24} color="black" />
         </TouchableOpacity>

@@ -17,6 +17,7 @@ import {
   fetchCardRate
 } from "../Redux/Actions/crptoTransaction";
 import SelectTransaction from "../components/SelectTransaction";
+import { getAllBanks } from "../Redux/Actions/user";
 
 const Tab = createBottomTabNavigator();
 
@@ -75,6 +76,11 @@ const ButtomTab = () => {
   // *************fetch USDT transaction **************************
   useEffect(() => {
     dispatch(fetchCardRate(token, setModalMessage));
+  }, []);
+
+  // *************fetch all banks **************************
+  useEffect(() => {
+    dispatch(getAllBanks());
   }, []);
 
   return (

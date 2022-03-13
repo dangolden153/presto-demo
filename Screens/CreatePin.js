@@ -7,17 +7,43 @@ import { Context } from "../context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LinearButton from "../components/LinearButton";
 import NavBar from "../components/NavBar";
+import { useFonts } from "expo-font";
+import { useToast } from "react-native-toast-notifications";
+import { ModalComponent } from "../components/Modal";
 
 const CreatePin = ({ navigation }) => {
   const [code, setCode] = useState("");
-  const { setIsAuthenticated, accessToken, loading, setLoading } = useContext(
-    Context
-  );
-  // console.log("accessToken", accessToken);
+  const {
+    setIsAuthenticated,
+    accessToken,
+    loading,
+    setLoading,
+    setToken,
+    openModal,
+    setOpenModal,
+    setModalMessage
+  } = useContext(Context);
+  const toast = useToast();
+
+  // ************notification ***********
+  const handleToast = () => {
+    toast.show("Pin created successfully", {
+      type: "custom",
+      placement: "top",
+      duration: 4000,
+      offset: 30,
+      animationType: "slide-in"
+    });
+  };
 
   const handlePin = () => {
-    if (!accessToken) {
-      return null;
+    if (code.length < 4) {
+      setOpenModal(true);
+      setModalMessage({
+        status: "fail",
+        text: "pin must be at least 4 characters!"
+      });
+      return;
     }
 
     setLoading(true);
@@ -40,17 +66,24 @@ const CreatePin = ({ navigation }) => {
       .then(response => response.json())
       .then(result => {
         setLoading(false);
-        console.log(result);
+        console.log("result result", result);
 
         if (result?.status == "201") {
           setIsAuthenticated(true);
           storeData(accessToken);
+          handleToast();
+
           return;
         }
       })
       .catch(error => {
         setLoading(false);
         console.log("error", error);
+        setOpenModal(true);
+        setModalMessage({
+          status: "fail",
+          text: "Ops! an error occurred, please try again"
+        });
       });
   };
 
@@ -67,38 +100,42 @@ const CreatePin = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <NavBar title="Create Pin" navigation={navigation} />
-      <View style={styles.sub_container}>
-        <View style={styles.pin_text}>
-          <SmoothPinCodeInput
-            value={code}
-            onTextChange={code => setCode(code)}
-            //   onFulfill={this._checkCode}
-            //   onBackspace={this._focusePrevInput}
-            cellStyle={{
-              borderColor: "#0084f4",
-              borderWidth: 1,
-              marginHorizontal: 20
-            }}
-            cellStyleFocused={{
-              borderColor: "black"
-            }}
-            // containerStyle={{
+    <>
+      <View style={styles.container}>
+        <NavBar title="Create Pin" navigation={navigation} />
+        <View style={styles.sub_container}>
+          <View style={styles.pin_text}>
+            <SmoothPinCodeInput
+              value={code}
+              onTextChange={code => setCode(code)}
+              //   onFulfill={this._checkCode}
+              //   onBackspace={this._focusePrevInput}
+              cellStyle={{
+                borderColor: "#0B365B",
+                borderWidth: 1,
+                marginHorizontal: 20
+              }}
+              cellStyleFocused={{
+                borderColor: "black"
+              }}
+              // containerStyle={{
 
-            // }}
-            cellSize={58}
-          />
-          <Text style={styles.Sub_header}>Create new Pin</Text>
+              // }}
+              cellSize={58}
+            />
+            <Text style={styles.Sub_header}>Create new Pin</Text>
+          </View>
         </View>
+        <LinearButton
+          title={loading ? "creating pin" : "create pin"}
+          loading={loading}
+          onPress={handlePin}
+        />
+        <View style={{ marginBottom: 40 }} />
       </View>
-      <LinearButton
-        title={loading ? "creating pin" : "create pin"}
-        loading={loading}
-        onPress={handlePin}
-      />
-      <View style={{ marginBottom: 40 }} />
-    </View>
+
+      {openModal && <ModalComponent />}
+    </>
   );
 };
 

@@ -138,10 +138,15 @@ export default function App() {
 // inputting of email existing user ✅
 // splash screen ✅
 // bank verification through flutter wave ✅
+// change the settings icon to svg ✅
+// push to gitlab ✅
+
+// card transaction
+// wallect screen for user that dont have an account yet ✅
+// multiple image
+// registration process ..✅
+// postpaid button
 // check notification ...
-// change the settings icon to svg
 // check the modal after transaction on the profile screen
-// the modal after the tranaction fails
-// tell bosss that the app should have had a prototype.
-// registration process
-// push to gitlab
+// the modal after the tranaction fails || ops an error occurred
+// exixting loin setvalidate

@@ -42,7 +42,8 @@ const Dropdown = ({
   setItem,
   placeholder,
   label,
-  selectItemLabel
+  selectItemLabel,
+  dataProps
 }) => {
   // console.log(`card`, card)
   const [error, setError] = useState("");
@@ -90,7 +91,7 @@ const Dropdown = ({
             key={i}
             // onPress={() => console.log(i)}
             // label={dataItems.cardname || dataItems.countryName || dataItems}
-            label={dataItems.cardname || dataItems}
+            label={dataItems.cardname || dataItems || dataProps}
             value={dataItems}
           />
         ))}

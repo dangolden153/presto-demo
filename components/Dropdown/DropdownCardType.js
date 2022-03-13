@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import {
   Select,
   VStack,
@@ -10,20 +10,20 @@ import {
   Container,
   FormControl,
 } from "native-base";
-import {useFonts} from 'expo-font'
-import AppLoading from 'expo-app-loading'
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 const theme = extendTheme({
   components: {
     Select: {
       baseStyle: {
-        borderColor: "transparent",
-        width:"100%",
+        borderColor: "white",
+        width: "100%",
         alignSelf: "center",
         backgroundColor: "#ffff",
         fontSize: "15",
         padding: 3,
-        fontFamily:"regular",
+        fontFamily: "regular",
         customDropdownIconProps: {
           size: "6",
           p: "1",
@@ -42,56 +42,72 @@ const theme = extendTheme({
 
 // "outline" | "rounded" | "unstyled" | "filled" | "underlined"
 
-const DropdownCardType = ({navigation}) => {
-  const [service, setService] = React.useState("");
+const DropdownCardType = ({
+  data,
+  item,
+  setItem,
+  placeholder,
+  label,
+  selectItemLabel,
+}) => {
   const [firstloading, Error] = useFonts({
     regular: require("../../assets/fonts/raleway/Raleway-Regular.ttf"),
     bold: require("../../assets/fonts/raleway/Raleway-Bold.ttf"),
-})
+  });
 
+  if (!firstloading) {
+    return <AppLoading />;
+  }
 
-    if(!firstloading){
-     return   <AppLoading />
-    }
-    
+  // const labelData = data?.map((item, i) => {
+  //   return item;
+  // });
+
+  // const sortedArray = labelData.sort();
+  // console.log("sortedArray", sortedArray);
+
   return (
-    <View style={{ flexGrow: .25, marginVertical: 15,width: "95%", alignSelf: "center"}}>
-    <NativeBaseProvider theme={theme}>
-   
+    <View
+      style={{
+        flexGrow: 0.25,
+        marginVertical: 15,
+        width: "100%",
+        alignSelf: "center",
+      }}
+    >
+      <NativeBaseProvider theme={theme}>
         <FormControl isRequired>
-
-          <Text style={{fontSize: 16, marginBottom:5, fontFamily:"regular"}}>Giftcard Type</Text>
-          <View style={{width: "100%", alignSelf: "center",backgroundColor: "white", paddingHorizontal:10,borderRadius:10,}} >
-
-          <Select 
-            // minWidth=""
-            accessibilityLabel="Choose Service"
-            placeholder="Select card type"
-            _selectedItem={{
-              bg: "teal.600",
-              endIcon: <CheckIcon size={5} />,
+          <TouchableOpacity
+            style={{
+              width: "100%",
+              alignSelf: "center",
+              backgroundColor: "white",
+              paddingHorizontal: 10,
+              borderRadius: 10,
             }}
-            mt="1"
           >
-            <Select.Item label="UX Research" value="ux" />
-            <Select.Item label="Web Development" value="web" />
-            <Select.Item label="Cross Platform Development" value="cross" />
-            <Select.Item label="UI Designing" value="ui" />
-            <Select.Item label="Backend Development" value="backend" />
-          </Select>
-        
-              </View>
-
+            <Select
+              selectedValue={item}
+              onValueChange={(itemValue) => setItem(itemValue)}
+              // accessibilityLabel="Choose Service"
+              placeholder={placeholder}
+              _selectedItem={{
+                bg: "teal.600",
+                endIcon: <CheckIcon size={5} />,
+              }}
+              mt="1"
+            >
+              {data?.map((dataItems, i) => (
+                <Select.Item key={i} label={dataItems.name} value={dataItems} />
+              ))}
+            </Select>
+          </TouchableOpacity>
         </FormControl>
       </NativeBaseProvider>
-
     </View>
-
-  )
+  );
 };
 
+export default DropdownCardType;
 
-
-export default DropdownCardType
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

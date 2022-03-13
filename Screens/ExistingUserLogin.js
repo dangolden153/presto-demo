@@ -10,7 +10,7 @@ import {
   Keyboard,
   ActivityIndicator,
   Dimensions,
-  Image
+  Image,
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -41,7 +41,7 @@ const ExistingUserLogin = ({ navigation }) => {
     setModalMessage,
     setIsAuthenticated,
     setToken,
-    setAccessToken
+    setAccessToken,
   } = useContext(Context);
 
   let trimPassword = password.trim();
@@ -59,17 +59,12 @@ const ExistingUserLogin = ({ navigation }) => {
       placement: "top",
       duration: 4000,
       offset: 30,
-      animationType: "slide-in"
+      animationType: "slide-in",
     });
   };
 
   const handleValidation = () => {
-    if (!email) {
-      setValidate("please use a valid email address!");
-      alert("please use a valid email address!");
-      return false;
-    } else if (!password && password.length < 6) {
-      setValidate("password too short!");
+    if (!password && password.length < 6) {
       alert("password too short!");
       return false;
     } else {
@@ -94,13 +89,13 @@ const ExistingUserLogin = ({ navigation }) => {
     var requestOptions = {
       method: "POST",
       body: formdata,
-      redirect: "follow"
+      redirect: "follow",
     };
 
     fetch("https://api.prestohq.io/api/auth/login", requestOptions)
-      .then(response => response.json())
+      .then((response) => response.json())
 
-      .then(result => {
+      .then((result) => {
         // console.log("login result", result);
         setLoading(false);
 
@@ -124,14 +119,14 @@ const ExistingUserLogin = ({ navigation }) => {
           setModalMessage({ status: "fail", text: result?.error });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("catching login error", error);
         setLoading(false);
       });
   };
 
   //  ****************store user's token ***********
-  const storeData = async value => {
+  const storeData = async (value) => {
     try {
       const jsonValue = value;
       await AsyncStorage.setItem("@prestoToken", jsonValue);
@@ -183,6 +178,14 @@ const ExistingUserLogin = ({ navigation }) => {
     setUserEmail();
   }, [email]);
 
+  const removeToken = async () => {
+    try {
+      await AsyncStorage.removeItem("@email");
+      console.log("username removed");
+    } catch (error) {
+      console.log("username removed", error);
+    }
+  };
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
@@ -191,12 +194,13 @@ const ExistingUserLogin = ({ navigation }) => {
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    italic: require("../assets/fonts/raleway/Raleway-Italic.ttf")
+    italic: require("../assets/fonts/raleway/Raleway-Italic.ttf"),
   });
 
   if (!fontLoaded) {
     return <AppLoading />;
   }
+
   return (
     <>
       <View style={styles.container}>
@@ -208,7 +212,7 @@ const ExistingUserLogin = ({ navigation }) => {
             width: "100%",
             height: windowHeight * 0.08,
             position: "absolute",
-            zIndex: 100
+            zIndex: 100,
           }}
         />
 
@@ -217,13 +221,13 @@ const ExistingUserLogin = ({ navigation }) => {
             position: "absolute",
             top: 35,
             left: 20,
-            zIndex: 100
+            zIndex: 100,
           }}
         >
           <TouchableOpacity
             onPress={() => navigation.navigate("LoginScreen")}
             style={{
-              marginBottom: 15
+              marginBottom: 15,
             }}
           >
             <MaterialIcons name="arrow-back-ios" size={24} color="white" />
@@ -249,24 +253,28 @@ const ExistingUserLogin = ({ navigation }) => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  marginBottom: 30
+                  marginBottom: 30,
                 }}
               >
-                <Image
-                  source={{ uri: imgUrl || nullAvatar }}
-                  style={{
-                    height: 80,
-                    width: 80,
-                    borderRadius: 200,
-                    marginRight: 10
-                  }}
-                />
+                <TouchableOpacity
+                // onPress={() => removeToken()}
+                >
+                  <Image
+                    source={{ uri: imgUrl || nullAvatar }}
+                    style={{
+                      height: 80,
+                      width: 80,
+                      borderRadius: 200,
+                      marginRight: 10,
+                    }}
+                  />
+                </TouchableOpacity>
                 <View>
                   <Text
                     style={{
                       color: "#0B365B",
                       fontSize: 20,
-                      fontFamily: "italic"
+                      fontFamily: "italic",
                       //   fontFamily: "medium"
                     }}
                   >
@@ -278,7 +286,7 @@ const ExistingUserLogin = ({ navigation }) => {
                       fontSize: 16,
                       textTransform: "capitalize",
                       //   fontFamily: "italic",
-                      fontFamily: "medium"
+                      fontFamily: "medium",
                     }}
                   >
                     {name}
@@ -294,7 +302,7 @@ const ExistingUserLogin = ({ navigation }) => {
                     placeholderTextColor={"black"}
                     style={{ flex: 1 }}
                     value={password}
-                    onChangeText={text => setPassword(text)}
+                    onChangeText={(text) => setPassword(text)}
                     type="password"
                     secureTextEntry={showPassword}
                     autoFocus
@@ -313,14 +321,14 @@ const ExistingUserLogin = ({ navigation }) => {
                 onPress={() => navigation.navigate("ForgotPassword")}
                 activeOpacity={0.5}
                 style={{
-                  marginVertical: 10
+                  marginVertical: 10,
                 }}
               >
                 <Text
                   style={{
                     fontSize: 15,
                     textAlign: "right",
-                    color: "#0B365B"
+                    color: "#0B365B",
                   }}
                 >
                   Forgot password?
@@ -358,12 +366,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    position: "relative"
+    position: "relative",
   },
   header_container: {
     alignItems: "flex-start",
     marginLeft: 15,
-    marginTop: 90
+    marginTop: 90,
   },
 
   header: {
@@ -371,23 +379,23 @@ const styles = StyleSheet.create({
     fontSize: 30,
     letterSpacing: 1,
     zIndex: 100,
-    fontFamily: "medium"
+    fontFamily: "medium",
   },
 
   Sub_header: {
     color: "#999999",
     fontSize: 15,
-    marginTop: 10
+    marginTop: 10,
   },
   inner_container: {
     paddingHorizontal: 20,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   input_container: {
-    marginTop: 10
+    marginTop: 10,
   },
   inputTextContainer: {
-    marginTop: 5
+    marginTop: 5,
   },
   input_text: {
     marginBottom: 5,
@@ -395,7 +403,7 @@ const styles = StyleSheet.create({
     zIndex: 200,
     color: "gray",
     fontSize: 14,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 
   icon_input: {
@@ -405,17 +413,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   btn_text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   btn: {
     marginTop: 10,
     width: "100%",
     paddingVertical: 15,
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
 });

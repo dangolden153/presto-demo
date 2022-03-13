@@ -35,16 +35,20 @@ const SellGiftCardScreen = ({ navigation }) => {
 
   console.log(`type`, type);
   console.log(`country`, typeof type.country);
-  console.log(`countryArr`, typeof countryArry);
+  // console.log(`countryArr`, countryArry[1]);
 
   useEffect(() => {
     if (type.country == null) {
-      return alert("Please select a card");
+      return;
     }
     setCountryArry(type?.country);
     return alert("  a card selected");
   }),
     [type];
+
+  // const cArr = countryArry.map(rate => {
+  //   return console.log(rate);
+  // });
 
   // // console.log(`getCardRate`, getCardRate);
   // console.log(`country`, country);
@@ -132,10 +136,6 @@ const SellGiftCardScreen = ({ navigation }) => {
     }
   ];
 
-  // const cArr = countryArry.map(rate => {
-  //   return console.log(rate);
-  // });
-
   // const count = cArr.map(ctry => {
   //   return console.log(ctry[3]);
   // });
@@ -164,7 +164,7 @@ const SellGiftCardScreen = ({ navigation }) => {
         <Dropdown
           label="Giftcard"
           placeholder={type.cardname || "Select a card"}
-          data={getCardRate}
+          data={cardData}
           setItem={setType}
           item={type}
         />

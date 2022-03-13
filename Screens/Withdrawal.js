@@ -16,6 +16,7 @@ import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
+import NoAccountDetails from "../components/NoAccountDetails";
 
 const Withdrawal = ({ navigation }) => {
   const [amount, setAmount] = useState("");
@@ -30,7 +31,7 @@ const Withdrawal = ({ navigation }) => {
     setLoading,
     loading
   } = useContext(Context);
-  console.log("user", user);
+  // console.log("user", user);
 
   const handleWithdraw = () => {
     if (!amount) {
@@ -79,24 +80,9 @@ const Withdrawal = ({ navigation }) => {
     return <AppLoading />;
   }
 
-  if (!user?.accountno) {
-    return (
-      <View style={styles.noAcct}>
-        <NavBar title="Wallet" navigation={navigation} />
-        <Text style={styles.noAcctText}>
-          {user?.firstname}, you don't have a bank account on Presto, please
-          kindly add a bank account and proceed with your transactions
-        </Text>
-
-        <View style={{ marginVertical: 30 }} />
-        <LinearButton
-          navigation={navigation}
-          title="Add Account"
-          navigate="Accounts"
-        />
-      </View>
-    );
-  }
+  // if (!user?.accountno) {
+  //   return <NoAccountDetails />;
+  // }
 
   return (
     <>
@@ -104,47 +90,49 @@ const Withdrawal = ({ navigation }) => {
         {/* up section container */}
 
         <NavBar title="Wallet" navigation={navigation} />
+        {user?.accountno ? (
+          <View style={styles.body}>
+            <Text style={styles.title}>Bank Account</Text>
+            <View style={styles.img_title}>
+              <View style={{ alignItems: "center" }}>
+                <Image
+                  source={{
+                    uri:
+                      "https://upload.wikimedia.org/wikipedia/commons/f/f7/Polaris-Bank-Limited.png"
+                  }}
+                  style={{
+                    height: 70,
+                    width: 70,
+                    borderRadius: 10,
+                    marginBottom: 5
+                  }}
+                />
+                {/* <Text>{user?.bank}</Text> */}
+              </View>
 
-        <View style={styles.body}>
-          <Text style={styles.title}>Bank Account</Text>
-          <View style={styles.img_title}>
-            <View style={{ alignItems: "center" }}>
-              <Image
-                source={{
-                  uri:
-                    "https://upload.wikimedia.org/wikipedia/commons/f/f7/Polaris-Bank-Limited.png"
-                }}
-                style={{
-                  height: 70,
-                  width: 70,
-                  borderRadius: 10,
-                  marginBottom: 5
-                }}
-              />
-              <Text>{user?.bank}</Text>
+              <View style={styles.title_sub}>
+                <Text style={styles.title}>{user?.accountname}</Text>
+                <Text style={styles.time}>{user?.accountno}</Text>
+              </View>
             </View>
 
-            <View style={styles.title_sub}>
-              <Text style={{ fontSize: 14 }}>{user?.accountno}</Text>
-              <Text style={{ fontFamily: "medium" }}>
-                {user?.firstname} {user?.lastname}
-              </Text>
-            </View>
+            <TextInput
+              value={amount}
+              onChangeText={text => setAmount(text)}
+              style={styles.input}
+              placeholder="Enter Amount"
+            />
+
+            <LinearButton
+              onPress={handleWithdraw}
+              title="Withdraw"
+              loading={loading}
+            />
           </View>
+        ) : (
+          <NoAccountDetails wallet />
+        )}
 
-          <TextInput
-            value={amount}
-            onChangeText={text => setAmount(text)}
-            style={styles.input}
-            placeholder="Enter Amount"
-          />
-
-          <LinearButton
-            onPress={handleWithdraw}
-            title="Withdraw"
-            loading={loading}
-          />
-        </View>
         {openModal && (
           <ModalComponent
             modalVisible={openModal}
@@ -220,7 +208,7 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   title_sub: {
-    marginLeft: 10
+    marginLeft: 15
   },
 
   input: {
@@ -234,16 +222,15 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 17
   },
-  noAcct: {
-    flex: 1,
-    padding: 15
-    // alignItems: "center",
-    // justifyContent: "center",
+  title: {
+    fontSize: 14,
+    fontFamily: "semiBold",
+    color: "#666666",
+    // backgroundColor: "pink",
+    width: "99%"
   },
-  noAcctText: {
-    fontSize: 17,
+  time: {
     fontFamily: "regular",
-    textAlign: "center",
-    marginTop: 40
+    color: "#999999"
   }
 });

@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
   ImageBackground,
   Image,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -31,11 +31,10 @@ const windowHeight = Dimensions.get("window").height;
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [validate, setValidate] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const dispatch = useDispatch();
   const toast = useToast();
-  const { user, userToken } = useSelector(state => state.UserReducer);
+  const { user, userToken } = useSelector((state) => state.UserReducer);
   const {
     openModal,
     setOpenModal,
@@ -44,7 +43,7 @@ const LoginScreen = ({ navigation }) => {
     setModalMessage,
     setIsAuthenticated,
     setToken,
-    setAccessToken
+    setAccessToken,
   } = useContext(Context);
 
   let trimEmail = email.trim();
@@ -61,17 +60,16 @@ const LoginScreen = ({ navigation }) => {
       placement: "top",
       duration: 4000,
       offset: 30,
-      animationType: "slide-in"
+      animationType: "slide-in",
     });
   };
 
+  //  ***********set Validation***********
   const handleValidation = () => {
     if (!email) {
-      setValidate("please use a valid email address!");
       alert("please use a valid email address!");
       return false;
     } else if (!password && password.length < 6) {
-      setValidate("password too short!");
       alert("password too short!");
       return false;
     } else {
@@ -96,13 +94,13 @@ const LoginScreen = ({ navigation }) => {
     var requestOptions = {
       method: "POST",
       body: formdata,
-      redirect: "follow"
+      redirect: "follow",
     };
 
     fetch("https://api.prestohq.io/api/auth/login", requestOptions)
-      .then(response => response.json())
+      .then((response) => response.json())
 
-      .then(result => {
+      .then((result) => {
         // console.log("login result", result);
         setLoading(false);
 
@@ -125,14 +123,14 @@ const LoginScreen = ({ navigation }) => {
           setModalMessage({ status: "fail", text: result?.error });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("catching login error", error);
         setLoading(false);
       });
   };
 
   //  ****************store user's token ***********
-  const storeData = async value => {
+  const storeData = async (value) => {
     try {
       const jsonValue = value;
       await AsyncStorage.setItem("@prestoToken", jsonValue);
@@ -148,7 +146,7 @@ const LoginScreen = ({ navigation }) => {
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf")
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
   });
 
   if (!fontLoaded) {
@@ -167,7 +165,7 @@ const LoginScreen = ({ navigation }) => {
             width: "100%",
             height: windowHeight * 0.08,
             position: "absolute",
-            zIndex: 100
+            zIndex: 100,
           }}
         />
 
@@ -188,7 +186,7 @@ const LoginScreen = ({ navigation }) => {
                   placeholderTextColor={"black"}
                   style={styles.input}
                   value={email}
-                  onChangeText={text => setEmail(text)}
+                  onChangeText={(text) => setEmail(text)}
                   type="text"
                   autoFocus
                 />
@@ -202,7 +200,7 @@ const LoginScreen = ({ navigation }) => {
                     placeholderTextColor={"black"}
                     style={{ flex: 1 }}
                     value={password}
-                    onChangeText={text => setPassword(text)}
+                    onChangeText={(text) => setPassword(text)}
                     type="password"
                     secureTextEntry={showPassword}
                     autoFocus
@@ -221,14 +219,14 @@ const LoginScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate("ForgotPassword")}
                 activeOpacity={0.5}
                 style={{
-                  marginVertical: 10
+                  marginVertical: 10,
                 }}
               >
                 <Text
                   style={{
                     fontSize: 15,
                     textAlign: "right",
-                    color: "#0B365B"
+                    color: "#0B365B",
                   }}
                 >
                   Forgot password?
@@ -262,20 +260,6 @@ const LoginScreen = ({ navigation }) => {
                 </Text>
               </Text>
             </TouchableOpacity>
-
-            {validate === "" ? null : (
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: "red",
-                  opacity: 0.6,
-                  marginTop: 20,
-                  alignSelf: "center"
-                }}
-              >
-                {validate}
-              </Text>
-            )}
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -292,12 +276,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    position: "relative"
+    position: "relative",
   },
   header_container: {
     alignItems: "flex-start",
     marginLeft: 15,
-    marginTop: 90
+    marginTop: 90,
   },
 
   header: {
@@ -309,23 +293,23 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     left: 20,
-    fontFamily: "medium"
+    fontFamily: "medium",
   },
 
   Sub_header: {
     color: "#999999",
     fontSize: 15,
-    marginTop: 10
+    marginTop: 10,
   },
   inner_container: {
     paddingHorizontal: 20,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   input_container: {
-    marginTop: 10
+    marginTop: 10,
   },
   inputTextContainer: {
-    marginTop: 5
+    marginTop: 5,
   },
   input_text: {
     marginBottom: 5,
@@ -333,7 +317,7 @@ const styles = StyleSheet.create({
     zIndex: 200,
     color: "gray",
     fontSize: 14,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   input_textNumber: {
     marginLeft: 30,
@@ -344,7 +328,7 @@ const styles = StyleSheet.create({
     width: 140,
     textAlign: "center",
     color: "gray",
-    fontSize: 15
+    fontSize: 15,
   },
   icon_input: {
     borderWidth: 1,
@@ -353,14 +337,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   input: {
     // backgroundColor: "black",
     borderWidth: 1,
     borderColor: "#e8e6ea",
     padding: 15,
-    borderRadius: 20
+    borderRadius: 20,
   },
 
   terms: {
@@ -369,7 +353,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: 15
+    marginHorizontal: 15,
   },
   radioBtn: {
     width: 25,
@@ -377,27 +361,27 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: "gray",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   text: {
     color: "gray",
     fontSize: 13,
     fontWeight: "bold",
-    width: "85%"
+    width: "85%",
   },
   btn: {
-    marginTop: 20
+    marginTop: 20,
   },
 
   btn_text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   btn: {
     marginTop: 10,
     width: "100%",
     paddingVertical: 15,
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
 });

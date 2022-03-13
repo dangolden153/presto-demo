@@ -1,29 +1,34 @@
-import { USER_DATA ,USER_TOKEN} from "../Types/type";
+import { USER_DATA, USER_TOKEN, Fetch_BANKS } from "../Types/type";
 
 const initialState = {
-    user :null,
-    userToken:null
-}
+  user: null,
+  userToken: null,
+  allBanks: []
+};
 
+const UserReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case USER_DATA:
+      return {
+        ...state,
+        user: action.payload
+      };
 
-const UserReducer =(state =initialState, action) => {
-    switch (action.type) {
-        case USER_DATA:
-            return{
-                ...state,
-                user: action.payload
-            }
+    case USER_TOKEN:
+      return {
+        ...state,
+        userToken: action.payload
+      };
 
-            case USER_TOKEN:
-            return{
-                ...state,
-                userToken: action.payload
-            }
-    
-    
-        default:
-            return state;
-    }
-}
+    case Fetch_BANKS:
+      return {
+        ...state,
+        allBanks: action.payload
+      };
 
-export default  UserReducer
+    default:
+      return state;
+  }
+};
+
+export default UserReducer;

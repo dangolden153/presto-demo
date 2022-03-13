@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
   TransitionPresets,
-  CardStyleInterpolators
+  CardStyleInterpolators,
 } from "@react-navigation/stack";
 import Demo from "./Screens/DemoScreen";
 import RegisterScreen from "./Screens/RegistrationScreen";
@@ -51,13 +51,13 @@ import UsdtTransactions from "./Screens/UsdtTransactions";
 import TransactionDetail from "./Screens/TransactionDetail";
 import SelectAvatar from "./Screens/SelectAvatar";
 import ExistingUserLogin from "./Screens/ExistingUserLogin";
+import AccountVerScreen from "./Screens/AccountVerScreen";
 
 // import TransactionsTopTab from "./Screens/TransactionsTopTab";
 
 const AppNavigator = () => {
-  const { token, existinguser, setExistinguser, isAuthenticated } = useContext(
-    Context
-  );
+  const { token, existinguser, setExistinguser, isAuthenticated } =
+    useContext(Context);
 
   // *************user token check*********************************
   // useEffect(() => {
@@ -79,14 +79,14 @@ const AppNavigator = () => {
       try {
         const value = await AsyncStorage.getItem("@email");
         setExistinguser(value);
-        console.log("existing username fetched", value);
+        // console.log("existing username fetched", value);
       } catch (error) {
         console.log("username cant be updated", error);
       }
     };
     getItems();
   }, [isAuthenticated]);
-  console.log("existinguser existinguser", existinguser);
+  // console.log("existinguser existinguser", existinguser);
 
   const Stack = createStackNavigator();
 
@@ -98,30 +98,30 @@ const AppNavigator = () => {
       mass: 3,
       overShootingClamping: false,
       restDisplacementThreshold: 0.01,
-      restSpeedThreshold: 0.01
-    }
+      restSpeedThreshold: 0.01,
+    },
   };
 
   const closeConfig = {
     animation: "timing",
     config: {
-      duration: 500
+      duration: 500,
       // easing: Easing.linear,
-    }
+    },
   };
 
   return (
     <Stack.Navigator
-      // initialRouteName="TransactionsTopTab"
+      // initialRouteName="CreatePin"
       // mode="modal"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "horizontal",
         transitionSpec: {
           open: config,
-          close: closeConfig
+          close: closeConfig,
         },
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
       {token !== null ? (
@@ -130,7 +130,7 @@ const AppNavigator = () => {
             name="ButtomTab"
             component={ButtomTab}
             options={{
-              headerShown: false
+              headerShown: false,
               // gestureDirection: "vertical",
             }}
           />
@@ -178,22 +178,12 @@ const AppNavigator = () => {
             component={TransactionDetail}
             options={{ headerShown: false }}
           />
-          {/* 
 
-         
-
-          
           <Stack.Screen
-            name="VerifiedScreen"
-            component={VerifiedScreen}
-            options={{ headerShown: false }}
-          /> */}
-
-          {/* <Stack.Screen
             name="TransactionImage"
             component={TransactionImage}
             options={{ headerShown: false }}
-          /> */}
+          />
           <Stack.Screen
             name="Withdrawal"
             component={Withdrawal}
@@ -271,6 +261,11 @@ const AppNavigator = () => {
             options={{ headerShown: false }}
           />
 
+          <Stack.Screen
+            name="AccountVerScreen"
+            component={AccountVerScreen}
+            options={{ headerShown: false }}
+          />
           {/* <Stack.Screen
             name="TransactionsTopTab"
             component={TransactionsTopTab}

@@ -3,7 +3,7 @@ export const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [token, setToken] = useState("null");
+  const [token, setToken] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);

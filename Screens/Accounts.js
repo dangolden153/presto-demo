@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
@@ -16,135 +16,86 @@ import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
 import { ModalComponent } from "../components/Modal";
 import { Dimensions } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Context } from "../context";
+import NoAccountDetails from "../components/NoAccountDetails";
+import DropdownCardType from "../components/Dropdown/DropdownCardType";
+import { AddBankAccountDetails } from "../Redux/Actions/user";
+import { useNavigation } from "@react-navigation/native";
 
-const Accounts = ({ navigation }) => {
+const Accounts = ({}) => {
   const [bank, setBank] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [accountName, setAccountName] = useState("");
-  const { user } = useSelector(state => state.UserReducer);
+  const [validate, setValidate] = useState("");
+  const { user, allBanks } = useSelector((state) => state.UserReducer);
   const {
     token,
-    message,
     setModalMessage,
     openModal,
     setOpenModal,
     setLoading,
-    loading
+    loading,
   } = useContext(Context);
+  const navigation = useNavigation();
   // console.log('deviceHeight', deviceHeight/20);
-  // console.log(" add bank token", token);
 
-  // ***********form validation*********************
-  const handleValidation = () => {
-    if (!bank) {
-      // setValidate("please select a bank!");
-      alert("please select a bank!");
-      return true;
-    }
-    if (!accountNumber) {
-      setValidate("please enter your account number!");
-      alert("please enter your account number!");
-      return true;
-    }
-    if (!accountName) {
-      setValidate("please enter your account name!");
-      alert("please enter your account name!");
-      return true;
-    }
-    if (!token) {
-      setValidate("invalid token!");
-      alert("invalid token!");
-      return true;
-    }
-  };
+  const dispatch = useDispatch();
 
   // ***********Add Bank Account Details***************
-  const AddBankAccountDetails = () => {
-    if (handleValidation()) {
-      return null;
+  useEffect(() => {
+    if (accountNumber.length > 1 && accountNumber.length < 9) {
+      setValidate("account number you be at least 10 digits");
+    } else {
+      setValidate("");
     }
-    setLoading(true);
+  }, [accountNumber]);
 
-    let myHeaders = new Headers();
-    console.log("token", token);
-
-    myHeaders.append("Authorization", "Bearer " + token);
-    let formdata = new FormData();
-    formdata.append("bank", bank);
-    formdata.append("accountname", accountName);
-    formdata.append("accountno", accountNumber);
-
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow"
-    };
-
-    fetch("https://api.prestohq.io/api/auth/updateaccount", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        setLoading(false);
-        setModalMessage(result?.message);
-        setOpenModal(true);
-        // console.log("bank result", result);
-      })
-      .catch(error => {
-        setLoading(false);
-        setValidate("unable to process transaction");
-        console.log("error", error);
-      });
+  // ***********handle Submit***************
+  const handleSubmit = () => {
+    setValidate("");
+    dispatch(
+      AddBankAccountDetails(
+        token,
+        bank?.code,
+        accountNumber,
+        setLoading,
+        setModalMessage,
+        setOpenModal,
+        navigation
+      )
+    );
   };
 
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf")
+    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
   });
 
   if (!firstLoaded) {
     return <AppLoading />;
   }
 
-  if (!user?.accountno) {
-    return (
-      <View style={styles.noAcct}>
-        <NavBar title="Wallet" navigation={navigation} />
-        <Text style={styles.noAcctText}>
-          {user?.firstname}, you don't have a bank account on Presto, please
-          kindly add a bank account and proceed with your transactions
-        </Text>
-
-        <View style={{ marginVertical: 30 }} />
-        <LinearButton
-          navigation={navigation}
-          title="Add Account"
-          navigate="Accounts"
-        />
-      </View>
-    );
-  }
+  // console.log(" bank", bank);
 
   return (
     <>
       <SafeAreaView style={styles.container}>
-        {/* up section container */}
+        {/****************** NavBar*******************/}
         <NavBar title="Account" navigation={navigation} />
 
-        {user?.accountno && (
+        {user?.accountno ? (
           <View style={styles.gift_card}>
             <View style={styles.img_title}>
               <Image
                 source={{
-                  uri:
-                    "https://startcredits.com/wp-content/uploads/2019/04/Access-bank.png"
+                  uri: "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg",
                 }}
                 style={{
                   height: 90,
                   width: 70,
                   borderRadius: 20,
-                  marginRight: 20
+                  marginRight: 40,
                 }}
               />
               <View style={styles.title_time}>
@@ -152,48 +103,59 @@ const Accounts = ({ navigation }) => {
                 <Text style={styles.time}>{user?.accountno}</Text>
               </View>
             </View>
-
-            {/* <TouchableOpacity style={styles.trash}>
-          <Feather name="trash-2" size={27} color="white" />
-        </TouchableOpacity> */}
           </View>
+        ) : (
+          <Text style={styles.noAcctText}>
+            {user?.firstname}, you don't have a bank account on Presto, please
+            kindly add a bank account and proceed with your transactions
+          </Text>
         )}
+
+        {/****************** form body*******************/}
         <ScrollView style={styles.body}>
           <Text style={styles.input_text}>Add Account</Text>
-          <TextInput
-            value={bank}
-            onChangeText={text => setBank(text)}
-            style={styles.input}
-            placeholder="Enter bank"
+          <DropdownCardType
+            placeholder={bank?.name || "Select bank"}
+            data={allBanks}
+            setItem={setBank}
+            item={bank}
           />
 
           <TextInput
             value={accountNumber}
-            onChangeText={text => setAccountNumber(text)}
-            style={styles.input}
+            onChangeText={(text) => setAccountNumber(text)}
+            style={[
+              styles.input,
+              {
+                borderColor: validate ? "red" : "white",
+                borderWidth: validate ? 1 : 0,
+              },
+            ]}
             placeholder="Acount number"
           />
-
-          <TextInput
+          {/* <TextInput
             value={accountName}
             onChangeText={text => setAccountName(text)}
             style={styles.input}
             placeholder="Afeez Olamide"
-          />
+          /> */}
         </ScrollView>
+        <Text
+          style={{
+            color: "red",
+            fontSize: 14,
+            textAlign: "center",
+          }}
+        >
+          {validate}
+        </Text>
         <LinearButton
           title="Add Account"
-          onPress={AddBankAccountDetails}
+          onPress={handleSubmit}
           loading={loading}
         />
       </SafeAreaView>
-      {openModal && (
-        <ModalComponent
-          modalVisible={openModal}
-          message={message}
-          setModalVisible={setOpenModal}
-        />
-      )}
+      {openModal && <ModalComponent />}
     </>
   );
 };
@@ -205,7 +167,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: "white",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   nav: {
@@ -215,40 +177,46 @@ const styles = StyleSheet.create({
     width: "68%",
     marginTop: 20,
     marginLeft: 10,
-    marginBottom: 30
+    marginBottom: 30,
   },
 
   header: {
     color: "black",
     fontSize: 23,
     letterSpacing: 1,
-    fontWeight: "200"
+    fontWeight: "200",
     // textAlign: "center",
     // alignItems: "center",
   },
 
   body: {
-    marginTop: 150,
+    marginTop: 100,
     backgroundColor: "#f4fafe",
 
     borderRadius: 20,
     width: "100%",
     paddingBottom: 70,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
+  // title_time: {
+  //   flex: 1,
+  //   backgroundColor: "pink",
+  //   width: "100%",
+  // },
   title: {
-    fontSize: 17,
-    fontFamily: "semiBold"
+    fontSize: 14,
+    fontFamily: "semiBold",
+    color: "#666666",
+    width: "99%",
   },
   time: {
     fontFamily: "regular",
-
-    color: "#999999"
+    color: "#999999",
   },
   input_text: {
     fontFamily: "semiBold",
     fontSize: 16,
-    marginTop: 20
+    marginTop: 20,
   },
 
   input: {
@@ -260,7 +228,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignSelf: "center",
     fontSize: 16,
-    fontFamily: "regular"
+    fontFamily: "regular",
   },
 
   gift_card: {
@@ -270,29 +238,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4fafe",
     marginVertical: 5,
     borderRadius: 20,
-    padding: 7
+    padding: 7,
   },
   img_title: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "space-between",
+    // backgroundColor: "red",
   },
   trash: {
     backgroundColor: "#F3002E",
     padding: 10,
-    borderRadius: 10
+    borderRadius: 10,
   },
 
   text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   btn: {
     marginTop: 18,
     width: "100%",
     paddingVertical: 15,
     borderRadius: 10,
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  },
+
+  noAcctText: {
+    fontSize: 17,
+    fontFamily: "regular",
+    textAlign: "center",
+    marginTop: 20,
+  },
 });

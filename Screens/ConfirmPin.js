@@ -10,20 +10,31 @@ import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { ModalComponent } from "../components/Modal";
 
-
-
 const ConfirmPin = ({ route }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { token, setModalMessage, setOpenModal,openModal,message } =
-    useContext(Context);
+  const {
+    token,
+    setModalMessage,
+    setOpenModal,
+    openModal,
+    message
+  } = useContext(Context);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const oldPin = route?.params;
-//   console.log("pin", pin);
+  //   console.log("pin", pin);
 
   const handleValidation = () => {
+    if (code.length < 4) {
+      setOpenModal(true);
+      setModalMessage({
+        status: "fail",
+        text: "pin must be at least 4 characters!"
+      });
+      return;
+    }
     dispatch(
       resetPin(
         code,
@@ -38,53 +49,45 @@ const ConfirmPin = ({ route }) => {
   };
 
   return (
-      <>
-    <View style={styles.container}>
+    <>
+      <View style={styles.container}>
+        {/* ********nav************************ */}
+        <NavBar title="change PIN" navigation={navigation} />
 
-      {/* ********nav************************ */}
-      <NavBar title="change PIN" navigation={navigation} />
+        <View style={styles.sub_container}>
+          <View style={styles.pin_text}>
+            <SmoothPinCodeInput
+              value={code}
+              onTextChange={code => setCode(code)}
+              //   onFulfill={this._checkCode}
+              //   onBackspace={this._focusePrevInput}
+              cellStyle={{
+                borderColor: "#0084f4",
+                borderWidth: 1,
+                marginHorizontal: 20
+              }}
+              cellStyleFocused={{
+                borderColor: "black"
+              }}
+              // containerStyle={{
 
-      <View style={styles.sub_container}>
-        <View style={styles.pin_text}>
-          <SmoothPinCodeInput
-            value={code}
-            onTextChange={(code) => setCode(code)}
-            //   onFulfill={this._checkCode}
-            //   onBackspace={this._focusePrevInput}
-            cellStyle={{
-              borderColor: "#0084f4",
-              borderWidth: 1,
-              marginHorizontal: 20,
-            }}
-            cellStyleFocused={{
-              borderColor: "black",
-            }}
-            // containerStyle={{
-
-            // }}
-            cellSize={58}
-          />
-          <Text style={styles.Sub_header}>New Pin</Text>
+              // }}
+              cellSize={58}
+            />
+            <Text style={styles.Sub_header}>New Pin</Text>
+          </View>
         </View>
+
+        {/* ****************button******************** */}
+        <LinearButton
+          title="proceed"
+          onPress={handleValidation}
+          loading={loading}
+        />
       </View>
 
-      {/* ****************button******************** */}
-      <LinearButton
-        title="proceed"
-        onPress={handleValidation}
-        loading={loading}
-      />
-    </View>
-
-
-     {/* *********response modal************************** */}
-     {openModal && (
-        <ModalComponent
-          modalVisible={openModal}
-          setModalVisible={setOpenModal}
-          message={message}
-        />
-      )}
+      {/* *********response modal************************** */}
+      {openModal && <ModalComponent />}
     </>
   );
 };
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    position: "relative",
+    position: "relative"
     // alignItems: "center",
     // justifyContent: "center",
   },
@@ -105,33 +108,33 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "60%",
     marginTop: 60,
-    marginLeft: 10,
+    marginLeft: 10
   },
 
   header: {
     color: "black",
     fontSize: 20,
     letterSpacing: 1,
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   Sub_header: {
     color: "#999999",
     fontSize: 15,
-    marginTop: 10,
+    marginTop: 10
   },
   sub_container: {
     alignItems: "center",
     justifyContent: "space-between",
     flex: 1,
-    marginVertical: 50,
+    marginVertical: 50
   },
   pin_text: {
     height: 200,
     marginTop: 40,
-    alignItems: "center",
+    alignItems: "center"
   },
   btn: {
     marginTop: 50,
-    width: 250,
-  },
+    width: 250
+  }
 });

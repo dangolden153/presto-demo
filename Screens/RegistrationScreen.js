@@ -13,7 +13,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   ScrollView,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
@@ -38,16 +38,8 @@ const RegistrationScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(true);
   const toggleRadio = () => setRadioBtn(!radioBtn);
-  const {
-    openModal,
-    setOpenModal,
-    loading,
-    setLoading,
-    setModalMessage,
-    setIsAuthenticated,
-    setToken,
-    setAccessToken
-  } = useContext(Context);
+  const { openModal, setOpenModal, loading, setLoading, setModalMessage } =
+    useContext(Context);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -56,8 +48,36 @@ const RegistrationScreen = ({ navigation }) => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  //  ***********set Validation***********
+  const handleValidation = () => {
+    if (!firstName) {
+      alert("first name canot be empty!");
+      return false;
+    } else if (!lastName) {
+      alert("last name canot be empty!");
+      return false;
+    } else if (!email) {
+      alert("please use a valid email address!");
+      return false;
+    } else if (!phoneno) {
+      alert("phone number canot be empty!");
+      return false;
+    } else if (!password && password.length < 6) {
+      alert("password too short!");
+      return false;
+    } else if (passwordConfirmation !== password) {
+      alert("password must match!");
+      return false;
+    } else if (!radioBtn) {
+      alert("please accept terms and condition.");
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const handleSignup = () => {
-    if (!radioBtn) {
+    if (!handleValidation()) {
       return null;
     }
     setLoading(true);
@@ -72,22 +92,22 @@ const RegistrationScreen = ({ navigation }) => {
     var requestOptions = {
       method: "POST",
       body: formdata,
-      redirect: "follow"
+      redirect: "follow",
     };
 
     fetch("https://api.prestohq.io/api/auth/register", requestOptions)
-      .then(response => response.json())
-      .then(res => {
+      .then((response) => response.json())
+      .then((res) => {
         // console.log("res", res)
         setLoading(false);
         if (res?.status === "201") {
           return navigation.navigate("CheckVerification");
         }
-        console.log("res", res);
+        console.log("res", res?.email);
         setModalMessage({ status: "fail", text: res });
         setOpenModal(true);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error", error);
         setModalMessage({ status: "fail", text: result?.error });
         setLoading(false);
@@ -100,7 +120,7 @@ const RegistrationScreen = ({ navigation }) => {
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf")
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
   });
 
   if (!fontLoaded) {
@@ -122,7 +142,7 @@ const RegistrationScreen = ({ navigation }) => {
               backgroundColor: "#0B365B", //#0B365B
               width: "100%",
               height: windowHeight * 0.08,
-              position: "absolute"
+              position: "absolute",
               // zIndex: 5
             }}
           />
@@ -133,7 +153,7 @@ const RegistrationScreen = ({ navigation }) => {
                 style={{
                   marginTop: 30,
                   marginLeft: 15,
-                  zIndex: 100
+                  zIndex: 100,
                 }}
                 size={24}
                 color="white"
@@ -153,7 +173,7 @@ const RegistrationScreen = ({ navigation }) => {
             style={{
               position: "absolute",
               // top: -10,
-              zIndex: -1
+              zIndex: -1,
               // backgroundColor: "pink"
             }}
           />
@@ -170,7 +190,7 @@ const RegistrationScreen = ({ navigation }) => {
                   placeholderTextColor={"black"}
                   style={styles.input}
                   value={firstName}
-                  onChangeText={text => setFirstName(text)}
+                  onChangeText={(text) => setFirstName(text)}
                   type="text"
                   autoFocus
                 />
@@ -183,7 +203,7 @@ const RegistrationScreen = ({ navigation }) => {
                   placeholderTextColor={"black"}
                   style={styles.input}
                   value={lastName}
-                  onChangeText={text => setLastName(text)}
+                  onChangeText={(text) => setLastName(text)}
                   type="text"
                   autoFocus
                 />
@@ -196,7 +216,7 @@ const RegistrationScreen = ({ navigation }) => {
                   placeholderTextColor={"black"}
                   style={styles.input}
                   value={email}
-                  onChangeText={text => setEmail(text)}
+                  onChangeText={(text) => setEmail(text)}
                   type="email"
                   autoFocus
                 />
@@ -209,7 +229,7 @@ const RegistrationScreen = ({ navigation }) => {
                   placeholderTextColor={"black"}
                   style={styles.input}
                   value={phoneno}
-                  onChangeText={text => setPhoneno(text)}
+                  onChangeText={(text) => setPhoneno(text)}
                   type="number"
                   autoFocus
                 />
@@ -223,7 +243,7 @@ const RegistrationScreen = ({ navigation }) => {
                     placeholderTextColor={"black"}
                     style={{ flex: 1 }}
                     value={password}
-                    onChangeText={text => setPassword(text)}
+                    onChangeText={(text) => setPassword(text)}
                     type="password"
                     secureTextEntry={showPassword}
                     autoFocus
@@ -246,7 +266,7 @@ const RegistrationScreen = ({ navigation }) => {
                     placeholderTextColor={"black"}
                     style={{ flex: 1 }}
                     value={passwordConfirmation}
-                    onChangeText={text => setPasswordConfirmation(text)}
+                    onChangeText={(text) => setPasswordConfirmation(text)}
                     type="password"
                     secureTextEntry={showConfirmPassword}
                     autoFocus
@@ -300,7 +320,7 @@ export default RegistrationScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffff"
+    backgroundColor: "#ffff",
 
     // paddingHorizontal: 20,
   },
@@ -308,7 +328,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginLeft: 15,
     marginTop: 20,
-    marginBottom: 50
+    marginBottom: 50,
   },
 
   header: {
@@ -317,7 +337,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     letterSpacing: 1,
     fontFamily: "medium",
-    zIndex: 100
+    zIndex: 100,
   },
 
   Sub_header: {
@@ -326,23 +346,23 @@ const styles = StyleSheet.create({
     fontSize: 15,
     // letterSpacing: 1,
     fontWeight: "bold",
-    marginTop: 10
+    marginTop: 10,
   },
   inner_container: {
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   input_container: {
     marginTop: 20,
     // marginBottom:40,
     // flexGrow: 0.8,
     // flex: 1,
-    height: "55%"
+    height: "55%",
     // backgroundColor: "green",
     //  justifyContent: "center",
     //  paddingTop:10
   },
   inputTextContainer: {
-    marginTop: 7
+    marginTop: 7,
   },
   input_text: {
     marginBottom: 5,
@@ -354,7 +374,7 @@ const styles = StyleSheet.create({
     // textAlign: "center",
     color: "gray",
     fontSize: 14,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   // input_textNumber: {
   //   marginLeft: 30,
@@ -386,14 +406,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   input: {
     // backgroundColor: "black",
     borderWidth: 1,
     borderColor: "#e8e6ea",
     padding: 15,
-    borderRadius: 20
+    borderRadius: 20,
   },
 
   terms: {
@@ -402,7 +422,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: 15
+    marginHorizontal: 15,
 
     // backgroundColor: "pink",
     // width: "100%",
@@ -416,32 +436,32 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     marginHorizontal: 5,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   onClicked: {
     width: 15,
     height: 15,
     borderRadius: 100,
-    backgroundColor: "black"
+    backgroundColor: "black",
   },
   text: {
     color: "gray",
     fontSize: 13,
     fontWeight: "bold",
-    width: "85%"
+    width: "85%",
   },
   btn_text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   btn: {
     marginTop: 10,
     width: "100%",
     paddingVertical: 15,
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
 });
 
 // messsage : {firsname :"please insert "}, {lastnme:""},{email:""}
