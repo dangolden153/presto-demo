@@ -1,5 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
@@ -7,20 +14,21 @@ import { Context } from "../context";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ModalComponent } from "../components/Modal";
+import { sellGiftcard } from "../Redux/Actions/crptoTransaction";
+import { useDispatch } from "react-redux";
+import CardImage from "../components/CardImage";
 
 const UploadGiftcardScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [receipt, setReceipt] = useState("");
-  const [validate, setValidate] = useState("");
-  const [message, setModalMessage] = useState("");
-  const [openModal, setOpenModal] = useState(false);
 
-  const { ctry, tpe, amount, value } = route ?.params ?.giftcardData;
+  const dispatch = useDispatch();
+  const { token, setOpenModal, openModal, setModalMessage, cardPictures } =
+    useContext(Context);
 
-  // console.log("routes", route?.params?.giftcardData);
-
-  const { token } = useContext(Context);
+  const { country, tpe, amount, value, image_big, image_small } =
+    route?.params?.giftcardData;
 
   /// pick image from photo library
   const pickImage = async () => {
@@ -54,105 +62,42 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
 
   ///*******************submit card function *********************
   const handleSellGiftcard = () => {
-    setLoading(true);
-
-    let myHeaders = new Headers();
-    console.log("sell card token", token);
-
-    myHeaders.append("Authorization", "Bearer " + token);
-    let formdata = new FormData();
-    formdata.append("country", ctry);
-    formdata.append("amount", amount);
-    formdata.append("value", value);
-    formdata.append("type", tpe);
-    formdata.append("image", {
-      name: "dan",
-      type: "image/jpeg",
-      uri: image,
-    });
-    formdata.append("receipt", {
-      name: "dan",
-      type: "image/jpeg",
-      uri: receipt,
-    });
-    // formdata.append("picture_1", {
-    //   name: "dan",
-    //   type: "image/jpeg",
-    //   uri: receipt,
-    // });
-    // formdata.append("receipt", receipt);
-
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    fetch("https://api.prestohq.io/api/cardtransaction", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setLoading(false);
-        console.log("card result", result);
-        if (result ?.result === "Transaction Sent") {
-          setModalMessage({ status: "ok", text: result ?.result});
-          setOpenModal(true);
-        } else {
-          setOpenModal(true);
-          setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
-        }
-        console.log("card result", result);
-      })
-      .catch((error) => {
-        setLoading(false);
-        setOpenModal(true);
-        setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
-        console.log("error", error);
-      });
+    dispatch(
+      sellGiftcard(
+        token,
+        country,
+        amount,
+        value,
+        tpe,
+        image,
+        receipt,
+        photoData,
+        setLoading,
+        setModalMessage,
+        setOpenModal,
+        image_big,
+        image_small
+      )
+    );
   };
+
+  const photoData = cardPictures.map((pics) => {
+    return pics.uri;
+  });
+
+  // console.log("photoData", photoData);
 
   ///////function to display either image preview or instruction text to upload images
   const handleImagePreview = () => {
-    if (image || receipt) {
+    if (image || receipt || photoData) {
       return (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            // marginTop: 5
-          }}
-        >
-          {image !== "" ? (
-            <View style={{ position: "relative" }}>
-              <TouchableOpacity
-                style={styles.icon_container}
-                onPress={() => setImage("")}
-              >
-                <Ionicons name="close" color="white" size={25} />
-              </TouchableOpacity>
-              <Image
-                source={{ uri: image }}
-                style={{ width: 120, height: 120, margin: 10 }}
-              />
-            </View>
-          ) : null}
-
-          {receipt !== "" ? (
-            <View style={{ position: "relative" }}>
-              <TouchableOpacity
-                style={styles.icon_container}
-                onPress={() => setReceipt("")}
-              >
-                <Ionicons name="close" color="white" size={25} />
-              </TouchableOpacity>
-              <Image
-                source={{ uri: receipt }}
-                style={{ width: 120, height: 120, margin: 10 }}
-              />
-            </View>
-          ) : null}
-        </View>
+        <CardImage
+          image={image}
+          receipt={receipt}
+          photoData={photoData}
+          setReceipt={setReceipt}
+          setImage={setImage}
+        />
       );
     } else {
       return (
@@ -176,7 +121,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
             <View style={styles.value_table}>
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Country:</Text>
-                <Text style={styles.rate}>{ctry || "USD"}</Text>
+                <Text style={styles.rate}>{country || "USD"}</Text>
               </View>
 
               <View style={styles.value_rates}>
@@ -184,10 +129,10 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
                 <Text style={styles.rate}>{tpe || "Physical card"}</Text>
               </View>
 
-              <View style={styles.value_rates}>
+              {/* <View style={styles.value_rates}>
                 <Text style={styles.value}>min time:</Text>
                 <Text style={styles.rate}>15mins</Text>
-              </View>
+              </View> */}
 
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Amount:</Text>
@@ -200,7 +145,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
             <Text style={styles.upload_textI}>Kindly upload your Card</Text>
             <TouchableOpacity
               style={styles.upload_btn}
-              onPress={() => pickImage()}
+              onPress={() => navigation.navigate("MediaScreen")}
             >
               <Feather name="upload" size={24} color="#999999" />
               <Text style={styles.upload_text}> Upload Cards</Text>
@@ -220,39 +165,18 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
 
           <View style={{ marginTop: 10 }}>{handleImagePreview()}</View>
 
-          <View style={{ width: "100%", alignSelf: "center" }}>
-            <LinearButton
-              title="Upload"
-              navigation={navigation}
-              onPress={handleSellGiftcard}
-              loading={loading}
-            />
-          </View>
-
-          {validate !== "" ? (
-            <Text
-              style={{
-                color: "red",
-                opacity: 0.6,
-                alignSelf: "center",
-                marginTop: 10,
-              }}
-            >
-              {validate}
-            </Text>
-          ) : null}
+          <LinearButton
+            title="Upload"
+            navigation={navigation}
+            onPress={handleSellGiftcard}
+            loading={loading}
+          />
+          {/* </View> */}
         </View>
       </View>
 
       {/* *********response modal************************** */}
-      {openModal && (
-        <ModalComponent
-          modalVisible={openModal}
-          message={message}
-          setModalVisible={setOpenModal}
-          navigate="TransactionHistory"
-        />
-      )}
+      {openModal && <ModalComponent navigate="TransactionHistory" />}
     </>
   );
 };
@@ -263,6 +187,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 15,
+    backgroundColor: "white",
   },
   body: {
     backgroundColor: "#f4fafe",
@@ -343,6 +268,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 16,
     textAlign: "right",
+    textTransform: "capitalize",
   },
   text: {
     color: "white",

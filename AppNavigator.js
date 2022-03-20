@@ -52,6 +52,7 @@ import TransactionDetail from "./Screens/TransactionDetail";
 import SelectAvatar from "./Screens/SelectAvatar";
 import ExistingUserLogin from "./Screens/ExistingUserLogin";
 import AccountVerScreen from "./Screens/AccountVerScreen";
+import GiftCardScreen from "./Screens/GiftCardScreen";
 
 // import TransactionsTopTab from "./Screens/TransactionsTopTab";
 
@@ -266,11 +267,11 @@ const AppNavigator = () => {
             component={AccountVerScreen}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
-            name="TransactionsTopTab"
-            component={TransactionsTopTab}
+          <Stack.Screen
+            name="GiftCardScreen"
+            component={GiftCardScreen}
             options={{ headerShown: false }}
-          /> */}
+          />
         </>
       ) : (
         <>

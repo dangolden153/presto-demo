@@ -44,8 +44,8 @@ const Accounts = ({}) => {
 
   // ***********Add Bank Account Details***************
   useEffect(() => {
-    if (accountNumber.length > 1 && accountNumber.length < 9) {
-      setValidate("account number you be at least 10 digits");
+    if (accountNumber.length > 1 && accountNumber.length < 10) {
+      setValidate("account number must be at least 10 digits");
     } else {
       setValidate("");
     }

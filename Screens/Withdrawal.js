@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  TextInput
+  TextInput,
 } from "react-native";
 import { Context } from "../context";
 import { ModalComponent } from "../components/Modal";
@@ -20,7 +20,7 @@ import NoAccountDetails from "../components/NoAccountDetails";
 
 const Withdrawal = ({ navigation }) => {
   const [amount, setAmount] = useState("");
-  const { user } = useSelector(state => state.UserReducer);
+  const { user } = useSelector((state) => state.UserReducer);
 
   const {
     token,
@@ -29,7 +29,7 @@ const Withdrawal = ({ navigation }) => {
     openModal,
     setOpenModal,
     setLoading,
-    loading
+    loading,
   } = useContext(Context);
   // console.log("user", user);
 
@@ -51,18 +51,18 @@ const Withdrawal = ({ navigation }) => {
       method: "POST",
       headers: myHeaders,
       body: formdata,
-      redirect: "follow"
+      redirect: "follow",
     };
 
     fetch("https://api.prestohq.io/api/requestwithdrawal", requestOptions)
-      .then(response => response.json())
-      .then(result => {
+      .then((response) => response.json())
+      .then((result) => {
         setLoading(false);
         console.log("bank result", result);
         setModalMessage(result?.message || result?.result);
         setOpenModal(true);
       })
-      .catch(error => {
+      .catch((error) => {
         setLoading(false);
         // setValidate("unable to process transaction");
         console.log("error", error);
@@ -73,7 +73,7 @@ const Withdrawal = ({ navigation }) => {
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf")
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
   });
 
   if (!firstLoaded) {
@@ -97,14 +97,13 @@ const Withdrawal = ({ navigation }) => {
               <View style={{ alignItems: "center" }}>
                 <Image
                   source={{
-                    uri:
-                      "https://upload.wikimedia.org/wikipedia/commons/f/f7/Polaris-Bank-Limited.png"
+                    uri: "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg",
                   }}
                   style={{
                     height: 70,
                     width: 70,
                     borderRadius: 10,
-                    marginBottom: 5
+                    marginBottom: 5,
                   }}
                 />
                 {/* <Text>{user?.bank}</Text> */}
@@ -118,7 +117,7 @@ const Withdrawal = ({ navigation }) => {
 
             <TextInput
               value={amount}
-              onChangeText={text => setAmount(text)}
+              onChangeText={(text) => setAmount(text)}
               style={styles.input}
               placeholder="Enter Amount"
             />
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: "white"
+    backgroundColor: "white",
     // position:"relative"
   },
 
@@ -163,7 +162,7 @@ const styles = StyleSheet.create({
     width: "58%",
     marginTop: 20,
     marginLeft: 10,
-    marginBottom: 30
+    marginBottom: 30,
   },
 
   header: {
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     fontWeight: "bold",
     textAlign: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
 
   body: {
@@ -184,18 +183,18 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     paddingVertical: 20,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   title: {
     fontSize: 20,
-    fontFamily: "bold"
+    fontFamily: "bold",
   },
   sub_title: {
     fontSize: 18,
     color: "#999999",
     width: "90%",
     textAlign: "center",
-    marginTop: 15
+    marginTop: 15,
   },
   img_title: {
     flexDirection: "row",
@@ -205,10 +204,10 @@ const styles = StyleSheet.create({
     // marginHorizontal: 10,
     marginVertical: 20,
     backgroundColor: "white",
-    borderRadius: 20
+    borderRadius: 20,
   },
   title_sub: {
-    marginLeft: 15
+    marginLeft: 15,
   },
 
   input: {
@@ -220,17 +219,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "100%",
     alignSelf: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   title: {
     fontSize: 14,
     fontFamily: "semiBold",
     color: "#666666",
     // backgroundColor: "pink",
-    width: "99%"
+    width: "99%",
   },
   time: {
     fontFamily: "regular",
-    color: "#999999"
-  }
+    color: "#999999",
+  },
 });

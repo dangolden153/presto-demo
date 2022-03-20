@@ -141,12 +141,16 @@ export default function App() {
 // change the settings icon to svg ✅
 // push to gitlab ✅
 
-// card transaction
+// card transaction ✅
 // wallect screen for user that dont have an account yet ✅
-// multiple image
 // registration process ..✅
-// postpaid button
+// send svg to ahmed ✅
+// closing of wallet modal after selection ✅
+// sendng card trasaction with multiple images to the backend ✅
+// usdt & btc rate ..✅
+// postpaid button - whatsazpp ✅
 // check notification ...
+// google playstore
+// yup validation
+
 // check the modal after transaction on the profile screen
-// the modal after the tranaction fails || ops an error occurred
-// exixting loin setvalidate

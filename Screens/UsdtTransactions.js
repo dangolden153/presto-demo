@@ -5,7 +5,7 @@ import {
   View,
   SafeAreaView,
   TextInput,
-  FlatList
+  FlatList,
 } from "react-native";
 import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +15,7 @@ import { fetchUSDTTransactions } from "../Redux/Actions/crptoTransaction";
 import NavBar from "../components/NavBar";
 
 const UsdtTransactions = ({ navigation }) => {
-  const { usdtTransaction } = useSelector(state => state.TransactionReducer);
+  const { usdtTransaction } = useSelector((state) => state.TransactionReducer);
   const { token, setModalMessage } = useContext(Context);
   const [refresh, setRefresh] = useState(false);
 
@@ -25,9 +25,6 @@ const UsdtTransactions = ({ navigation }) => {
     dispatch(fetchUSDTTransactions(token, setModalMessage));
   };
 
-  // if (!usdtTransaction) {
-  //     return <Loading />;
-  // }
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -42,7 +39,7 @@ const UsdtTransactions = ({ navigation }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                flex: 1
+                flex: 1,
               }}
             >
               <Text style={{ fontSize: 20 }}>No transaction found</Text>
@@ -68,7 +65,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   body: {
     backgroundColor: "#f4fafe",
@@ -79,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     // paddingVertical: 10,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   input: {
     padding: 15,
@@ -88,6 +85,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     width: "100%",
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  },
 });

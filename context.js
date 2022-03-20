@@ -10,6 +10,7 @@ export const ContextProvider = ({ children }) => {
   const [message, setModalMessage] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [existinguser, setExistinguser] = useState(null);
+  const [cardPictures, setCardPictures] = useState([]);
 
   const handleRefresh = () => {
     setRefresh(!refresh);
@@ -33,7 +34,9 @@ export const ContextProvider = ({ children }) => {
         accessToken,
         setAccessToken,
         existinguser,
-        setExistinguser
+        setExistinguser,
+        cardPictures,
+        setCardPictures,
       }}
     >
       {children}

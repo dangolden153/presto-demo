@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  FlatList
+  FlatList,
 } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 
@@ -14,7 +14,7 @@ const wallet = [
   { type: "ERC20", text: "3nofvnodslrdt67yuyullgfdXd" },
   { type: "TRC20", text: "3nofvnodslrdt67yuyullgfdXd" },
   { type: "BEP2", text: "3nofvnodslrdt67yuyullgfdXd" },
-  { type: "BEP20", text: "3nofvnodslrdt67yuyulltyuiwe" }
+  { type: "BEP20", text: "3nofvnodslrdt67yuyulltyuiwe" },
 ];
 const WalletModal = ({ copyToClipboard }) => {
   return (
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
     padding: 10,
     borderRadius: 10,
-    elevation: 5
+    elevation: 5,
   },
   address: {
     flex: 1,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    marginVertical: 5
+    marginVertical: 5,
     // backgroundColor: "green"
-  }
+  },
 });

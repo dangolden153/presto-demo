@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Clipboard
+  Clipboard,
 } from "react-native";
 import {
   AntDesign,
@@ -23,11 +23,9 @@ import BitcoinModalScreen from "../components/BitcoinModal";
 import { Context } from "../context";
 import LinearButton from "../components/LinearButton";
 import { ModalComponent } from "../components/Modal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleSellBtc } from "../Redux/Actions/crptoTransaction";
 import { useToast } from "react-native-toast-notifications";
-
-// import * as Clipboard from "expo-clipboard";
 
 const SellBitcoin = ({ navigation }) => {
   const [image, setImage] = useState("");
@@ -35,22 +33,25 @@ const SellBitcoin = ({ navigation }) => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedText, setCopiedText] = useState("");
-  const { token, openModal, setOpenModal, setModalMessage } = useContext(Context);
+  const { token, openModal, setOpenModal, setModalMessage } =
+    useContext(Context);
+  const { getCyptoRate } = useSelector((state) => state.TransactionReducer);
+
   const dispatch = useDispatch();
   const USD = 450;
   const UsdToNaira = USD * parseInt(amount);
   const toast = useToast();
 
-
+  const btcRate = getCyptoRate.map((rate) => {
+    return rate?.btcrate;
+  });
+  console.log(`btcRate`, btcRate);
 
   const handleToggleModal = () => {
     setOpenBtcModal(!openBtcModal);
   };
-  // console.log(`image`, image);
-  // console.log("set amount btc", amount);
-  // console.log("cal btc", UsdToNaira);
 
-  const walletAddress = "3nofvnodslrdt67yuyullgfdXd"
+  const walletAddress = "3nofvnodslrdt67yuyullgfdXd";
   ///******* */ pick image from photo library ********
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -91,18 +92,17 @@ const SellBitcoin = ({ navigation }) => {
       offset: 30,
       animationType: "slide-in",
     });
-  }
+  };
 
   const copyToClipboard = () => {
-    Clipboard.setString(walletAddress);
-    handleToast()
+    Clipboard.setString(btcRate[2]);
+    handleToast();
   };
 
   const fetchCopiedText = async () => {
     const text = await Clipboard.getString();
     setCopiedText(text);
   };
-
 
   return (
     <>
@@ -125,8 +125,12 @@ const SellBitcoin = ({ navigation }) => {
                 color="black"
               />
             </TouchableOpacity>
-            <Text style={[styles.btc_address, { fontWeight: "bold" }]}>BTC Wallet Details</Text>
-            <Text style={styles.btc_address}>3nofvnodslrdt67yuyullgfdXd</Text>
+            <Text style={[styles.btc_address, { fontWeight: "bold" }]}>
+              BTC Wallet Details
+            </Text>
+            <Text style={styles.btc_address} numberOfLines={1}>
+              {btcRate[2]}
+            </Text>
           </View>
 
           <LinearButton title="Click to copy" onPress={copyToClipboard} />
@@ -186,17 +190,17 @@ const SellBitcoin = ({ navigation }) => {
 
                 <View style={styles.value_rates}>
                   <Text style={styles.value}>less that 100</Text>
-                  <Text style={styles.value}>520</Text>
+                  <Text style={styles.value}>{btcRate[0]}</Text>
                 </View>
 
                 <View style={styles.value_rates}>
                   <Text style={styles.value}>100+ to 1,000</Text>
-                  <Text style={styles.value}>535</Text>
+                  <Text style={styles.value}>{btcRate[3]}</Text>
                 </View>
 
                 <View style={styles.value_rates}>
                   <Text style={styles.value}>Above 1,000</Text>
-                  <Text style={styles.value}>550</Text>
+                  <Text style={styles.value}>{btcRate[4]}</Text>
                 </View>
               </View>
             </View>
@@ -217,11 +221,7 @@ const SellBitcoin = ({ navigation }) => {
       )}
 
       {/* *********response modal************************** */}
-      {openModal && (
-        <ModalComponent
-          navigate="BtcTransactions"
-        />
-      )}
+      {openModal && <ModalComponent navigate="BtcTransactions" />}
     </>
   );
 };
@@ -302,6 +302,8 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     marginVertical: 2,
     color: "#666666",
+    width: 300,
+    textAlign: "center",
   },
   btc_text: {
     fontSize: 14,
@@ -331,7 +333,7 @@ const styles = StyleSheet.create({
     // borderStyle:"do"
   },
   upload_text: {
-    fontSize: 15,//
+    fontSize: 15, //
     color: "#999999",
     marginLeft: 10,
     fontWeight: "100",
@@ -345,10 +347,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 30,
     alignItems: "center",
-
   },
   rate_header: {
-    fontSize: 17,//
+    fontSize: 17, //
     fontWeight: "600",
     alignSelf: "flex-start",
   },
@@ -362,7 +363,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   value_header: {
-    fontSize: 16,//
+    fontSize: 16, //
     fontWeight: "500",
     alignSelf: "flex-start",
     minWidth: 80,

@@ -1,14 +1,23 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import React from "react";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/core";
 import Bitcoin from "../images/btc.svg";
 import USDT from "../images/usdt.svg";
 import CARD from "../images/cards.svg";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const TransactionItems = ({ datas, btc, usdt, card }) => {
   const navigation = useNavigation();
-  console.log("datas", datas);
+  // console.log("10 * windowWidth", 0.1 * windowWidth);
   const status =
     datas?.status == "0"
       ? "pending"
@@ -23,7 +32,7 @@ const TransactionItems = ({ datas, btc, usdt, card }) => {
       ? "green"
       : "#f9886c";
 
-  const Img = btc ? Bitcoin : usdt ? USDT : CARD;
+  const Img = btc ? Bitcoin : USDT;
   const title = btc ? "BTC" : usdt ? "USDT" : datas.type;
   const amount = btc ? datas.amount : usdt ? datas.amount : datas.value;
   return (
@@ -34,7 +43,20 @@ const TransactionItems = ({ datas, btc, usdt, card }) => {
       }
     >
       <View style={styles.img_title}>
-        <Img style={{ marginRight: 10 }} />
+        {card ? (
+          <Image
+            source={{ uri: datas?.image_small }}
+            style={{
+              marginRight: 10,
+              height: windowHeight * 0.07,
+              width: windowWidth * 0.13,
+              borderRadius: 10,
+              // resizeMode: "contain",
+            }}
+          />
+        ) : (
+          <Img style={{ marginRight: 10 }} />
+        )}
         <View style={styles.title_time}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.time}>
@@ -66,12 +88,12 @@ export default TransactionItems;
 const styles = StyleSheet.create({
   title: {
     fontSize: 15,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   time: {
     // fontSize: 18,
     color: "#999999",
-    width: 100
+    width: 100,
     // backgroundColor: "pink",
   },
 
@@ -83,24 +105,24 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     borderRadius: 20,
     padding: 7,
-    width: "100%"
+    width: "100%",
   },
   img_title: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   status_fail: {
     color: "red",
-    opacity: 0.4
+    opacity: 0.4,
   },
   status_success: {
-    color: "#00C48C"
+    color: "#00C48C",
     // opacity: 0.4,
   },
   price_status: {
     // width: "40%",
     // backgroundColor: "pink",
-    alignItems: "flex-end"
-  }
+    alignItems: "flex-end",
+  },
 });

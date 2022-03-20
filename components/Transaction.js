@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  Image
+  Image,
+  Dimensions,
 } from "react-native";
 import moment from "moment";
 import { useFonts } from "expo-font";
@@ -15,15 +16,12 @@ import { useNavigation } from "@react-navigation/native";
 import Bitcoin from "../images/btc.svg";
 import USDT from "../images/usdt.svg";
 import CARD from "../images/cards.svg";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
-  const [uploadCard, setUploadCard] = useState(false);
-  const togglePickCard = () => setUploadCard(!uploadCard);
-  // console.log("datas", datas);
-
   const Address = "";
 
-  const navigation = useNavigation();
   const status =
     datas?.status === 0
       ? "pending"
@@ -33,21 +31,20 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
 
   const colors =
     datas?.status === 0 ? "#ff9d3a" : datas?.status === 1 ? "green" : "#f9886c";
-
   const amount = card ? datas?.value : datas?.amount;
-
-  const Img = btc ? Bitcoin : usdt ? USDT : CARD;
+  const Img = btc ? Bitcoin : USDT;
 
   const [fontLoaded, error] = useFonts({
     Italic: require("../assets/fonts/raleway/Raleway-Italic.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf")
+    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
   });
 
   if (!fontLoaded) {
     return <AppLoading />;
   }
 
+  // *********check if data is available**************
   if (!datas) {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
@@ -71,10 +68,21 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
               position: "relative",
               alignItems: "center",
               backgroundColor: "white",
-              marginBottom: 10
+              marginBottom: 10,
             }}
           >
-            <Img height={150} width={150} />
+            {card ? (
+              <Image
+                source={{ uri: datas?.image }}
+                style={{
+                  height: windowHeight * 0.19,
+                  width: windowWidth * 0.6,
+                  borderRadius: 10,
+                }}
+              />
+            ) : (
+              <Img height={windowHeight * 0.19} width={windowWidth * 0.7} />
+            )}
           </TouchableOpacity>
           <View style={styles.gift_card}>
             {/* ******************Amount************************ */}
@@ -164,7 +172,7 @@ export default Transaction;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
 
   nav: {
@@ -173,7 +181,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "65%",
     marginTop: 20,
-    marginLeft: 10
+    marginLeft: 10,
   },
 
   header: {
@@ -182,7 +190,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     fontWeight: "bold",
     textAlign: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   body: {
     backgroundColor: "#f4fafe",
@@ -190,13 +198,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 20,
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   title: {
     fontSize: 18,
     color: "black",
     // fontWeight: "bold",
-    textTransform: "capitalize"
+    textTransform: "capitalize",
   },
   card: {
     // width: "80%",
@@ -204,22 +212,22 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 20,
     // backgroundColor: "white",
-    borderRadius: 20
+    borderRadius: 20,
   },
   gift_card: {
     // flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   img_title: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    marginVertical: 5
+    marginVertical: 5,
   },
   upload_container: {
-    margin: 10
+    margin: 10,
   },
   upload_btn: {
     borderWidth: 2,
@@ -230,22 +238,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 10,
-    padding: 20
+    padding: 20,
     // borderStyle:"do"
   },
   upload_text: {
     fontSize: 18,
-    color: "#999999"
+    color: "#999999",
   },
   status_fail: {
     color: "red",
-    opacity: 0.4
+    opacity: 0.4,
   },
   status_success: {
-    color: "#00C48C"
+    color: "#00C48C",
     // opacity: 0.4,
   },
   price_del: {
-    alignItems: "flex-end"
-  }
+    alignItems: "flex-end",
+  },
 });

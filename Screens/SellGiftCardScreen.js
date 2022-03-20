@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
@@ -23,8 +23,7 @@ const SellGiftCardScreen = ({ navigation }) => {
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [value, setValue] = useState("");
-  const [countryArry, setCountryArry] = useState();
-  const { getCardRate } = useSelector(state => state.TransactionReducer);
+  const { getCardRate } = useSelector((state) => state.TransactionReducer);
   let emptyArray = [];
 
   const countryIndex = type ? type.country.indexOf(country) : null;
@@ -32,113 +31,36 @@ const SellGiftCardScreen = ({ navigation }) => {
   const cardtypeIndex = value ? cardtypeArr.indexOf(value) : null;
   const rateArr = type ? type.rate[countryIndex] : [];
   const rate = cardtypeArr ? rateArr[cardtypeIndex] : null;
+  const countryData = type ? type.country : null;
+  const tpe = type?.cardname;
+  const image_big = type?.image_big;
+  const image_small = type?.image_small;
 
-  console.log(`type`, type);
-  console.log(`country`, typeof type.country);
-  // console.log(`countryArr`, countryArry[1]);
-
-  useEffect(() => {
-    if (type.country == null) {
-      return;
-    }
-    setCountryArry(type?.country);
-    return alert("  a card selected");
-  }),
-    [type];
-
-  // const cArr = countryArry.map(rate => {
-  //   return console.log(rate);
-  // });
-
-  // // console.log(`getCardRate`, getCardRate);
-  // console.log(`country`, country);
-  // // console.log(`country`, country);
-  // console.log(`value`, value);
-  // console.log(`cardtypeArr`, cardtypeArr);
-  // console.log(`cardtypeIndex`, cardtypeIndex);
-  // console.log(`rate`, rateArr);
-  // console.log(`rate`, rate);
-  const ctry = country?.countryName;
-  const tpe = type?.cardName;
+  // console.log(`type.cardname `, type.cardname);
+  // console.log(`country.countryName `, country);
+  // console.log(`type.cardtype[countryIndex] `, value);
+  // console.log(`type image_big`, type?.image_big);
+  // console.log(`type image_small`, type?.image_small);
 
   const handleNavigation = () => {
-    if (!ctry || !tpe || !value || !amount) {
+    if (!country || !tpe || !value || !amount) {
       return alert("credentials required!");
     }
 
     navigation.navigate("UploadGiftcardScreen", {
-      giftcardData: { ctry, tpe, value, amount }
+      giftcardData: { country, tpe, value, amount, image_big, image_small },
     });
   };
 
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf")
+    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
   });
 
   if (!firstLoaded) {
     return <AppLoading />;
   }
 
-  const cardData = [
-    {
-      id: 2,
-      cardname: "Itunes",
-      country: ["USA", "AUSTRALIA", "UK", "CANADA"],
-      cardtype: [
-        [
-          "E-code $50",
-          "E-code $100",
-          "E-code $20-$49",
-          "Itunes $51-$99",
-          "Itunes $50",
-          "Itunes $100",
-          "Itunes $101-$200",
-          "Itunes $201-$499"
-        ],
-        ["Itunes $20-$49", "Itunes $50-$100", "Itunes $25-$1000"],
-        ["Itunes $50-$100", "Itunes $20-$49"],
-        ["Itunes $25-$5000"]
-      ],
-      rate: [
-        [200, 200, 200, 200, 200, 200, 200, 200],
-        [200, 200, 200],
-        [201, 200],
-        [200]
-      ]
-    },
-
-    {
-      id: 1,
-      cardname: "Apple store",
-      country: ["USA", "AUSTRALIA", "UK", "CANADA"],
-      cardtype: [
-        [
-          "E-code $50",
-          "E-code $100",
-          "E-code $20-$49",
-          "Itunes $51-$99",
-          "Itunes $50",
-          "Itunes $100",
-          "Itunes $101-$200",
-          "Itunes $201-$499"
-        ],
-        ["Itunes $20-$49", "Itunes $50-$100", "Itunes $25-$1000"],
-        ["Itunes $50-$100", "Itunes $20-$49"],
-        ["Itunes $25-$5000"]
-      ],
-      rate: [
-        [200, 200, 200, 200, 200, 200, 200, 200],
-        [200, 200, 200],
-        [200, 200],
-        [200]
-      ]
-    }
-  ];
-
-  // const count = cArr.map(ctry => {
-  //   return console.log(ctry[3]);
-  // });
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
@@ -164,7 +86,7 @@ const SellGiftCardScreen = ({ navigation }) => {
         <Dropdown
           label="Giftcard"
           placeholder={type.cardname || "Select a card"}
-          data={cardData}
+          data={getCardRate}
           setItem={setType}
           item={type}
         />
@@ -173,21 +95,22 @@ const SellGiftCardScreen = ({ navigation }) => {
         <Dropdown
           label="Select Country"
           selectItemLabel="Select a card"
-          // placeholder={country.countryName || "Select Country"}
-          placeholder={"Select Country"}
-          // data={countryArry}
-          // setItem={setCountry}
-          // item={country}
+          placeholder={country || "Select Country"}
+          // placeholder={"Select Country"}
+          data={countryData}
+          setItem={setCountry}
+          item={country}
         />
 
         {/* **********************dropdown Select Giftcard Value ***********************/}
         <Dropdown
           label="Select a card"
           selectItemLabel="Select Country"
-          placeholder="Select Giftcard Value"
-          // data={type ? type.cardtype[countryIndex] : emptyArray}
+          placeholder={value || "Select Giftcard Value"}
+          // placeholder="Select Giftcard Value"
+          data={type ? type.cardtype[countryIndex] : emptyArray}
           setItem={setValue}
-          item={value}
+          item={amount}
         />
 
         <View style={styles.text_input}>
@@ -196,14 +119,14 @@ const SellGiftCardScreen = ({ navigation }) => {
               fontSize: 16,
               fontFamily: "regular",
               marginBottom: 5,
-              alignSelf: "flex-start"
+              alignSelf: "flex-start",
             }}
           >
             Amount
           </Text>
           <TextInput
             value={amount}
-            onChangeText={text => setAmount(text)}
+            onChangeText={(text) => setAmount(text)}
             placeholder="$Enter the amount"
             style={styles.input}
           />
@@ -250,7 +173,7 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingHorizontal: 25,
     backgroundColor: "white",
-    position: "relative"
+    position: "relative",
   },
 
   nav: {
@@ -260,7 +183,7 @@ const styles = StyleSheet.create({
     // width: "68%",
     marginTop: 20,
     marginLeft: 10,
-    marginBottom: 30
+    marginBottom: 30,
   },
 
   header: {
@@ -270,58 +193,58 @@ const styles = StyleSheet.create({
     fontWeight: "200",
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "semiBold"
+    fontFamily: "semiBold",
   },
 
   body: {
     backgroundColor: "#f4fafe",
     flex: 1,
     padding: 10,
-    borderRadius: 20
+    borderRadius: 20,
   },
   text_input: {
     alignItems: "center",
     marginVertical: 15,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   input: {
     width: "100%",
     backgroundColor: "white",
     padding: 15,
-    borderRadius: 10
+    borderRadius: 10,
   },
 
   rate_container: {
     margin: 10,
     backgroundColor: "white",
     padding: 15,
-    borderRadius: 10
+    borderRadius: 10,
     // marginBottom: 10,
   },
   rate: {
     flexDirection: "row",
     alignItems: "center",
 
-    marginVertical: 5
+    marginVertical: 5,
   },
   rate_text: {
     fontSize: 16,
     fontFamily: "regular",
-    marginRight: 10
+    marginRight: 10,
   },
   price: {
     fontSize: 16,
-    fontFamily: "regular"
+    fontFamily: "regular",
   },
   text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   btn: {
     marginTop: 20,
     width: "100%",
     paddingVertical: 15,
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
 });

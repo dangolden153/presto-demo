@@ -140,7 +140,7 @@ const Dashboard = ({ navigation }) => {
       {/* *************middle section container*********************** */}
       <View style={styles.mid_section}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("SellGiftCardScreen")}
+          onPress={() => navigation.navigate("GiftCardScreen")} // SellGiftCardScreen
           style={styles.left_section}
         >
           <Image

@@ -1,34 +1,28 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { AssetsSelector } from "expo-images-picker";
-import { Ionicons } from "@expo/vector-icons";
-import { set } from "react-native-reanimated";
+import {
+  AntDesign,
+  Feather,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
+import { Context } from "../context";
 
 const MediaScreen = ({ navigation }) => {
-  const [photo, setPhoto] = useState([]);
+  const { setCardPictures } = useContext(Context);
   const onSuccess = (data) => {
     navigation.goBack();
 
-    // console.log("pictures data", data)
-    setPhoto(data);
+    setCardPictures(data);
   };
-
-  console.log("photooosss", photo);
-
-  const photoData = photo.map((pics) => {
-    return pics.uri;
-  });
-
-  console.log("photoData", photoData);
-
 
   const widgetSettings = useMemo(
     () => ({
       getImageMetaData: false,
       initialLoad: 100,
       assetsType: ["photo", "video"],
-      minSelection: 1,
-      maxSelection: 6,
+      maxSelection: 8,
       portraitCols: 4,
       landscapeCols: 4,
     }),
@@ -38,14 +32,6 @@ const MediaScreen = ({ navigation }) => {
   const widgetErrors = useMemo(
     () => ({
       errorTextColor: "red",
-      // errorMessages: {
-      //     hasErrorWithPermissions: translator(
-      //         T.ERROR.HAS_PERMISSIONS_ERROR
-      //     ),
-      //     hasErrorWithLoading: translator(T.ERROR.HAS_INTERNAL_ERROR),
-      //     hasErrorWithResizing: translator(T.ERROR.HAS_INTERNAL_ERROR),
-      //     hasNoAssets: translator(T.ERROR.HAS_NO_ASSETS),
-      // },
     }),
     []
   );
@@ -53,7 +39,7 @@ const MediaScreen = ({ navigation }) => {
   const widgetStyles = useMemo(
     () => ({
       margin: 2,
-      bgColor: "pink",
+      bgColor: "gray",
       spinnerColor: "purple",
       widgetWidth: 99,
       screenStyle: {
@@ -83,29 +69,18 @@ const MediaScreen = ({ navigation }) => {
   const widgetNavigator = useMemo(
     () => ({
       Texts: {
-        finish: "finish",
-        back: "back",
-        selected: "selected",
+        finish: <Feather name="check-circle" size={24} color="black" />,
+        back: <AntDesign name="back" size={24} color="black" />,
+        selected: "finish",
       },
-      midTextColor: "green",
-      minSelection: 3,
-      // buttonTextStyle: _textStyle,
-      // buttonStyle: _buttonStyle,
+      // midTextColor: "green",
+      minSelection: 1,
+      // color: "white",
       onBack: () => navigation.goBack(),
       onSuccess: (data) => onSuccess(data),
     }),
     []
   );
-
-  // const widgetResize = useMemo(
-  //     () => ({
-  //         width: 512,
-  //         compress: 0.7,
-  //         base64: false,
-  //         saveTo: SaveType.JPG,
-  //     }),
-  //     []
-  // )
 
   return (
     <View style={styles.container}>
@@ -113,17 +88,7 @@ const MediaScreen = ({ navigation }) => {
         Settings={widgetSettings}
         Errors={widgetErrors}
         Styles={widgetStyles}
-        // Resize={widgetResize} // optional
         Navigator={widgetNavigator} // optional
-        // CustomNavigator={{
-        //   // optional
-        //   Component: CustomNavigator,
-        //   props: {
-        //     backFunction: true,
-        //     onSuccess,
-        //     text: T.ACTIONS.SELECT,
-        //   },
-        // }}
       />
     </View>
   );
