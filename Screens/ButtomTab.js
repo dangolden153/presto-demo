@@ -16,16 +16,39 @@ import {
   fetchUSDTTransactions,
   fetchCardRate,
   fetchCyptoRate,
+  fetchUBTCAddress,
+  fetchUSDTAddress,
 } from "../Redux/Actions/crptoTransaction";
 import SelectTransaction from "../components/SelectTransaction";
 import { getAllBanks } from "../Redux/Actions/user";
+import { useNavigation } from "@react-navigation/native";
+import registerNNPushToken, { getPushDataObject } from "native-notify";
 
 const Tab = createBottomTabNavigator();
 
 const ButtomTab = () => {
   const dispatch = useDispatch();
-  const { token, setModalMessage, refresh } = useContext(Context);
+  const {
+    token,
+    setModalMessage,
+    refresh,
+    setNotification,
+    setNotifyMessage,
+    isViewed,
+  } = useContext(Context);
+  console.log("isViewd", isViewed);
+  let pushDataObject = getPushDataObject();
+  useEffect(() => {
+    console.log("bottom pushDataObject message", pushDataObject?.message);
 
+    if (isViewed === "pending" && pushDataObject?.message) {
+      setNotification(true);
+      setNotifyMessage(pushDataObject?.message);
+      console.log("bottom pushDataObject message", pushDataObject?.message);
+
+      return;
+    }
+  });
   // *************get user's details  **************************
   useEffect(() => {
     fetchUserDetails();
@@ -89,8 +112,19 @@ const ButtomTab = () => {
     dispatch(fetchCyptoRate());
   }, []);
 
+  // *************fetch usdt wallet adddress**************************
+  useEffect(() => {
+    dispatch(fetchUSDTAddress());
+  }, []);
+
+  // *************fetch btc wallet adddress **************************
+  useEffect(() => {
+    dispatch(fetchUBTCAddress());
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
+      <StatusBar style="auto" />
       <Tab.Navigator
         // tabBarOptions={{
         //   showLabel: false,

@@ -207,7 +207,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   title_sub: {
-    marginLeft: 15,
+    // marginLeft: 15,
+    backgroundColor: "pink",
+    width: "50%",
   },
 
   input: {

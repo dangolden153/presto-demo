@@ -98,17 +98,22 @@ const RegistrationScreen = ({ navigation }) => {
     fetch("https://api.prestohq.io/api/auth/register", requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        // console.log("res", res)
+        console.log("res", res);
         setLoading(false);
         if (res?.status === "201") {
           return navigation.navigate("CheckVerification");
+          // console.log("res", res);
         }
-        console.log("res", res?.email);
+        // console.log("ress", res?.data);
+        // console.log("ress typeof", typeof res);
+        console.log("ress email", res);
         setModalMessage({ status: "fail", text: res });
         setOpenModal(true);
       })
       .catch((error) => {
         console.log("error", error);
+        console.log("error", error?.response);
+
         setModalMessage({ status: "fail", text: result?.error });
         setLoading(false);
       });

@@ -198,16 +198,16 @@ const styles = StyleSheet.create({
     paddingBottom: 70,
     paddingHorizontal: 10,
   },
-  // title_time: {
-  //   flex: 1,
-  //   backgroundColor: "pink",
-  //   width: "100%",
-  // },
+  title_time: {
+    // backgroundColor: "pink",
+    width: "65%",
+    alignItems: "flex-end",
+  },
   title: {
     fontSize: 14,
     fontFamily: "semiBold",
     color: "#666666",
-    width: "99%",
+    // width: "99%",
   },
   time: {
     fontFamily: "regular",

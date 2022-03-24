@@ -4,6 +4,8 @@ import {
   USDT_TRANSACTION,
   CARD_RATE,
   CRPTO_RATE,
+  USDT_ADD,
+  BTC_ADD,
 } from "../Types/type";
 
 const initialState = {
@@ -12,6 +14,8 @@ const initialState = {
   usdtTransaction: [],
   getCardRate: [],
   getCyptoRate: [],
+  getUSDTAddress: [],
+  getBTCAddress: [],
 };
 
 const TransactionReducer = (state = initialState, action) => {
@@ -42,6 +46,16 @@ const TransactionReducer = (state = initialState, action) => {
       return {
         ...state,
         getCyptoRate: action.payload,
+      };
+    case USDT_ADD:
+      return {
+        ...state,
+        getUSDTAddress: action.payload,
+      };
+    case BTC_ADD:
+      return {
+        ...state,
+        getBTCAddress: action.payload,
       };
     default:
       return state;

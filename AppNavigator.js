@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
   createStackNavigator,
   TransitionPresets,
@@ -53,6 +53,8 @@ import SelectAvatar from "./Screens/SelectAvatar";
 import ExistingUserLogin from "./Screens/ExistingUserLogin";
 import AccountVerScreen from "./Screens/AccountVerScreen";
 import GiftCardScreen from "./Screens/GiftCardScreen";
+import NotificcationScreen from "./Screens/NotificcationScreen";
+import ReferScreen from "./Screens/ReferScreen";
 
 // import TransactionsTopTab from "./Screens/TransactionsTopTab";
 
@@ -270,6 +272,16 @@ const AppNavigator = () => {
           <Stack.Screen
             name="GiftCardScreen"
             component={GiftCardScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="NotificcationScreen"
+            component={NotificcationScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ReferScreen"
+            component={ReferScreen}
             options={{ headerShown: false }}
           />
         </>

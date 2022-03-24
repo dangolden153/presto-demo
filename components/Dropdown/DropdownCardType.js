@@ -20,7 +20,7 @@ const theme = extendTheme({
         borderColor: "white",
         width: "100%",
         alignSelf: "center",
-        backgroundColor: "#ffff",
+        backgroundColor: "transparent",
         fontSize: "15",
         padding: 3,
         fontFamily: "regular",

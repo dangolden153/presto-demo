@@ -35,7 +35,9 @@ const SellBitcoin = ({ navigation }) => {
   const [copiedText, setCopiedText] = useState("");
   const { token, openModal, setOpenModal, setModalMessage } =
     useContext(Context);
-  const { getCyptoRate } = useSelector((state) => state.TransactionReducer);
+  const { getCyptoRate, getBTCAddress } = useSelector(
+    (state) => state.TransactionReducer
+  );
 
   const dispatch = useDispatch();
   const USD = 450;
@@ -45,7 +47,8 @@ const SellBitcoin = ({ navigation }) => {
   const btcRate = getCyptoRate.map((rate) => {
     return rate?.btcrate;
   });
-  console.log(`btcRate`, btcRate);
+
+  // console.log(`btcRate`, btcRate);
 
   const handleToggleModal = () => {
     setOpenBtcModal(!openBtcModal);
@@ -95,7 +98,7 @@ const SellBitcoin = ({ navigation }) => {
   };
 
   const copyToClipboard = () => {
-    Clipboard.setString(btcRate[2]);
+    Clipboard.setString(getBTCAddress[0]?.btcwallet);
     handleToast();
   };
 
@@ -128,9 +131,11 @@ const SellBitcoin = ({ navigation }) => {
             <Text style={[styles.btc_address, { fontWeight: "bold" }]}>
               BTC Wallet Details
             </Text>
-            <Text style={styles.btc_address} numberOfLines={1}>
-              {btcRate[2]}
-            </Text>
+            {getBTCAddress?.map((address, i) => (
+              <Text style={styles.btc_address} numberOfLines={1}>
+                {address?.btcwallet}
+              </Text>
+            ))}
           </View>
 
           <LinearButton title="Click to copy" onPress={copyToClipboard} />
@@ -195,12 +200,12 @@ const SellBitcoin = ({ navigation }) => {
 
                 <View style={styles.value_rates}>
                   <Text style={styles.value}>100+ to 1,000</Text>
-                  <Text style={styles.value}>{btcRate[3]}</Text>
+                  <Text style={styles.value}>{btcRate[1]}</Text>
                 </View>
 
                 <View style={styles.value_rates}>
                   <Text style={styles.value}>Above 1,000</Text>
-                  <Text style={styles.value}>{btcRate[4]}</Text>
+                  <Text style={styles.value}>{btcRate[2]}</Text>
                 </View>
               </View>
             </View>
@@ -330,7 +335,6 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "white",
     borderColor: "#999999",
-    // borderStyle:"do"
   },
   upload_text: {
     fontSize: 15, //

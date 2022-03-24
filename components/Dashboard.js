@@ -9,15 +9,16 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import card from "../images/Payment.png";
-import coin from "../images/Coin.png";
-import gift from "../images/gift.png";
+import PaymentCard from "../images/card.svg";
+import Coin from "../images/Coin.svg";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { useSelector } from "react-redux";
 import Card from "./Card";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from "../context";
+import { RFValue } from "react-native-responsive-fontsize";
+import Refer from "../images/refer.svg";
 
 const Dashboard = ({ navigation }) => {
   const { user } = useSelector((state) => state.UserReducer);
@@ -43,7 +44,7 @@ const Dashboard = ({ navigation }) => {
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const alphaMonth = months[getMonth];
   const alphaDay = days[getDay];
-  const { setIsAuthenticated, isAuthenticated, setExistinguser } =
+  const { setIsAuthenticated, isAuthenticated, setExistinguser, notification } =
     useContext(Context);
 
   // **************set username to the local storage*****************
@@ -128,8 +129,27 @@ const Dashboard = ({ navigation }) => {
             Today {alphaDay}, {getDate} {alphaMonth},
           </Text>
           <TouchableOpacity
-          // onPress={()=> logout()}
+            onPress={() =>
+              navigation.navigate("NotificcationScreen", { messg: "nnnnnn" })
+            }
+            style={{ position: "relative" }}
           >
+            {notification && (
+              <View
+                style={{
+                  backgroundColor: "red",
+                  height: RFValue(8, 580),
+                  width: RFValue(8, 580),
+                  borderRadius: 100,
+                  position: "absolute",
+                  right: 3,
+                  zIndex: 10,
+
+                  // marginHorizontal: RFValue(5, 580),
+                  // marginTop: RFValue(2, 580),
+                }}
+              />
+            )}
             <Ionicons name="notifications-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -143,11 +163,19 @@ const Dashboard = ({ navigation }) => {
           onPress={() => navigation.navigate("GiftCardScreen")} // SellGiftCardScreen
           style={styles.left_section}
         >
-          <Image
+          {/* <Image
             source={card}
             style={{
               width: 250,
               height: 250,
+              position: "absolute",
+              resizeMode: "contain",
+              top: -100,
+              transform: [{ rotate: "120deg" }],
+            }}
+          /> */}
+          <PaymentCard
+            style={{
               position: "absolute",
               resizeMode: "contain",
               top: -100,
@@ -160,12 +188,8 @@ const Dashboard = ({ navigation }) => {
           onPress={() => navigation.navigate("CryptoScreen")} //SellBitcoin
           style={styles.right_section}
         >
-          <Image
-            source={coin}
+          <Coin
             style={{
-              width: 250,
-              height: 250,
-              resizeMode: "contain",
               position: "absolute",
               resizeMode: "contain",
               top: -100,
@@ -178,7 +202,7 @@ const Dashboard = ({ navigation }) => {
       {/* ************ Refer a friend down section container *******************/}
       <TouchableOpacity
         style={styles.bottom_section}
-        // onPress={() => navigation.navigate("TransactionDetail")} //MediaScreen PendingTransactionScreen
+        onPress={() => navigation.navigate("ReferScreen")}
       >
         <View style={styles.bttm_txt_container}>
           <Text style={styles.bottom_bold_text}>Refer and earn</Text>
@@ -186,16 +210,8 @@ const Dashboard = ({ navigation }) => {
             Refer a friend today and earn N5000 to N10,000 weekly
           </Text>
         </View>
-        <Image
-          source={gift}
-          style={{
-            width: 250,
-            height: 150,
-            resizeMode: "contain",
-            resizeMode: "contain",
-            right: 70,
-          }}
-        />
+
+        <Refer />
       </TouchableOpacity>
       {/* </View> */}
     </SafeAreaView>
@@ -283,13 +299,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#DDD6ED",
     borderRadius: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "flex-end",
   },
   bttm_txt_container: {
     alignItems: "flex-start",
-    margin: 20,
+    padding: 10,
     width: "50%",
+    // backgroundColor: "pink",
   },
   bottom_bold_text: {
     fontSize: 18,

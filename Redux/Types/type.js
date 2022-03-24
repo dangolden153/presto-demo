@@ -6,3 +6,5 @@ export const USDT_TRANSACTION = "USDT_TRANSACTION";
 export const CARD_RATE = "CARD_RATE";
 export const CRPTO_RATE = "CRPTO_RATE";
 export const Fetch_BANKS = "Fetch_BANKS";
+export const BTC_ADD = "BTC_ADD";
+export const USDT_ADD = "USDT_ADD";

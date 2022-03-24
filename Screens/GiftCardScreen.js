@@ -37,7 +37,7 @@ const GiftCardScreen = ({ navigation }) => {
             <FontAwesome name="whatsapp" size={40} color="#0B365B" />
           </TouchableOpacity>
 
-          <Text style={[styles.text, { color: "#0B365B" }]}>postpaid</Text>
+          <Text style={[styles.text, { color: "#0B365B" }]}>Funds</Text>
         </View>
         <Ionicons name="ios-chevron-forward" size={24} color="black" />
       </TouchableOpacity>
@@ -58,7 +58,7 @@ const GiftCardScreen = ({ navigation }) => {
             <CARD />
           </TouchableOpacity>
 
-          <Text style={[styles.text, { color: "#0B365B" }]}>sell Giftcard</Text>
+          <Text style={[styles.text, { color: "#0B365B" }]}>Sell Giftcard</Text>
         </View>
         <Ionicons name="ios-chevron-forward" size={24} color="black" />
       </TouchableOpacity>

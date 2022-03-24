@@ -4,6 +4,8 @@ import {
   USDT_TRANSACTION,
   CARD_RATE,
   CRPTO_RATE,
+  USDT_ADD,
+  BTC_ADD,
 } from "../Types/type";
 
 // ***************sell btc********************
@@ -253,6 +255,41 @@ export const fetchCyptoRate = () => (dispatch) => {
     .then((result) => {
       // console.log("get cryto rate", result?.cryptorates);
       dispatch({ type: CRPTO_RATE, payload: result?.cryptorates });
+    })
+    .catch((error) => {
+      console.log("error", error);
+    });
+};
+
+// ***************get usdt wallet address*****************************
+export const fetchUSDTAddress = () => (dispatch) => {
+  let requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+  fetch(`https://api.prestohq.io/api/usdtwallet`, requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      // console.log("get cryto rate", result?.cryptorates);
+      dispatch({ type: USDT_ADD, payload: result?.addresses });
+    })
+    .catch((error) => {
+      console.log("error", error);
+    });
+};
+
+// ***************get btc wallet address*****************************
+export const fetchUBTCAddress = () => (dispatch) => {
+  let requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+  fetch(`https://api.prestohq.io/api/btcwallet`, requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      // console.log("get cryto rate", result?.cryptorates);
+      dispatch({ type: BTC_ADD, payload: result?.addresses });
     })
     .catch((error) => {
       console.log("error", error);

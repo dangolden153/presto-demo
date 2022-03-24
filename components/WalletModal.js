@@ -16,17 +16,20 @@ const wallet = [
   { type: "BEP2", text: "3nofvnodslrdt67yuyullgfdXd" },
   { type: "BEP20", text: "3nofvnodslrdt67yuyulltyuiwe" },
 ];
-const WalletModal = ({ copyToClipboard }) => {
+const WalletModal = ({ copyToClipboard, getUSDTAddress }) => {
+  // console.log("getUSDTAddress", getUSDTAddress);
   return (
     <View style={styles.container}>
-      {wallet.map((item, index) => (
+      {getUSDTAddress.map((item, index) => (
         <TouchableOpacity
           key={index}
           style={styles.address}
-          onPress={() => copyToClipboard(item.text)}
+          onPress={() => copyToClipboard(item.usdtwallet)}
         >
-          <Text>{item.type}</Text>
-          <Text>{item.text}</Text>
+          <Text style={styles.category}>{item.category}</Text>
+          <Text style={styles.address_text} numberOfLines={1}>
+            {item.usdtwallet}
+          </Text>
           <Ionicons name="ios-copy-outline" size={24} color="black" />
         </TouchableOpacity>
       ))}
@@ -58,5 +61,12 @@ const styles = StyleSheet.create({
     width: "100%",
     marginVertical: 5,
     // backgroundColor: "green"
+  },
+  address_text: {
+    // backgroundColor: "pink",
+    width: "65%",
+  },
+  category: {
+    textTransform: "uppercase",
   },
 });

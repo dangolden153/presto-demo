@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import AppNavigator from "./AppNavigator";
 import { Provider } from "react-redux";
 import { store } from "./Redux/Store";
 import { ContextProvider } from "./context";
 import { ToastProvider } from "react-native-toast-notifications";
-import registerNNPushToken from "native-notify";
+import registerNNPushToken, { getPushDataObject } from "native-notify";
 // general padding for all container is 20 pixels
 
 export default function App() {
   registerNNPushToken(2267, "MyP35yWdfoWlM79sdA0wG3");
+
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer>
@@ -149,8 +150,14 @@ export default function App() {
 // sendng card trasaction with multiple images to the backend ✅
 // usdt & btc rate ..✅
 // postpaid button - whatsazpp ✅
-// check notification ...
-// google playstore
-// yup validation
+// remodeling of the card transaction data with rate
 
 // check the modal after transaction on the profile screen
+
+// check notification ...✅ notifications drop the msssage ✅
+// yup validation 30min
+// notifications and referral screen 1hr ✅
+// images url to the card endpoint
+// google playstore
+// fonts
+// cant add bank account .

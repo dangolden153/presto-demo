@@ -8,7 +8,10 @@ export const ContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setModalMessage] = useState("");
+  const [notifyMessage, setNotifyMessage] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const [notification, setNotification] = useState(false);
+  const [isViewed, setIsViewed] = useState("pending");
   const [existinguser, setExistinguser] = useState(null);
   const [cardPictures, setCardPictures] = useState([]);
 
@@ -37,6 +40,12 @@ export const ContextProvider = ({ children }) => {
         setExistinguser,
         cardPictures,
         setCardPictures,
+        notification,
+        setNotification,
+        notifyMessage,
+        setNotifyMessage,
+        isViewed,
+        setIsViewed,
       }}
     >
       {children}

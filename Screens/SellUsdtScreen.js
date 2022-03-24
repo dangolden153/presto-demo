@@ -29,7 +29,9 @@ const SellUsdtScreen = ({ navigation }) => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
-  const { getCyptoRate } = useSelector((state) => state.TransactionReducer);
+  const { getCyptoRate, getUSDTAddress } = useSelector(
+    (state) => state.TransactionReducer
+  );
   const { token, openModal, setOpenModal, setModalMessage } =
     useContext(Context);
   const dispatch = useDispatch();
@@ -48,7 +50,7 @@ const SellUsdtScreen = ({ navigation }) => {
   const usdtRate = getCyptoRate.map((rate) => {
     return rate?.usdtrate;
   });
-  // console.log(`usdtRate`, usdtRate[2]);
+  // console.log(`usdtRate`, usdtRate);
 
   /// pick image from photo library
   const pickImage = async () => {
@@ -123,7 +125,12 @@ const SellUsdtScreen = ({ navigation }) => {
             title="Select wallet address"
             onPress={handleToggleAdress}
           />
-          {openAddress && <WalletModal copyToClipboard={copyToClipboard} />}
+          {openAddress && (
+            <WalletModal
+              copyToClipboard={copyToClipboard}
+              getUSDTAddress={getUSDTAddress}
+            />
+          )}
 
           <Text style={styles.btc_text}>
             the address and the barcode are yours you can recieve bitcoin and
@@ -184,12 +191,12 @@ const SellUsdtScreen = ({ navigation }) => {
 
                 <View style={styles.value_rates}>
                   <Text style={styles.value}>100+ to 1,000</Text>
-                  <Text style={styles.value}>{usdtRate[3]}</Text>
+                  <Text style={styles.value}>{usdtRate[1]}</Text>
                 </View>
 
                 <View style={styles.value_rates}>
                   <Text style={styles.value}>Above 1,000</Text>
-                  <Text style={styles.value}>{usdtRate[4]}</Text>
+                  <Text style={styles.value}>{usdtRate[2]}</Text>
                 </View>
               </View>
             </View>
