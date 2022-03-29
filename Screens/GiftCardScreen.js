@@ -11,12 +11,14 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import CARD from "../images/cards.svg";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { StatusBar } from "expo-status-bar";
 const GiftCardScreen = ({ navigation }) => {
   const { height, width } = useWindowDimensions();
 
-  console.log("height :>> ", height);
+  // console.log("height :>> ", height);
   return (
     <View style={styles.container}>
+      <StatusBar style="auto" />
       <NavBar title="Sell Giftcard" />
 
       {/* ***********postpaid****************** */}
@@ -69,7 +71,7 @@ const GiftCardScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    padding: 15,
     backgroundColor: "white",
   },
 

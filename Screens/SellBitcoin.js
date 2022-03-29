@@ -30,7 +30,7 @@ import { useToast } from "react-native-toast-notifications";
 const SellBitcoin = ({ navigation }) => {
   const [image, setImage] = useState("");
   const [openBtcModal, setOpenBtcModal] = useState(true);
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [copiedText, setCopiedText] = useState("");
   const { token, openModal, setOpenModal, setModalMessage } =
@@ -38,23 +38,23 @@ const SellBitcoin = ({ navigation }) => {
   const { getCyptoRate, getBTCAddress } = useSelector(
     (state) => state.TransactionReducer
   );
-
   const dispatch = useDispatch();
-  const USD = 450;
-  const UsdToNaira = USD * parseInt(amount);
-  const toast = useToast();
 
   const btcRate = getCyptoRate.map((rate) => {
     return rate?.btcrate;
   });
 
-  // console.log(`btcRate`, btcRate);
+  const USD =
+    amount < 100 ? btcRate[0] : amount < 1000 ? btcRate[1] : btcRate[2];
+  const UsdToNaira = amount * USD;
+  // console.log(`USD`, USD);
+
+  const toast = useToast();
 
   const handleToggleModal = () => {
     setOpenBtcModal(!openBtcModal);
   };
 
-  const walletAddress = "3nofvnodslrdt67yuyullgfdXd";
   ///******* */ pick image from photo library ********
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -262,7 +262,6 @@ const styles = StyleSheet.create({
 
   body: {
     backgroundColor: "#f4fafe",
-    // alignItems: "center",
     marginTop: 10,
     borderRadius: 20,
     width: "100%",

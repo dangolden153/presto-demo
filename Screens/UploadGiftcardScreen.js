@@ -22,13 +22,29 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [receipt, setReceipt] = useState("");
-
   const dispatch = useDispatch();
-  const { token, setOpenModal, openModal, setModalMessage, cardPictures } =
-    useContext(Context);
+  const {
+    token,
+    setOpenModal,
+    openModal,
+    setModalMessage,
+    cardPictures,
+    setCardPictures,
+  } = useContext(Context);
 
-  const { country, tpe, amount, value, image_big, image_small } =
-    route?.params?.giftcardData;
+  const {
+    country,
+    tpe,
+    amount,
+    value,
+    image_big,
+    image_small,
+    total,
+    setType,
+    setCountry,
+    setValue,
+    setAmount,
+  } = route?.params?.giftcardData;
 
   /// pick image from photo library
   const pickImage = async () => {
@@ -62,6 +78,9 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
 
   ///*******************submit card function *********************
   const handleSellGiftcard = () => {
+    if (photoData?.length === 0) {
+      return alert("kindly upload your card.");
+    }
     dispatch(
       sellGiftcard(
         token,
@@ -76,16 +95,19 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
         setModalMessage,
         setOpenModal,
         image_big,
-        image_small
+        image_small,
+        setCardPictures,
+        setType,
+        setCountry,
+        setValue,
+        setAmount
       )
     );
   };
 
-  const photoData = cardPictures.map((pics) => {
+  let photoData = cardPictures.map((pics) => {
     return pics.uri;
   });
-
-  // console.log("photoData", photoData);
 
   ///////function to display either image preview or instruction text to upload images
   const handleImagePreview = () => {
@@ -114,14 +136,17 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     <>
       <View style={styles.container}>
         <NavBar title="Sell Giftcard" navigation={navigation} />
-        <View style={styles.body}>
+        <ScrollView
+          contentContainerStyle={styles.body}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.btc_table}>
             <Text style={styles.rate_header}>Summary</Text>
 
             <View style={styles.value_table}>
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Country:</Text>
-                <Text style={styles.rate}>{country || "USD"}</Text>
+                <Text style={styles.rate}>{country.trim() || "USD"}</Text>
               </View>
 
               <View style={styles.value_rates}>
@@ -129,14 +154,14 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
                 <Text style={styles.rate}>{tpe || "Physical card"}</Text>
               </View>
 
-              {/* <View style={styles.value_rates}>
-                <Text style={styles.value}>min time:</Text>
-                <Text style={styles.rate}>15mins</Text>
-              </View> */}
-
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Amount:</Text>
-                <Text style={styles.rate}>{amount || "35,000.00"}</Text>
+                <Text style={styles.rate}>{amount || ""}</Text>
+              </View>
+
+              <View style={styles.value_rates}>
+                <Text style={styles.value}>Total Amount:</Text>
+                <Text style={styles.rate}>{total || ""}</Text>
               </View>
             </View>
           </View>
@@ -172,7 +197,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
             loading={loading}
           />
           {/* </View> */}
-        </View>
+        </ScrollView>
       </View>
 
       {/* *********response modal************************** */}
@@ -186,13 +211,13 @@ export default UploadGiftcardScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
+    padding: 15,
     backgroundColor: "white",
   },
   body: {
     backgroundColor: "#f4fafe",
     borderRadius: 20,
-    flex: 1,
+    // flex: 1,
     width: "100%",
     paddingHorizontal: 15,
   },
@@ -260,12 +285,12 @@ const styles = StyleSheet.create({
   },
   value: {
     marginTop: 10,
-    color: "#999999",
+    color: "black",
     fontSize: 16,
   },
   rate: {
     marginTop: 10,
-    color: "black",
+    color: "#999999",
     fontSize: 16,
     textAlign: "right",
     textTransform: "capitalize",

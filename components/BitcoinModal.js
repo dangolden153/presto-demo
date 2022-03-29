@@ -19,10 +19,8 @@ function BitcoinModalScreen({
   amount,
   setAmount,
   UsdToNaira,
-  usdt
+  usdt,
 }) {
-
-
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
@@ -81,8 +79,8 @@ function BitcoinModalScreen({
                     Enter the crypto Amount you want to sell
                   </Text>
                   <Text style={styles.sub_text}>
-                    The minimum amount is $5 , your Presto Wallet
-                    will be credited after confirmation.
+                    The minimum amount is $5 , your Presto Wallet will be
+                    credited after confirmation.
                   </Text>
 
                   {/* **********************selling in dollar container******************** */}
@@ -121,6 +119,7 @@ function BitcoinModalScreen({
                         value={amount}
                         onChangeText={(text) => setAmount(text)}
                         keyboardType="numeric"
+                        type="number"
                       />
                       <Text
                         style={{ color: "#fbddc3", fontFamily: "semibold" }}
@@ -169,7 +168,10 @@ function BitcoinModalScreen({
                     </View>
                   </View>
 
-                  <LinearButton title={usdt ? "Sell USDT" : "Sell Btc"} onPress={handleToggleModal} />
+                  <LinearButton
+                    title={usdt ? "Sell USDT" : "Sell Btc"}
+                    onPress={handleToggleModal}
+                  />
                 </View>
               </Modal.Body>
             </Modal.Content>

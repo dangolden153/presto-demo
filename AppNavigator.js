@@ -1,24 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+
 import {
   createStackNavigator,
   TransitionPresets,
   CardStyleInterpolators,
 } from "@react-navigation/stack";
-import Demo from "./Screens/DemoScreen";
-import RegisterScreen from "./Screens/RegistrationScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import CheckVerification from "./Screens/CheckVerification";
 import VerifiedScreen from "./Screens/VerifiedScreen";
 import CreatePin from "./Screens/CreatePin";
 import HomeScreen from "./Screens/HomeScreen";
-import OnboardingScreen from "./Screens/OnboardingScreen";
-import SecondOnboardingScreen from "./Screens/SecondOnboardingScreen";
-import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
-import Dashboard from "./components/Dashboard";
 // import SellGiftCard from "./Screens/SellGiftCardScreen";
 import ButtomTab from "./Screens/ButtomTab";
 import EditProfile from "./Screens/EditProfile";
@@ -27,8 +19,6 @@ import SellBitcoin from "./Screens/SellBitcoin";
 import TransactionImage from "./Screens/TransactionImage";
 import Withdrawal from "./Screens/Withdrawal";
 import AddBankAccount from "./Screens/AddBankAccount";
-import dropdownScreen from "./Screens/dropdownScreen";
-import { NativeBaseProvider } from "native-base";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import OtpScreen from "./Screens/OtpScreen";
 import SellGiftCardScreen from "./Screens/SellGiftCardScreen";
@@ -55,27 +45,43 @@ import AccountVerScreen from "./Screens/AccountVerScreen";
 import GiftCardScreen from "./Screens/GiftCardScreen";
 import NotificcationScreen from "./Screens/NotificcationScreen";
 import ReferScreen from "./Screens/ReferScreen";
-
-// import TransactionsTopTab from "./Screens/TransactionsTopTab";
+import { getPushDataObject } from "native-notify";
+import ReceiptScreen from "./Screens/ReceiptScreen";
+import ConfirmWithdrawal from "./Screens/ConfirmWithdrawal";
 
 const AppNavigator = () => {
-  const { token, existinguser, setExistinguser, isAuthenticated } =
-    useContext(Context);
+  const {
+    token,
+    existinguser,
+    setExistinguser,
+    isAuthenticated,
+    setNotification,
+    setNotifyMessage,
+    isViewed,
+    setIsViewed,
+  } = useContext(Context);
+  // console.log("isViewed App:>> ", isViewed);
 
-  // *************user token check*********************************
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const value = await AsyncStorage.getItem("@prestoToken");
-  //       // console.log("@userToken'", value);
-  //       setToken(value);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
+  let pushDataObject = getPushDataObject();
+  // ***************checking for notification*********************
+  useEffect(() => {
+    setIsViewed("pending");
+  }, [pushDataObject?.message]);
 
-  //   getData();
-  // }, [isAuthenticated, token]);
+  // ***************checking for notification*********************
+  useEffect(() => {
+    // console.log("Appnavigator pushDataObject message", pushDataObject?.message);
+    if (isViewed === "pending" && pushDataObject?.message) {
+      setNotification(true);
+      setNotifyMessage(pushDataObject?.message);
+      console.log(
+        "Appnavigator pushDataObject message",
+        pushDataObject?.message
+      );
+
+      return;
+    }
+  });
   // ***************check for existing user*********************
   useEffect(() => {
     const getItems = async () => {
@@ -115,7 +121,7 @@ const AppNavigator = () => {
 
   return (
     <Stack.Navigator
-      // initialRouteName="CreatePin"
+      // initialRouteName="ConfirmWithdrawal"
       // mode="modal"
       screenOptions={{
         gestureEnabled: true,
@@ -284,6 +290,23 @@ const AppNavigator = () => {
             component={ReferScreen}
             options={{ headerShown: false }}
           />
+
+          <Stack.Screen
+            name="ReceiptScreen"
+            component={ReceiptScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ConfirmWithdrawal"
+            component={ConfirmWithdrawal}
+            options={{ headerShown: false }}
+            ReceiptScreen
+          />
+          {/* <Stack.Screen
+            name="ReferScreen"
+            component={ReferScreen}
+            options={{ headerShown: false }}ReceiptScreen
+          /> */}
         </>
       ) : (
         <>

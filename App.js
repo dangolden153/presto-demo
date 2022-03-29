@@ -155,9 +155,34 @@ export default function App() {
 // check the modal after transaction on the profile screen
 
 // check notification ...✅ notifications drop the msssage ✅
-// yup validation 30min
 // notifications and referral screen 1hr ✅
-// images url to the card endpoint
+
+// images url and update the card endpoint ..✅
+// card total amount amount * rate ✅
+// empty the card images after any transaction. ✅ and empty card datas ✅
+// trasactions reduction in font size && navbar details title && address field.✅
+
+// the btc and usdt rate on the calculator modal should be updated ✅
+
+// endpoint from agabje for users to send email.✅
+// the splash screen should be changed to presto-text ✅
+// invite button should be removed. The and chat with us ✅
+// notification post and get endpoints ✅
+// yup validation 30min
 // google playstore
+
+// work on the tab icons ✅
+// withdraw reciept screens ✅
+// confirm withdraw screen ✅
+// modify withdraw screen ✅ ..
+// modify add account screen ✅
+// passing the bank array details around the withdraw screen.
+// chat with us screen
+// withdraw history get endpoint-
+// passing in bank image url and bank name when a user is adding an account.
+
 // fonts
-// cant add bank account .
+// spash screen
+
+// calculating the user input base on the rate btc / usdt rate ✅
+// photo is reqiured for card transaction  .✅

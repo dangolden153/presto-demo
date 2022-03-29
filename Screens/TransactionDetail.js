@@ -1,22 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import NavBar from "../components/NavBar";
 import { Context } from "../context";
 import Transaction from "../components/Transaction";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCardTransactions } from "../Redux/Actions/crptoTransaction";
 
-
 const TransactionDetail = ({ route, navigation }) => {
   const [validate, setValidate] = useState("");
   const dispatch = useDispatch();
   const { transaction } = useSelector((state) => state.TransactionReducer);
   const { token, setModalMessage } = useContext(Context);
-  const { card, datas, btc, usdt } = route ?.params
+  const { card, datas, btc, usdt } = route?.params;
   // console.log("transaction", transaction);
   const lastTransaction = transaction[transaction.length - 1];
   // console.log("lastTransaction", route ?.params);
@@ -26,16 +21,21 @@ const TransactionDetail = ({ route, navigation }) => {
     dispatch(fetchCardTransactions(token, setModalMessage));
   }, []);
 
-
   return (
     <View style={styles.container}>
       <NavBar
-        title="Transaction"
+        title="Transaction Details"
         navigation={navigation}
-      // navigate="ButtomTab"
+        // navigate="ButtomTab"
       />
 
-      <Transaction card={card} datas={datas} btc={btc} usdt={usdt} lastTransaction={lastTransaction} />
+      <Transaction
+        card={card}
+        datas={datas}
+        btc={btc}
+        usdt={usdt}
+        lastTransaction={lastTransaction}
+      />
 
       {validate !== "" ? (
         <Text

@@ -10,10 +10,13 @@ import React, { useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
 import Presto from "../images/presto_logo.svg";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 const NotificationItem = ({ item, body, time }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { height } = useWindowDimensions();
+  const { user } = useSelector((state) => state.UserReducer);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -34,7 +37,9 @@ const NotificationItem = ({ item, body, time }) => {
               marginTop: RFValue(2, 580),
             }}
           />
-          <Text style={styles.text}>{time || item.time}</Text>
+          <Text style={styles.text}>
+            {time || moment(item?.created_at).fromNow()}
+          </Text>
           <TouchableOpacity
             style={{
               marginLeft: RFValue(5, 580),
@@ -49,7 +54,7 @@ const NotificationItem = ({ item, body, time }) => {
             )}
           </TouchableOpacity>
         </View>
-        <Text style={styles.header_text}>Hi Daniel!</Text>
+        <Text style={styles.header_text}>Hi {user?.firstname}!</Text>
         <Text
           style={[
             styles.text,
@@ -60,7 +65,7 @@ const NotificationItem = ({ item, body, time }) => {
             },
           ]}
         >
-          {body || item.body}
+          {body || item.message}
         </Text>
       </TouchableOpacity>
     </ScrollView>
@@ -89,7 +94,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: RFValue(10, 580),
     color: "#686868",
-    textTransform: "uppercase",
   },
   header_text: {
     fontSize: RFValue(12, 580),

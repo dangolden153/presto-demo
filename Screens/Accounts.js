@@ -36,6 +36,7 @@ const Accounts = ({}) => {
     setOpenModal,
     setLoading,
     loading,
+    handleRefresh,
   } = useContext(Context);
   const navigation = useNavigation();
   // console.log('deviceHeight', deviceHeight/20);
@@ -51,7 +52,7 @@ const Accounts = ({}) => {
     }
   }, [accountNumber]);
 
-  // ***********handle Submit***************
+  // ***********handle Submit account detail***************
   const handleSubmit = () => {
     setValidate("");
     dispatch(
@@ -62,7 +63,8 @@ const Accounts = ({}) => {
         setLoading,
         setModalMessage,
         setOpenModal,
-        navigation
+        navigation,
+        handleRefresh
       )
     );
   };
@@ -99,7 +101,9 @@ const Accounts = ({}) => {
                 }}
               />
               <View style={styles.title_time}>
-                <Text style={styles.title}>{user?.accountname}</Text>
+                <Text style={styles.title} numberOfLines={1}>
+                  {user?.accountname}
+                </Text>
                 <Text style={styles.time}>{user?.accountno}</Text>
               </View>
             </View>
@@ -205,9 +209,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    fontFamily: "semiBold",
     color: "#666666",
-    // width: "99%",
+    // fontFamily: "semiBold",
   },
   time: {
     fontFamily: "regular",

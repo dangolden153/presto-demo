@@ -18,24 +18,22 @@ const SupportScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <NavBar title="Help & Support" navigation={navigation} />
-      <View style={styles.content} >
-
+      <View style={styles.content}>
         {/* *************Chat with us***************** */}
-      <TouchableOpacity style={styles.textBg} activeOpacity={.5}>
-        <Text style={styles.text}>Chat with us</Text>
-      </TouchableOpacity> 
-      
-  {/* *************Send us an Email***************** */}
-      <TouchableOpacity style={styles.textBg} activeOpacity={.5}>
-        <Text style={styles.text}>Send us an Email</Text>
-      </TouchableOpacity>
-      
-   {/* *************FAQ***************** */}
-       <TouchableOpacity style={styles.textBg} activeOpacity={.5}>
-        <Text style={styles.text}>FAQ (Frequently Ask Question)</Text>
-      </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.textBg} activeOpacity={0.5}>
+          <Text style={styles.text}>Chat with us</Text>
+        </TouchableOpacity> */}
+
+        {/* *************Send us an Email***************** */}
+        <TouchableOpacity style={styles.textBg} activeOpacity={0.5}>
+          <Text style={styles.text}>Send us an Email</Text>
+        </TouchableOpacity>
+
+        {/* *************FAQ***************** */}
+        {/* <TouchableOpacity style={styles.textBg} activeOpacity={0.5}>
+          <Text style={styles.text}>FAQ (Frequently Ask Question)</Text>
+        </TouchableOpacity> */}
       </View>
-      
     </View>
   );
 };
@@ -46,23 +44,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    // paddingHorizontal: 20,
+    padding: 15,
   },
-  content:{
-    paddingHorizontal:20,
+  content: {
+    paddingHorizontal: 20,
     alignItems: "center",
-    marginTop:20
+    marginTop: 20,
   },
-  textBg:{
-      backgroundColor:"#F6F6F6",
-      alignItems: "center",
-      padding: 15,
-      borderRadius:10,
-      width:"95%",
-      marginVertical:10
+  textBg: {
+    backgroundColor: "#F6F6F6",
+    alignItems: "center",
+    padding: 15,
+    borderRadius: 10,
+    width: "100%",
+    marginVertical: 10,
   },
-  text:{
-    color:"#1E2234",
-    fontFamily:"semibold",
-  }
+  text: {
+    color: "#1E2234",
+    fontFamily: "semibold",
+  },
 });

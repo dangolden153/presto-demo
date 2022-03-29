@@ -1,4 +1,31 @@
-import { Fetch_BANKS } from "../Types/type";
+import { Fetch_BANKS, USER_DATA } from "../Types/type";
+
+// *************user details function**************************
+export const fetchUserDetails = (token) => (dispatch) => {
+  let myHeaders = new Headers();
+  // console.log("fetchUserDetails token", token);
+
+  myHeaders.append("Authorization", "Bearer " + token);
+  let requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  fetch("https://api.prestohq.io/api/auth/profile", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      // console.log("users details", result);
+      if (result) {
+        dispatch({ type: USER_DATA, payload: result });
+        return;
+      }
+    })
+    .catch((error) => {
+      // setValidate("unable to process users details");
+      console.log("users details error", error);
+    });
+};
 
 // ************update Avatar******************
 export const updateAvatar =
@@ -141,7 +168,8 @@ export const AddBankAccountDetails =
     setLoading,
     setModalMessage,
     setOpenModal,
-    navigation
+    navigation,
+    handleRefresh
   ) =>
   (dispatch) => {
     setLoading(true);
@@ -151,7 +179,8 @@ export const AddBankAccountDetails =
 
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
-    formdata.append("bank", bank);
+    // formdata.append("bank", bank);
+    formdata.append("bankcode", bank);
     // formdata.append("accountname", accountName);
     formdata.append("accountno", accountNumber);
 
@@ -166,7 +195,7 @@ export const AddBankAccountDetails =
       .then((response) => response.json())
       .then((result) => {
         console.log("bank result", result);
-
+        handleRefresh();
         setLoading(false);
         if (result?.status === 201) {
           navigation.navigate("AccountVerScreen", result?.accountname);

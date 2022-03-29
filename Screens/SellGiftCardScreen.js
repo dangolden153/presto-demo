@@ -16,7 +16,6 @@ import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import Dropdown from "../components/Dropdown/Dropdown";
 import { useSelector } from "react-redux";
-// import { cardData } from "../utils/cardData";
 
 const SellGiftCardScreen = ({ navigation }) => {
   const [country, setCountry] = useState(null);
@@ -25,7 +24,6 @@ const SellGiftCardScreen = ({ navigation }) => {
   const [value, setValue] = useState("");
   const { getCardRate } = useSelector((state) => state.TransactionReducer);
   let emptyArray = [];
-
   const countryIndex = type ? type.country.indexOf(country) : null;
   const cardtypeArr = type ? type.cardtype[countryIndex] : [];
   const cardtypeIndex = value ? cardtypeArr.indexOf(value) : null;
@@ -35,20 +33,29 @@ const SellGiftCardScreen = ({ navigation }) => {
   const tpe = type?.cardname;
   const image_big = type?.image_big;
   const image_small = type?.image_small;
+  const total = amount * rate;
+  // console.log("type :>> ", type);
 
-  // console.log(`type.cardname `, type.cardname);
-  // console.log(`country.countryName `, country);
-  // console.log(`type.cardtype[countryIndex] `, value);
-  // console.log(`type image_big`, type?.image_big);
-  // console.log(`type image_small`, type?.image_small);
-
+  //******navigate to upload card screen with card prpos********
   const handleNavigation = () => {
     if (!country || !tpe || !value || !amount) {
       return alert("credentials required!");
     }
 
     navigation.navigate("UploadGiftcardScreen", {
-      giftcardData: { country, tpe, value, amount, image_big, image_small },
+      giftcardData: {
+        country,
+        tpe,
+        value,
+        amount,
+        image_big,
+        image_small,
+        total,
+        setType,
+        setCountry,
+        setValue,
+        setAmount,
+      },
     });
   };
 
@@ -96,7 +103,6 @@ const SellGiftCardScreen = ({ navigation }) => {
           label="Select Country"
           selectItemLabel="Select a card"
           placeholder={country || "Select Country"}
-          // placeholder={"Select Country"}
           data={countryData}
           setItem={setCountry}
           item={country}
@@ -107,7 +113,6 @@ const SellGiftCardScreen = ({ navigation }) => {
           label="Select a card"
           selectItemLabel="Select Country"
           placeholder={value || "Select Giftcard Value"}
-          // placeholder="Select Giftcard Value"
           data={type ? type.cardtype[countryIndex] : emptyArray}
           setItem={setValue}
           item={amount}
@@ -140,17 +145,9 @@ const SellGiftCardScreen = ({ navigation }) => {
 
           <View style={styles.rate}>
             <Text style={styles.rate_text}>Total amount</Text>
-            <Text style={styles.price}>N</Text>
+            <Text style={styles.price}>N{total || ""}</Text>
           </View>
         </View>
-
-        {/* <LinearGradient
-          // Button Linear Gradient
-          colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
-          style={[styles.btn, { marginBottom: 30 }]}
-        >
-          <Text style={styles.text}>Prepaid card</Text>
-        </LinearGradient> */}
       </ScrollView>
 
       <TouchableOpacity activeOpacity={0.7} onPress={() => handleNavigation()}>
@@ -171,7 +168,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    paddingHorizontal: 25,
+    // paddingHorizontal: 25,
     backgroundColor: "white",
     position: "relative",
   },

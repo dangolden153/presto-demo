@@ -13,50 +13,39 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
 import NotificationItem from "../components/NotificationItem";
 import { Context } from "../context";
-import { getPushDataObject } from "native-notify";
+import { handleNotification } from "../Redux/Actions/notification";
+import { useDispatch, useSelector } from "react-redux";
 
 const NotificcationScreen = ({ route }) => {
-  // ********push notification message**************
-  //   const { message } = route.params;
-  //   console.log("message :>> ", message);
-  const { setNotification, notifyMessage, setIsViewed } = useContext(Context);
-  let pushDataObject = getPushDataObject();
-
+  const dispatch = useDispatch();
+  const { notifications } = useSelector((state) => state.notificationReducer);
+  const { setNotification, notifyMessage, setIsViewed, token, notification } =
+    useContext(Context);
+  console.log("notifications", notifications.sort());
   //   *********set notification to false on screeen is mounted and pass the message************
   useEffect(() => {
     setNotification(false);
     setIsViewed("seen");
-    console.log("notification pushDataObject message");
+    // console.log("isViewd useEffect notification", isViewed);
   }, []);
 
-  const notifications = [
+  useEffect(() => {
+    if (notification) {
+      const title = "";
+      dispatch(handleNotification(token, notifyMessage, title));
+      return;
+    }
+  }, []);
+
+  const notif = [
     {
       time: "1:00",
-      body: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitaeeleifend nulla. Sed rhoncus est ac aliquam cursus. Suspendisse enimneque, ultrices vel neque ut, finibus cursus libero.",
+      message:
+        "we are one stop shop to sell your giftcards and bitcoin. fast, secured & swift payment.",
     },
     {
-      time: "6:00",
-      body: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitaeeleifend nulla. Sed rhoncus est ac aliquam cursus. Suspendisse enimneque, ultrices vel neque ut, finibus cursus libero.",
-    },
-    {
-      time: "3:20",
-      body: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitaeeleifend nulla. Sed rhoncus est ac aliquam cursus. Suspendisse enimneque, ultrices vel neque ut, finibus cursus libero.",
-    },
-    {
-      time: "3:00",
-      body: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitaeeleifend nulla. Sed rhoncus est ac aliquam cursus. Suspendisse enimneque, ultrices vel neque ut, finibus cursus libero.",
-    },
-    {
-      time: "8:02",
-      body: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitaeeleifend nulla. Sed rhoncus est ac aliquam cursus. Suspendisse enimneque, ultrices vel neque ut, finibus cursus libero.",
-    },
-    {
-      time: "8:02",
-      body: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitaeeleifend nulla. Sed rhoncus est ac aliquam cursus. Suspendisse enimneque, ultrices vel neque ut, finibus cursus libero.",
-    },
-    {
-      time: "8:02",
-      body: " In vitaeeleifend nulla. Sed rhoncus est ac aliquam cursus. Suspendisse enimneque, ultrices vel neque ut, finibus cursus libero.",
+      time: "1:00",
+      message: "Sell Your Gift Cards for Instant Cash and Naira!.",
     },
   ];
 
@@ -72,7 +61,7 @@ const NotificcationScreen = ({ route }) => {
           <NotificationItem body={notifyMessage} time={time} />
         ) : null}
         <FlatList
-          data={notifications}
+          data={notif}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => item + index.toString()}
           renderItem={({ item }) => <NotificationItem item={item} />}

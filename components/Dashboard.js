@@ -54,7 +54,7 @@ const Dashboard = ({ navigation }) => {
     const setUsername = async () => {
       try {
         await AsyncStorage.setItem("@username", user?.firstname);
-        console.log("username updated");
+        // console.log("username updated");
       } catch (error) {
         console.log("username cant be updated", error);
       }
@@ -69,7 +69,7 @@ const Dashboard = ({ navigation }) => {
     const setUsername = async () => {
       try {
         await AsyncStorage.setItem("@pics", user?.profile_pic);
-        console.log("profile_pic updated");
+        // console.log("profile_pic updated");
       } catch (error) {
         // console.log("username cant be updated", error);
       }
@@ -98,7 +98,7 @@ const Dashboard = ({ navigation }) => {
       try {
         const value = await AsyncStorage.getItem("@email");
         setExistinguser(value);
-        console.log("existing username fetched", value);
+        // console.log("existing username fetched", value);
       } catch (error) {
         console.log("username cant be updated", error);
       }
@@ -129,28 +129,37 @@ const Dashboard = ({ navigation }) => {
             Today {alphaDay}, {getDate} {alphaMonth},
           </Text>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("NotificcationScreen", { messg: "nnnnnn" })
-            }
+            onPress={() => navigation.navigate("NotificcationScreen")}
             style={{ position: "relative" }}
           >
             {notification && (
               <View
                 style={{
                   backgroundColor: "red",
-                  height: RFValue(8, 580),
-                  width: RFValue(8, 580),
+                  height: RFValue(11, 580),
+                  width: RFValue(11, 580),
                   borderRadius: 100,
                   position: "absolute",
                   right: 3,
                   zIndex: 10,
-
+                  alignItems: "center",
+                  justifyContent: "center",
                   // marginHorizontal: RFValue(5, 580),
                   // marginTop: RFValue(2, 580),
                 }}
-              />
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontSize: RFValue(7, 580),
+                  }}
+                >
+                  1
+                </Text>
+              </View>
             )}
-            <Ionicons name="notifications-outline" size={24} color="black" />
+            <Ionicons name="notifications-outline" size={30} color="black" />
           </TouchableOpacity>
         </View>
       </View>
@@ -163,17 +172,6 @@ const Dashboard = ({ navigation }) => {
           onPress={() => navigation.navigate("GiftCardScreen")} // SellGiftCardScreen
           style={styles.left_section}
         >
-          {/* <Image
-            source={card}
-            style={{
-              width: 250,
-              height: 250,
-              position: "absolute",
-              resizeMode: "contain",
-              top: -100,
-              transform: [{ rotate: "120deg" }],
-            }}
-          /> */}
           <PaymentCard
             style={{
               position: "absolute",
@@ -202,7 +200,7 @@ const Dashboard = ({ navigation }) => {
       {/* ************ Refer a friend down section container *******************/}
       <TouchableOpacity
         style={styles.bottom_section}
-        onPress={() => navigation.navigate("ReferScreen")}
+        onPress={() => navigation.navigate("ReceiptScreen")} // ReferScreen
       >
         <View style={styles.bttm_txt_container}>
           <Text style={styles.bottom_bold_text}>Refer and earn</Text>

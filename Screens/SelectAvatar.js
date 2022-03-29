@@ -51,7 +51,7 @@ const SelectAvatar = () => {
   const avatar3 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed3.png";
   const avatar2 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed2.png";
   const avatar1 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed1.png";
-  const avatar = "https://api.prestohq.io/assets/Avatar1.svg";
+  const avatar = "https://prestohq.io/wp-content/uploads/2022/03/unnamed.png";
 
   if (loading) {
     return <Loading />;

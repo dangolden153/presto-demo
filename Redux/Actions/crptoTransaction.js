@@ -311,13 +311,18 @@ export const sellGiftcard =
     setModalMessage,
     setOpenModal,
     image_big,
-    image_small
+    image_small,
+    cardPictures,
+    setType,
+    setCountry,
+    setValue,
+    setAmount
   ) =>
   (dispatch) => {
     setLoading(true);
 
     let myHeaders = new Headers();
-    console.log("photoData[1] :>> ", photoData[1]);
+    // console.log("photoData[1] :>> ", photoData[1]);
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
     formdata.append("country", country);
@@ -406,14 +411,15 @@ export const sellGiftcard =
           uri: photoData[7],
         });
     }
-    // {
-    //   photoData[6] &&
-    //     formdata.append("receipt", {
-    //       name: "dan",
-    //       type: "image/jpeg",
-    //       uri: photoData[6],
-    //     });
-    // }
+    {
+      photoData[8] &&
+        formdata.append("receipt", {
+          name: "dan",
+          type: "image/jpeg",
+          uri: photoData[8],
+        });
+    }
+
     let requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -424,6 +430,12 @@ export const sellGiftcard =
     fetch("https://api.prestohq.io/api/cardtransaction", requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        photoData = null;
+        cardPictures([]);
+        setType("");
+        setCountry("");
+        setValue("");
+        setAmount("");
         setLoading(false);
         console.log("card result", result);
         if (result?.result === "Transaction Sent") {

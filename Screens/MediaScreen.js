@@ -39,7 +39,7 @@ const MediaScreen = ({ navigation }) => {
   const widgetStyles = useMemo(
     () => ({
       margin: 2,
-      bgColor: "gray",
+      bgColor: "black",
       spinnerColor: "purple",
       widgetWidth: 99,
       screenStyle: {
@@ -69,13 +69,15 @@ const MediaScreen = ({ navigation }) => {
   const widgetNavigator = useMemo(
     () => ({
       Texts: {
-        finish: <Feather name="check-circle" size={24} color="black" />,
-        back: <AntDesign name="back" size={24} color="black" />,
-        selected: "finish",
+        finish: "finish",
+        back: <Ionicons name="arrow-back" size={24} color="white" />,
+        selected: "selected",
+        color: "white",
       },
-      // midTextColor: "green",
+      midTextColor: "white",
       minSelection: 1,
-      // color: "white",
+      buttonTextStyle: { color: "white" },
+
       onBack: () => navigation.goBack(),
       onSuccess: (data) => onSuccess(data),
     }),

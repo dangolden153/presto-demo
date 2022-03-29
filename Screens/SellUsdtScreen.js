@@ -29,14 +29,23 @@ const SellUsdtScreen = ({ navigation }) => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
+  const [USDTRate, setUSDTRate] = useState(0);
   const { getCyptoRate, getUSDTAddress } = useSelector(
     (state) => state.TransactionReducer
   );
   const { token, openModal, setOpenModal, setModalMessage } =
     useContext(Context);
   const dispatch = useDispatch();
-  const USD = 450;
-  const UsdToNaira = USD * parseInt(amount);
+
+  const usdtRate = getCyptoRate.map((rate) => {
+    return rate?.usdtrate;
+  });
+  // console.log("usdtRate :>> ", usdtRate);
+  const USDT =
+    amount < 100 ? usdtRate[0] : amount < 1000 ? usdtRate[1] : usdtRate[2];
+  const UsdToNaira = amount * USDT;
+  // console.log("USDT", USDT);
+
   const toast = useToast();
 
   const handleToggleModal = () => {
@@ -47,11 +56,7 @@ const SellUsdtScreen = ({ navigation }) => {
     setOpenAddress(!openAddress);
   };
 
-  const usdtRate = getCyptoRate.map((rate) => {
-    return rate?.usdtrate;
-  });
   // console.log(`usdtRate`, usdtRate);
-
   /// pick image from photo library
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -226,7 +231,7 @@ const SellUsdtScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
+    padding: 15,
     backgroundColor: "white",
     // position: "relative",
   },
@@ -315,6 +320,12 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
+  },
+  btc_text: {
+    fontSize: 14,
+    color: "#999999",
+    textAlign: "center",
+    marginTop: 10,
   },
 });
 

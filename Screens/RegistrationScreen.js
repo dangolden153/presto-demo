@@ -1,21 +1,15 @@
-import React, { useState, useLayoutEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
   TextInput,
-  Image,
   TouchableOpacity,
-  SafeAreaView,
-  Platform,
-  TouchableWithoutFeedback,
   ActivityIndicator,
   ScrollView,
   Dimensions,
 } from "react-native";
-import { Button } from "react-native-elements";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Log_in from "../images/Login.svg";
@@ -37,6 +31,7 @@ const RegistrationScreen = ({ navigation }) => {
   const [phoneno, setPhoneno] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(true);
+  const [referralCode, setReferralCode] = useState("");
   const toggleRadio = () => setRadioBtn(!radioBtn);
   const { openModal, setOpenModal, loading, setLoading, setModalMessage } =
     useContext(Context);
@@ -98,23 +93,22 @@ const RegistrationScreen = ({ navigation }) => {
     fetch("https://api.prestohq.io/api/auth/register", requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        console.log("res", res);
         setLoading(false);
         if (res?.status === "201") {
           return navigation.navigate("CheckVerification");
-          // console.log("res", res);
         }
-        // console.log("ress", res?.data);
-        // console.log("ress typeof", typeof res);
-        console.log("ress email", res);
-        setModalMessage({ status: "fail", text: res });
+        // console.log("res", JSON.parse(res).email);
         setOpenModal(true);
+        setModalMessage({
+          status: "fail",
+          text: JSON.parse(res).email
+            ? JSON.parse(res).email[0]
+            : "invalid credentials given.",
+        });
       })
       .catch((error) => {
         console.log("error", error);
-        console.log("error", error?.response);
-
-        setModalMessage({ status: "fail", text: result?.error });
+        setModalMessage({ status: "fail", text: error });
         setLoading(false);
       });
   };
@@ -284,6 +278,19 @@ const RegistrationScreen = ({ navigation }) => {
                     )}
                   </TouchableOpacity>
                 </View>
+              </View>
+
+              {/* *************referral code***************************** */}
+              <View style={styles.inputTextContainer}>
+                <Text style={styles.input_text}>referral code (optional)</Text>
+                <TextInput
+                  placeholderTextColor={"black"}
+                  style={styles.input}
+                  value={referralCode}
+                  onChangeText={(text) => setReferralCode(text)}
+                  // type="number"
+                  autoFocus
+                />
               </View>
             </View>
           </ScrollView>

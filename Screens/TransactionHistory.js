@@ -14,7 +14,6 @@ import { Context } from "../context";
 import { fetchCardTransactions } from "../Redux/Actions/crptoTransaction";
 import NavBar from "../components/NavBar";
 
-
 const TransactionHistory = ({ navigation }) => {
   const { transaction } = useSelector((state) => state.TransactionReducer);
   const { token, setModalMessage } = useContext(Context);
@@ -36,12 +35,12 @@ const TransactionHistory = ({ navigation }) => {
         <NavBar
           navigation={navigation}
           title="Card Transaction"
-        // navigate="PendingTransactionScreen"
-        // full
+          // navigate="PendingTransactionScreen"
+          // full
         />
 
         <View style={styles.body} showsVerticalScrollIndicator={false}>
-          <TextInput style={styles.input} placeholder="Search Transaction" />
+          {/* <TextInput style={styles.input} placeholder="Search Transaction" /> */}
 
           {transaction.length == 0 ? (
             <View
@@ -54,15 +53,15 @@ const TransactionHistory = ({ navigation }) => {
               <Text style={{ fontSize: 20 }}>No transaction found</Text>
             </View>
           ) : (
-              <FlatList
-                data={transaction}
-                keyExtractor={(item, index) => item + index.toString()}
-                renderItem={({ item }) => <TransactionItems card datas={item} />}
-                onRefresh={handleTrans}
-                refreshing={refresh}
-                showsVerticalScrollIndicator={false}
-              />
-            )}
+            <FlatList
+              data={transaction}
+              keyExtractor={(item, index) => item + index.toString()}
+              renderItem={({ item }) => <TransactionItems card datas={item} />}
+              onRefresh={handleTrans}
+              refreshing={refresh}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
         </View>
       </SafeAreaView>
     </>
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flex: 1,
     width: "100%",
-    // paddingVertical: 10,
+    paddingVertical: 10,
     paddingHorizontal: 10,
   },
   input: {

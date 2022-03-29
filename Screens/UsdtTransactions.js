@@ -32,7 +32,7 @@ const UsdtTransactions = ({ navigation }) => {
         <NavBar navigation={navigation} title="USDT Transaction" />
 
         <View style={styles.body} showsVerticalScrollIndicator={false}>
-          <TextInput style={styles.input} placeholder="Search Transaction" />
+          {/* <TextInput style={styles.input} placeholder="Search Transaction" /> */}
 
           {usdtTransaction?.length === 0 ? (
             <View
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flex: 1,
     width: "100%",
-    // paddingVertical: 10,
+    paddingVertical: 10,
     paddingHorizontal: 10,
   },
   input: {

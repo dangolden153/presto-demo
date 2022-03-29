@@ -66,7 +66,7 @@ const ReferScreen = () => {
           Share the code between and ask them{"\n"} to enter it during sign up
         </Text>
       </View>
-      <View
+      {/* <View
         style={{
           flex: 1,
           margin: 10,
@@ -74,7 +74,7 @@ const ReferScreen = () => {
         }}
       >
         <LinearButton title="Invite" />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };

@@ -118,9 +118,13 @@ const LoginScreen = ({ navigation }) => {
           handleToast();
         } else {
           setOpenModal(true);
-          console.log("login error", result?.error);
+          console.log("login error", result);
+          // console.log("login error", result?.email[0]);
           setLoading(false);
-          setModalMessage({ status: "fail", text: result?.error });
+          setModalMessage({
+            status: "fail",
+            text: "Invalid credentials",
+          });
         }
       })
       .catch((error) => {
