@@ -4,7 +4,7 @@ import { Image } from "react-native";
 import {
   Feather,
   FontAwesome,
-  MaterialCommunityIcons
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -13,17 +13,23 @@ import AppLoading from "expo-app-loading";
 import pics from "../images/bg.png";
 import { useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MediumText, RegularText } from "./Text";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const Card = () => {
   const [hideBalance, setHideBalance] = useState(true);
   const [balance, setBalance] = useState(null);
-  const { user } = useSelector(state => state.UserReducer);
+  const { user } = useSelector((state) => state.UserReducer);
   const navigation = useNavigation();
 
   const handleToggle = () => {
     setHideBalance(!hideBalance);
     storeData();
   };
+
+  function numberWithCommas(x) {
+    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   // console.log("user hideBalance", hideBalance);
 
   // *************set hide balance value from storage*********************************
@@ -55,7 +61,7 @@ const Card = () => {
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf")
+    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
   });
 
   if (!fontLoaded) {
@@ -74,10 +80,10 @@ const Card = () => {
           width: 250,
           height: 250,
           resizeMode: "contain",
-          position: "absolute"
+          position: "absolute",
         }}
       />
-      <Text style={styles.up_section_text}>Your available balance</Text>
+      <RegularText blackTextColor>Your available balance</RegularText>
       <View style={styles.price_icon}>
         {balance === "true" ? (
           <View style={styles.icon_price}>
@@ -86,24 +92,30 @@ const Card = () => {
               size={24}
               color="black"
             />
-            <Text style={styles.price}>{user?.balance} .00</Text>
+            <MediumText blackTextColor bold>
+              {numberWithCommas(user?.balance)} .00
+            </MediumText>
           </View>
         ) : (
-          <Text
-            style={{
-              fontSize: 18,
-              color: "black",
-              marginRight: 20
-            }}
-          >
+          <MediumText blackTextColor bold>
             ****
-          </Text>
+          </MediumText>
         )}
         <TouchableOpacity onPress={() => handleToggle()}>
           {balance === "true" ? (
-            <FontAwesome name="eye" size={24} color="black" />
+            <FontAwesome
+              name="eye"
+              size={24}
+              color="black"
+              style={{ marginLeft: RFValue(5, 580) }}
+            />
           ) : (
-            <FontAwesome name="eye-slash" size={24} color="black" />
+            <FontAwesome
+              name="eye-slash"
+              size={24}
+              color="black"
+              style={{ marginLeft: RFValue(5, 580) }}
+            />
           )}
         </TouchableOpacity>
       </View>
@@ -116,7 +128,7 @@ const Card = () => {
           fontFamily: "semibold",
 
           borderRadius: 10,
-          marginTop: 10
+          marginTop: 10,
         }}
         title="withdraw"
         // raised
@@ -138,16 +150,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 10
+    paddingVertical: 10,
   },
 
   up_section_text: {
-    fontFamily: "regular"
+    fontFamily: "regular",
   },
   icon_price: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   price_icon: {
     flexDirection: "row",
@@ -157,12 +169,12 @@ const styles = StyleSheet.create({
     // width: 120,
     marginBottom: 7,
     // overflow: "hidden",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   price: {
     // fontFamily: "medium",
     fontSize: 18,
     color: "black",
-    marginRight: 20
-  }
+    marginRight: 20,
+  },
 });

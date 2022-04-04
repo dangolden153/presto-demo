@@ -12,7 +12,9 @@ const WithdrawalContent = ({ transationDetails }) => {
       <Text style={styles.title}>Beneficiary:</Text>
       <Text style={styles.subtitle}>{transationDetails?.accountName}</Text>
       <Text style={styles.title}>Beneficiary Bank:</Text>
-      <Text style={styles.subtitle}>{transationDetails?.bankName}</Text>
+      <Text style={styles.subtitle}>
+        {transationDetails?.bankName || "no bank name"}
+      </Text>
       <Text style={styles.title}>Description:</Text>
       <Text style={styles.subtitle}>{transationDetails?.note}</Text>
     </View>
@@ -30,12 +32,12 @@ const styles = StyleSheet.create({
     padding: RFValue(15, 580),
   },
   title: {
-    fontSize: RFValue(14, 580),
+    fontSize: 16,
     color: colors.primaryColor,
     fontWeight: "bold",
   },
   subtitle: {
-    fontSize: RFValue(14, 580),
+    fontSize: 15,
     color: colors.primaryColor,
     marginBottom: RFValue(8, 580),
   },

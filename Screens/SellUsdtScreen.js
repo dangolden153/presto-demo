@@ -8,10 +8,8 @@ import {
   SafeAreaView,
   ScrollView,
   Clipboard,
-  Dimensions,
 } from "react-native";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
-import { Button } from "react-native-elements";
 import NavBar from "../components/NavBar";
 import * as ImagePicker from "expo-image-picker";
 import { handleSellUsdt } from "../Redux/Actions/crptoTransaction";
@@ -29,7 +27,6 @@ const SellUsdtScreen = ({ navigation }) => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
-  const [USDTRate, setUSDTRate] = useState(0);
   const { getCyptoRate, getUSDTAddress } = useSelector(
     (state) => state.TransactionReducer
   );
@@ -115,7 +112,7 @@ const SellUsdtScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.body}
         >
-          <View style={{ alignItems: "center" }}>
+          {/* <View style={{ alignItems: "center" }}>
             <TouchableOpacity>
               <AntDesign
                 style={styles.code}
@@ -124,8 +121,36 @@ const SellUsdtScreen = ({ navigation }) => {
                 color="black"
               />
             </TouchableOpacity>
+          </View> */}
+
+          {/* ************************USDT Rate Table******************************** */}
+          <View style={styles.btc_table}>
+            <Text style={styles.rate_header}>USDT Rate Table </Text>
+
+            <View style={styles.value_table}>
+              <View style={styles.value_rates}>
+                <Text style={styles.value_header}>Value</Text>
+                <Text style={styles.value_header}>Rate </Text>
+              </View>
+
+              <View style={styles.value_rates}>
+                <Text style={styles.value}>less that 100</Text>
+                <Text style={styles.value}>{usdtRate[0]}</Text>
+              </View>
+
+              <View style={styles.value_rates}>
+                <Text style={styles.value}>100+ to 1,000</Text>
+                <Text style={styles.value}>{usdtRate[1]}</Text>
+              </View>
+
+              <View style={styles.value_rates}>
+                <Text style={styles.value}>Above 1,000</Text>
+                <Text style={styles.value}>{usdtRate[2]}</Text>
+              </View>
+            </View>
           </View>
 
+          {/* ******************Select wallet address***************************** */}
           <LinearButton
             title="Select wallet address"
             onPress={handleToggleAdress}
@@ -179,33 +204,7 @@ const SellUsdtScreen = ({ navigation }) => {
                 onPress={handleSubmit}
               />
             </View>
-          ) : (
-            <View style={styles.btc_table}>
-              <Text style={styles.rate_header}>Sell USDT</Text>
-
-              <View style={styles.value_table}>
-                <View style={styles.value_rates}>
-                  <Text style={styles.value_header}>Value</Text>
-                  <Text style={styles.value_header}>Rate </Text>
-                </View>
-
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>less that 100</Text>
-                  <Text style={styles.value}>{usdtRate[0]}</Text>
-                </View>
-
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>100+ to 1,000</Text>
-                  <Text style={styles.value}>{usdtRate[1]}</Text>
-                </View>
-
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>Above 1,000</Text>
-                  <Text style={styles.value}>{usdtRate[2]}</Text>
-                </View>
-              </View>
-            </View>
-          )}
+          ) : null}
         </ScrollView>
       </SafeAreaView>
 
@@ -244,6 +243,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 10,
     paddingVertical: 5,
+    flex: 1,
   },
 
   upload_container: {

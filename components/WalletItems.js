@@ -1,0 +1,46 @@
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React from "react";
+
+const WalletItems = ({ item }) => {
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  const accountNumber = item?.accountno.toString();
+  let lastIndex = accountNumber[accountNumber.length - 1];
+  const accountNum = accountNumber.substr(6, lastIndex);
+  //   console.log("accountNumber :>> ", accountNum);
+
+  // console.log("item :>> ", item);
+
+  return (
+    <TouchableOpacity style={styles.content}>
+      <Image
+        style={styles.img}
+        source={{
+          uri: "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg",
+        }}
+      />
+      <View>
+        <Text style={styles.text}>{item?.bank} bank</Text>
+        <Text style={styles.text}>****{accountNum}</Text>
+      </View>
+      <Text style={styles.text}>{numberWithCommas(item?.amount)}</Text>
+    </TouchableOpacity>
+  );
+};
+
+export default WalletItems;
+
+const styles = StyleSheet.create({
+  content: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  img: {
+    width: 60,
+    height: 60,
+  },
+});

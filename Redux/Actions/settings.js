@@ -53,7 +53,8 @@ export const validateCurrentPin =
     setLoading,
     navigation,
     navigate,
-    withdraw
+    withdraw,
+    handleWithdrawal
   ) =>
   (dispatch) => {
     setLoading(true);
@@ -77,10 +78,11 @@ export const validateCurrentPin =
       .then((response) => response.json())
       .then((result) => {
         setLoading(false);
-        // console.log("reset result", result);
+        console.log("reset result", result);
         if (result?.status === "200") {
           if (withdraw) {
-            console.log("Withdraw Approved");
+            console.log("Withdraw Approved!");
+            handleWithdrawal();
             return;
           }
           if (navigate) {

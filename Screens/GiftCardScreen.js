@@ -4,66 +4,58 @@ import {
   Text,
   TouchableOpacity,
   View,
-  useWindowDimensions,
 } from "react-native";
 import React from "react";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import CARD from "../images/cards.svg";
+import Funds from "../images/share.svg";
+
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { StatusBar } from "expo-status-bar";
-const GiftCardScreen = ({ navigation }) => {
-  const { height, width } = useWindowDimensions();
+import { LinearGradient } from "expo-linear-gradient";
 
+const GiftCardScreen = ({ navigation }) => {
   // console.log("height :>> ", height);
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <NavBar title="Sell Giftcard" />
 
-      {/* ***********postpaid****************** */}
-      <TouchableOpacity
-        style={[styles.btn]}
-        activeOpacity={0.7}
-        onPress={() => {
-          Linking.openURL("http://api.whatsapp.com/send?phone=+2347033201529");
-        }}
-      >
-        <View style={styles.icon_text}>
-          <TouchableOpacity
-            style={[
-              styles.whatsapp_icon,
-              { height: RFValue(45, height), width: RFValue(38, width) },
-            ]}
+      <View style={styles.btn_container}>
+        {/* ***********postpaid****************** */}
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => {
+            Linking.openURL(
+              "http://api.whatsapp.com/send?phone=+2347033201529"
+            );
+          }}
+        >
+          <LinearGradient
+            // Button Linear Gradient
+            colors={["#0B365B", "#0B365B", "#124672"]}
+            style={styles.btn}
           >
-            <FontAwesome name="whatsapp" size={40} color="#0B365B" />
-          </TouchableOpacity>
+            <Funds style={{ marginBottom: RFValue(10, 580) }} />
+            <Text style={styles.text}>Funds</Text>
+          </LinearGradient>
+        </TouchableOpacity>
 
-          <Text style={[styles.text, { color: "#0B365B" }]}>Funds</Text>
-        </View>
-        <Ionicons name="ios-chevron-forward" size={24} color="black" />
-      </TouchableOpacity>
+        {/* **************** sell Giftcard *************************** */}
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate("SellGiftCardScreen")}
+        >
+          <View style={[styles.btn, styles.usdt]}>
+            <CARD height={80} width={80} />
 
-      {/* ***********sell Giftcard****************** */}
-      <TouchableOpacity
-        style={[styles.btn]}
-        activeOpacity={0.7}
-        onPress={() => navigation.navigate("SellGiftCardScreen")}
-      >
-        <View style={styles.icon_text}>
-          <TouchableOpacity
-            style={[
-              styles.whatsapp_icon,
-              { height: RFValue(45, height), width: RFValue(38, width) },
-            ]}
-          >
-            <CARD />
-          </TouchableOpacity>
-
-          <Text style={[styles.text, { color: "#0B365B" }]}>Sell Giftcard</Text>
-        </View>
-        <Ionicons name="ios-chevron-forward" size={24} color="black" />
-      </TouchableOpacity>
+            <Text style={[styles.text, { color: "#0B365B" }]}>
+              Sell Giftcard
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -74,28 +66,37 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "white",
   },
-
+  btn_container: {
+    width: "100%",
+    marginTop: 20,
+  },
   btn: {
-    flexDirection: "row",
+    width: "100%",
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 40,
-    // backgroundColor: "pink",
-    backgroundColor: "#f4fafe",
-    padding: 15,
-    borderRadius: 5,
   },
   icon_text: {
     flexDirection: "row",
   },
   text: {
-    fontSize: 17,
+    color: "white",
+    textAlign: "center",
+    fontSize: RFValue(12, 580),
     fontFamily: "bold",
-    marginLeft: 15,
   },
   whatsapp_icon: {
     backgroundColor: "white",
     alignItems: "center",
     borderRadius: 5,
+  },
+  usdt: {
+    borderColor: "#0B365B",
+    borderWidth: 3,
+    borderRadius: 10,
+    marginTop: 40,
   },
 });
 

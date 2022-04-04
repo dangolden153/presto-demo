@@ -21,12 +21,17 @@ import NoAccountDetails from "../components/NoAccountDetails";
 import { RFValue } from "react-native-responsive-fontsize";
 import { colors } from "../components/Colors";
 import { LinearGradient } from "expo-linear-gradient";
+import { SvgUri } from "react-native-svg";
 
 const Withdrawal = ({ navigation }) => {
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
+  const [validate, setValidate] = useState("");
   const [details, setDetails] = useState(null);
-  const { user } = useSelector((state) => state.UserReducer);
+  // const {width, height} = useWindowDimensions();
+  const { bankDetails } = useSelector((state) => state.BankTransactionReducer);
+
+  // console.log("bankDetails :>> ", bankDetails);
 
   const {
     token,
@@ -37,43 +42,6 @@ const Withdrawal = ({ navigation }) => {
     setLoading,
     loading,
   } = useContext(Context);
-  // console.log("user", user);
-
-  const handleWithdraw = () => {
-    if (!amount) {
-      alert("please enter an amount");
-      return null;
-    }
-    setLoading(true);
-
-    let myHeaders = new Headers();
-    console.log("token", token);
-
-    myHeaders.append("Authorization", "Bearer " + token);
-    let formdata = new FormData();
-    formdata.append("amount", amount);
-
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    fetch("https://api.prestohq.io/api/requestwithdrawal", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setLoading(false);
-        console.log("bank result", result);
-        setModalMessage(result?.message || result?.result);
-        setOpenModal(true);
-      })
-      .catch((error) => {
-        setLoading(false);
-        // setValidate("unable to process transaction");
-        console.log("error", error);
-      });
-  };
 
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
@@ -86,6 +54,7 @@ const Withdrawal = ({ navigation }) => {
     return <AppLoading />;
   }
 
+  // **************validate form***********************
   const handleDetails = (detail) => {
     if (!amount) {
       return alert("Please enter amount");
@@ -97,35 +66,19 @@ const Withdrawal = ({ navigation }) => {
     setDetails(detail);
   };
 
-  console.log("details :>> ", details);
-  const banks = [
-    {
-      bankName: "First bank",
-      accountno: "2063033889",
-      accountname: "AGBAJE MUHAMMED AFOLABI",
-    },
-
-    {
-      bankName: "Zenith bank",
-      accountno: "2063033880",
-      accountname: "OLANREWAJU DANIEL",
-    },
-    {
-      bankName: "First bank",
-      accountno: "2063033881",
-      accountname: "AGBAJE MUHAMMED AFOLABI",
-    },
-
-    {
-      bankName: "Zenith bank",
-      accountno: "2063033882",
-      accountname: "OLANREWAJU DANIEL",
-    },
-  ];
+  // **************handle navigation*****************
   const handleNavigation = () => {
+    if (!details) {
+      return alert("Please select a bank");
+    }
+
+    if (amount < 2000) {
+      return setValidate("Minimium Withdrawal must be 2,000");
+    }
     const accountNumber = details.accountno;
     const accountName = details.accountname;
-    const bankName = details.bankName;
+    const bankName = details.bank;
+    const bankCode = details.bankcode;
     navigation.navigate("ConfirmWithdrawal", {
       details: {
         amount,
@@ -133,16 +86,19 @@ const Withdrawal = ({ navigation }) => {
         accountNumber,
         accountName,
         bankName,
+        bankCode,
       },
     });
   };
+
+  // console.log("details :>> ", details);
   return (
     <>
       <SafeAreaView style={styles.container}>
         {/* up section container */}
 
-        <NavBar title="Wallet" navigation={navigation} />
-        {user?.accountno ? (
+        <NavBar title="Withdraw" navigation={navigation} />
+        {bankDetails?.length > 0 ? (
           <View style={styles.body}>
             <Text style={styles.title}>Bank Account</Text>
 
@@ -152,7 +108,7 @@ const Withdrawal = ({ navigation }) => {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             >
-              {banks.map((item, index) => (
+              {bankDetails.map((item, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
@@ -169,6 +125,16 @@ const Withdrawal = ({ navigation }) => {
                   ]}
                   onPress={() => handleDetails(item)}
                 >
+                  {/* {item?.image ? (
+                    <SvgUri
+                      height="70"
+                      width="70"
+                      // resizeMode="contain"
+                      uri={item?.image}
+                    />
+                  ) : (
+                   
+                  )} */}
                   <Image
                     source={{
                       uri: "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg",
@@ -178,10 +144,12 @@ const Withdrawal = ({ navigation }) => {
                       width: 70,
                       // borderRadius: 10,
                       marginBottom: 5,
+                      resizeMode: "contain",
                     }}
                   />
+
                   <Text style={styles.title} numberOfLines={1}>
-                    {item?.bankName}
+                    {item?.bank || "no bank name"}
                   </Text>
                   <Text style={styles.title} numberOfLines={1}>
                     {item?.accountname}
@@ -203,9 +171,12 @@ const Withdrawal = ({ navigation }) => {
                 style={styles.input}
                 placeholder="Enter Amount"
               />
+              <Text style={{ color: "red", opacity: 0.5 }}>{validate}</Text>
               {/* *************bank name******************* */}
               {details && (
-                <Text style={styles.border_text}>{details?.bankName}</Text>
+                <Text style={styles.border_text}>
+                  {details?.bank || "no bank name"}
+                </Text>
               )}
               {/* *************account name******************* */}
               {details && (
@@ -223,13 +194,7 @@ const Withdrawal = ({ navigation }) => {
                 multiline={true}
               />
             </ScrollView>
-            {/* <View style={styles.btn_container}>
-              <LinearButton
-                onPress={handleWithdraw}
-                title="Withdraw"
-                loading={loading}
-              />
-            </View> */}
+
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => handleNavigation()}
@@ -282,7 +247,6 @@ const styles = StyleSheet.create({
   banks: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
     marginVertical: RFValue(10, 580),
     paddingVertical: RFValue(10, 580),
     borderRadius: RFValue(10, 580),
@@ -291,7 +255,7 @@ const styles = StyleSheet.create({
     margin: RFValue(10, 580),
     padding: RFValue(10, 580),
     width: RFValue(120, 580),
-    backgroundColor: "#f4fafe",
+    backgroundColor: "white",
   },
   form: {},
   // wallet_title: {
@@ -339,7 +303,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "100%",
     alignSelf: "center",
-    fontSize: RFValue(14, 580),
+    // fontSize: RFValue(14, 580),
+    fontSize: 16,
   },
   border_text: {
     backgroundColor: "white",
@@ -347,7 +312,7 @@ const styles = StyleSheet.create({
     borderRadius: RFValue(2, 580),
     marginVertical: RFValue(5, 580),
     padding: RFValue(10, 580),
-    fontSize: RFValue(14, 580),
+    fontSize: 16,
   },
   text: {
     color: "white",

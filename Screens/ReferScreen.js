@@ -14,9 +14,12 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import Copy from "../images/copy_icon.svg";
 import LinearButton from "../components/LinearButton";
 import { useToast } from "react-native-toast-notifications";
+import { useSelector } from "react-redux";
 
-const ReferScreen = () => {
+const ReferScreen = ({}) => {
   const { width } = useWindowDimensions();
+  const { user } = useSelector((state) => state.UserReducer);
+
   const toast = useToast();
 
   // ************notification ***********
@@ -48,9 +51,9 @@ const ReferScreen = () => {
 
         <TouchableOpacity
           style={[styles.upload_btn, { width: width * 0.8 }]}
-          onPress={() => copyToClipboard("gteryhuu253")}
+          onPress={() => copyToClipboard(user?.referralcode)}
         >
-          <Text style={styles.code_text}> gteryhuu253</Text>
+          <Text style={styles.code_text}> {user?.referralcode}</Text>
           <View style={styles.copy}>
             <Copy />
             <Text style={styles.copy_text}>copy code</Text>

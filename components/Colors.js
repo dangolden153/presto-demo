@@ -1,4 +1,7 @@
 export const colors = {
   primaryColor: "#0B365B",
-  red: "red",
+  lightTextColor: "#999999",
+  darkTextColor: "#666666",
+  whiteTextColor: "white",
+  blackTextColor: "black",
 };

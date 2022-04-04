@@ -3,7 +3,7 @@ import { USER_DATA, USER_TOKEN, Fetch_BANKS } from "../Types/type";
 const initialState = {
   user: null,
   userToken: null,
-  allBanks: []
+  allBanks: [],
 };
 
 const UserReducer = (state = initialState, action) => {
@@ -11,19 +11,19 @@ const UserReducer = (state = initialState, action) => {
     case USER_DATA:
       return {
         ...state,
-        user: action.payload
+        user: action.payload,
       };
 
     case USER_TOKEN:
       return {
         ...state,
-        userToken: action.payload
+        userToken: action.payload,
       };
 
     case Fetch_BANKS:
       return {
         ...state,
-        allBanks: action.payload
+        allBanks: action.payload,
       };
 
     default:

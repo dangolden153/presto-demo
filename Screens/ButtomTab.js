@@ -29,7 +29,10 @@ import HomeFocus from "../images/home-focus.svg";
 import WalletFocus from "../images/wallet-focus.svg";
 import HistoryFocus from "../images/history-focus.svg";
 import AccountFocus from "../images/account-focus.svg";
-import { fetchBankDetails } from "../Redux/Actions/bankTransactions";
+import {
+  fetchBankDetails,
+  fetchWithdrawals,
+} from "../Redux/Actions/bankTransactions";
 
 const Tab = createBottomTabNavigator();
 
@@ -87,9 +90,14 @@ const ButtomTab = () => {
     dispatch(getNotification(token));
   }, []);
 
-  // *************fetch notification **************************
+  // *************fetch BankDetails **************************
   useEffect(() => {
     dispatch(fetchBankDetails(token));
+  }, [refresh]);
+
+  // *************fetch Withdrawals **************************
+  useEffect(() => {
+    dispatch(fetchWithdrawals(token));
   }, []);
 
   return (

@@ -14,6 +14,7 @@ import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import Bitcoin from "../images/Bitcoin.svg";
 import USDT from "../images/usdt.svg";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const CryptoScreen = ({ navigation }) => {
   const [fontLoaded, error] = useFonts({
@@ -76,15 +77,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   btn: {
-    // marginTop: 50,
     width: "100%",
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 10,
-    // flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // marginVertical: 10,
   },
   usdt: {
     borderColor: "#0B365B",
@@ -95,7 +93,8 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17,
+    fontSize: RFValue(12, 580),
+
     fontFamily: "bold",
   },
 });

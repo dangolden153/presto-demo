@@ -137,7 +137,7 @@ export const updateProfile =
           status: "fail",
           text: "unable to process transaction, try again",
         });
-        console.log("error", error);
+        console.log("update profile error", error);
       });
   };
 
@@ -158,58 +158,3 @@ export const getAllBanks = () => (dispatch) => {
     })
     .catch((err) => console.log("getting all banks error", err));
 };
-
-// **************Add Bank Account Details**************************
-export const AddBankAccountDetails =
-  (
-    token,
-    bank,
-    accountNumber,
-    setLoading,
-    setModalMessage,
-    setOpenModal,
-    navigation,
-    handleRefresh
-  ) =>
-  (dispatch) => {
-    setLoading(true);
-
-    let myHeaders = new Headers();
-    // console.log("token", token);
-
-    myHeaders.append("Authorization", "Bearer " + token);
-    let formdata = new FormData();
-    // formdata.append("bank", bank);
-    formdata.append("bankcode", bank);
-    // formdata.append("accountname", accountName);
-    formdata.append("accountno", accountNumber);
-
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    fetch("https://api.prestohq.io/api/auth/updateaccount", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("bank result", result);
-        handleRefresh();
-        setLoading(false);
-        if (result?.status === 201) {
-          navigation.navigate("AccountVerScreen", result?.accountname);
-        } else {
-          console.log("transaction err ");
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        setOpenModal(true);
-        setModalMessage({
-          status: "fail",
-          text: "invalid credentials, try again",
-        });
-        console.log("transaction error ", error);
-      });
-  };

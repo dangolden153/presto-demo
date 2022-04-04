@@ -9,3 +9,5 @@ export const Fetch_BANKS = "Fetch_BANKS";
 export const BTC_ADD = "BTC_ADD";
 export const USDT_ADD = "USDT_ADD";
 export const GET_NOTIFICATION = "GET_NOTIFICATION";
+export const GET_Back_DETAILS = "GET_Back_DETAILS";
+export const GET_WITHDRAWALS = "GET_WITHDRAWALS";

@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -25,14 +31,26 @@ const SupportScreen = ({ navigation }) => {
         </TouchableOpacity> */}
 
         {/* *************Send us an Email***************** */}
-        <TouchableOpacity style={styles.textBg} activeOpacity={0.5}>
+        <TouchableOpacity
+          style={styles.textBg}
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate("EmailUsScreen")}
+        >
           <Text style={styles.text}>Send us an Email</Text>
         </TouchableOpacity>
 
         {/* *************FAQ***************** */}
-        {/* <TouchableOpacity style={styles.textBg} activeOpacity={0.5}>
-          <Text style={styles.text}>FAQ (Frequently Ask Question)</Text>
-        </TouchableOpacity> */}
+        <TouchableOpacity
+          style={styles.textBg}
+          activeOpacity={0.5}
+          onPress={() => {
+            Linking.openURL(
+              "http://api.whatsapp.com/send?phone=+2347033201529"
+            );
+          }}
+        >
+          <Text style={styles.text}>Chat us on whatsApp</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { Context } from "../context";
 import { ModalComponent } from "../components/Modal";
 import Loading from "../components/Loading";
+import { SvgUri } from "react-native-svg";
 
 const SelectAvatar = () => {
   const [openImgmgModal, setOpenImgModal] = useState(false);
@@ -43,15 +44,15 @@ const SelectAvatar = () => {
       )
     );
   };
-  const avatar7 =
-    "https://prestohq.io/wp-content/uploads/2022/03/Memoji-Boys-11-9.png";
-  const avatar6 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed6.png";
-  const avatar5 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed5.png";
-  const avatar4 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed4.png";
-  const avatar3 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed3.png";
-  const avatar2 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed2.png";
-  const avatar1 = "https://prestohq.io/wp-content/uploads/2022/03/unnamed1.png";
-  const avatar = "https://prestohq.io/wp-content/uploads/2022/03/unnamed.png";
+  const avatar8 = "https://api.prestohq.io/assets/Avatar9.svg";
+  const avatar7 = "https://api.prestohq.io/assets/Avatar8.svg";
+  const avatar6 = "https://api.prestohq.io/assets/Avatar7.svg";
+  const avatar5 = "https://api.prestohq.io/assets/Avatar6.svg";
+  const avatar4 = "https://api.prestohq.io/assets/Avatar5.svg";
+  const avatar3 = "https://api.prestohq.io/assets/Avatar4.svg";
+  const avatar2 = "https://api.prestohq.io/assets/Avatar3.svg";
+  const avatar1 = "https://api.prestohq.io/assets/Avatar2.svg";
+  const avatar = "https://api.prestohq.io/assets/Avatar1.svg";
 
   if (loading) {
     return <Loading />;
@@ -64,13 +65,18 @@ const SelectAvatar = () => {
         <View style={styles.inner_container}>
           {/* ********************************************************* */}
           <TouchableOpacity
+            onPress={() => setImage(avatar)}
+            style={styles.img_container}
+          >
+            <SvgUri uri={avatar} />
+          </TouchableOpacity>
+
+          {/* ********************************************************* */}
+          <TouchableOpacity
             onPress={() => setImage(avatar7)}
             style={styles.img_container}
           >
-            <Image
-              source={{ uri: avatar7 }}
-              style={{ width: 100, height: 100 }}
-            />
+            <SvgUri uri={avatar6} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -78,17 +84,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar)}
             style={styles.img_container}
           >
-            <Image
-              source={{
-                uri: avatar,
-                method: "POST",
-                headers: {
-                  Pragma: "no-cache",
-                },
-                body: "Your Body goes here",
-              }}
-              style={{ width: 100, height: 100 }}
-            />
+            <SvgUri uri={avatar2} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -96,10 +92,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar1)}
             style={styles.img_container}
           >
-            <Image
-              source={{ uri: avatar1 }}
-              style={{ width: 100, height: 100 }}
-            />
+            <SvgUri uri={avatar3} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -107,10 +100,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar2)}
             style={styles.img_container}
           >
-            <Image
-              source={{ uri: avatar2 }}
-              style={{ width: 100, height: 100 }}
-            />
+            <SvgUri uri={avatar4} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -118,10 +108,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar3)}
             style={styles.img_container}
           >
-            <Image
-              source={{ uri: avatar3 }}
-              style={{ width: 100, height: 100 }}
-            />
+            <SvgUri uri={avatar5} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -129,10 +116,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar4)}
             style={styles.img_container}
           >
-            <Image
-              source={{ uri: avatar4 }}
-              style={{ width: 100, height: 100 }}
-            />
+            <SvgUri uri={avatar6} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -140,10 +124,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar5)}
             style={styles.img_container}
           >
-            <Image
-              source={{ uri: avatar5 }}
-              style={{ width: 100, height: 100 }}
-            />
+            <SvgUri uri={avatar7} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -151,22 +132,16 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar6)}
             style={styles.img_container}
           >
-            <Image
-              source={{ uri: avatar6 }}
-              style={{ width: 100, height: 100 }}
-            />
+            <SvgUri uri={avatar8} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => setImage(avatar)}
             style={styles.img_container}
           >
-            <Image
-              source={{ uri: avatar }}
-              style={{ width: 100, height: 100 }}
-            />
-          </TouchableOpacity>
+            <SvgUri uri="https://api.prestohq.io/assets/Avatar1.svg" />
+          </TouchableOpacity> */}
         </View>
       </View>
       {openImgmgModal && (

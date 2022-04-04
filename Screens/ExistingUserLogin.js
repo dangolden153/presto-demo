@@ -20,8 +20,9 @@ import { useDispatch } from "react-redux";
 import { ModalComponent } from "../components/Modal";
 import Log_in from "../images/Login.svg";
 import { useToast } from "react-native-toast-notifications";
-import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
+import { SvgUri } from "react-native-svg";
+import { BigText, MediumText, RegularText } from "../components/Text";
+import { RFValue } from "react-native-responsive-fontsize";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -189,18 +190,6 @@ const ExistingUserLogin = ({ navigation }) => {
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
-  // **********font*****************
-  const [fontLoaded, error] = useFonts({
-    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
-    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    italic: require("../assets/fonts/raleway/Raleway-Italic.ttf"),
-  });
-
-  if (!fontLoaded) {
-    return <AppLoading />;
-  }
-
   return (
     <>
       <View style={styles.container}>
@@ -232,19 +221,10 @@ const ExistingUserLogin = ({ navigation }) => {
           >
             <MaterialIcons name="arrow-back-ios" size={24} color="white" />
           </TouchableOpacity>
-          <Text style={styles.header}>Presto</Text>
+          <BigText whiteTextColor>Presto</BigText>
         </View>
 
-        <Log_in
-          width={windowWidth}
-          height={bgHeight}
-          style={
-            {
-              // backgroundColor: "red" //#0B365B
-              // top: -10
-            }
-          }
-        />
+        <Log_in width={windowWidth} height={bgHeight} />
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner_container}>
@@ -257,46 +237,22 @@ const ExistingUserLogin = ({ navigation }) => {
                 }}
               >
                 <TouchableOpacity
-                // onPress={() => removeToken()}
+                  style={{
+                    marginRight: 10,
+                  }}
+                  // onPress={() => removeToken()}
                 >
-                  <Image
-                    source={{ uri: imgUrl || nullAvatar }}
-                    style={{
-                      height: 80,
-                      width: 80,
-                      borderRadius: 200,
-                      marginRight: 10,
-                    }}
-                  />
+                  <SvgUri uri={imgUrl || nullAvatar} />
                 </TouchableOpacity>
                 <View>
-                  <Text
-                    style={{
-                      color: "#0B365B",
-                      fontSize: 20,
-                      fontFamily: "italic",
-                      //   fontFamily: "medium"
-                    }}
-                  >
-                    Welcome back, {""}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#0B365B",
-                      fontSize: 16,
-                      textTransform: "capitalize",
-                      //   fontFamily: "italic",
-                      fontFamily: "medium",
-                    }}
-                  >
-                    {name}
-                  </Text>
+                  <MediumText blackTextColor>Welcome back,</MediumText>
+                  <RegularText capitalize>{name}</RegularText>
                 </View>
               </View>
 
               {/* ************* Password ***************************** */}
               <View style={styles.inputTextContainer}>
-                <Text style={styles.input_text}>Password</Text>
+                <RegularText>Password</RegularText>
                 <View style={styles.icon_input}>
                   <TextInput
                     placeholderTextColor={"black"}
@@ -316,6 +272,7 @@ const ExistingUserLogin = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               </View>
+
               {/* *************Forgot Password link***************************** */}
               <TouchableOpacity
                 onPress={() => navigation.navigate("ForgotPassword")}
@@ -324,15 +281,9 @@ const ExistingUserLogin = ({ navigation }) => {
                   marginVertical: 10,
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 15,
-                    textAlign: "right",
-                    color: "#0B365B",
-                  }}
-                >
+                <RegularText right primaryColor medium>
                   Forgot password?
-                </Text>
+                </RegularText>
               </TouchableOpacity>
             </View>
 
@@ -345,7 +296,9 @@ const ExistingUserLogin = ({ navigation }) => {
                 {loading ? (
                   <ActivityIndicator size="small" color="white" />
                 ) : (
-                  <Text style={styles.btn_text}>Login</Text>
+                  <RegularText whiteTextColor center>
+                    Login
+                  </RegularText>
                 )}
               </LinearGradient>
             </TouchableOpacity>
@@ -374,19 +327,14 @@ const styles = StyleSheet.create({
     marginTop: 90,
   },
 
-  header: {
-    color: "white",
-    fontSize: 30,
-    letterSpacing: 1,
-    zIndex: 100,
-    fontFamily: "medium",
-  },
+  // header: {
+  //   color: "white",
+  //   fontSize: 30,
+  //   letterSpacing: 1,
+  //   zIndex: 100,
+  //   fontFamily: "medium",
+  // },
 
-  Sub_header: {
-    color: "#999999",
-    fontSize: 15,
-    marginTop: 10,
-  },
   inner_container: {
     paddingHorizontal: 20,
     justifyContent: "center",
@@ -414,12 +362,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: RFValue(5, 580),
   },
-  btn_text: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 17,
-  },
+
   btn: {
     marginTop: 10,
     width: "100%",

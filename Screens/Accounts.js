@@ -20,8 +20,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Context } from "../context";
 import NoAccountDetails from "../components/NoAccountDetails";
 import DropdownCardType from "../components/Dropdown/DropdownCardType";
-import { AddBankAccountDetails } from "../Redux/Actions/user";
 import { useNavigation } from "@react-navigation/native";
+import { AddBankAccountDetails } from "../Redux/Actions/bankTransactions";
+import { bankData } from "../utils/selectBankData";
 
 const Accounts = ({}) => {
   const [bank, setBank] = useState("");
@@ -52,6 +53,11 @@ const Accounts = ({}) => {
     }
   }, [accountNumber]);
 
+  // ***********handle bank img***************
+  const filterBank = bankData.filter((bankItem) => {
+    return bankItem.id === bank?.id;
+  });
+
   // ***********handle Submit account detail***************
   const handleSubmit = () => {
     setValidate("");
@@ -64,7 +70,9 @@ const Accounts = ({}) => {
         setModalMessage,
         setOpenModal,
         navigation,
-        handleRefresh
+        handleRefresh,
+        bank?.name,
+        filterBank[0]?.imgURL
       )
     );
   };
@@ -78,7 +86,8 @@ const Accounts = ({}) => {
     return <AppLoading />;
   }
 
-  // console.log(" bank", bank);
+  // console.log(" bank", bank?.name);
+  // console.log("filterBank :>> ", filterBank[0]?.imgURL);
 
   return (
     <>
@@ -86,29 +95,7 @@ const Accounts = ({}) => {
         {/****************** NavBar*******************/}
         <NavBar title="Account" navigation={navigation} />
 
-        {user?.accountno ? (
-          <View style={styles.gift_card}>
-            <View style={styles.img_title}>
-              <Image
-                source={{
-                  uri: "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg",
-                }}
-                style={{
-                  height: 90,
-                  width: 70,
-                  borderRadius: 20,
-                  marginRight: 40,
-                }}
-              />
-              <View style={styles.title_time}>
-                <Text style={styles.title} numberOfLines={1}>
-                  {user?.accountname}
-                </Text>
-                <Text style={styles.time}>{user?.accountno}</Text>
-              </View>
-            </View>
-          </View>
-        ) : (
+        {!user?.accountno && (
           <Text style={styles.noAcctText}>
             {user?.firstname}, you don't have a bank account on Presto, please
             kindly add a bank account and proceed with your transactions
@@ -137,27 +124,30 @@ const Accounts = ({}) => {
             ]}
             placeholder="Acount number"
           />
-          {/* <TextInput
-            value={accountName}
-            onChangeText={text => setAccountName(text)}
-            style={styles.input}
-            placeholder="Afeez Olamide"
-          /> */}
+          <Text
+            style={{
+              color: "red",
+              fontSize: 14,
+              textAlign: "center",
+            }}
+          >
+            {validate}
+          </Text>
+
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-end",
+              // backgroundColor: "plum",
+            }}
+          >
+            <LinearButton
+              title="Add Account"
+              onPress={handleSubmit}
+              loading={loading}
+            />
+          </View>
         </ScrollView>
-        <Text
-          style={{
-            color: "red",
-            fontSize: 14,
-            textAlign: "center",
-          }}
-        >
-          {validate}
-        </Text>
-        <LinearButton
-          title="Add Account"
-          onPress={handleSubmit}
-          loading={loading}
-        />
       </SafeAreaView>
       {openModal && <ModalComponent />}
     </>
@@ -171,35 +161,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: "white",
-    justifyContent: "center",
-  },
-
-  nav: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "68%",
-    marginTop: 20,
-    marginLeft: 10,
-    marginBottom: 30,
-  },
-
-  header: {
-    color: "black",
-    fontSize: 23,
-    letterSpacing: 1,
-    fontWeight: "200",
-    // textAlign: "center",
-    // alignItems: "center",
+    // justifyContent: "center",
   },
 
   body: {
-    marginTop: 100,
+    // marginTop: 100,
     backgroundColor: "#f4fafe",
+    flex: 1,
 
     borderRadius: 20,
     width: "100%",
-    paddingBottom: 70,
+    // paddingBottom: 70,
     paddingHorizontal: 10,
   },
   title_time: {

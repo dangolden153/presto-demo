@@ -4,13 +4,11 @@ import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/core";
+import { BigText } from "./Text";
+import config from "../config";
 
 const NavBar = ({ title, navigate, full }) => {
-  const [fontLoaded, error] = useFonts({
-    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf")
-  });
+  // console.log("process.PRESTO_API :>> ", config.PRESTO_API_URL);
 
   const navigation = useNavigation();
   const handleNavigation = () => {
@@ -21,10 +19,6 @@ const NavBar = ({ title, navigate, full }) => {
     }
   };
 
-  if (!fontLoaded) {
-    return <AppLoading />;
-  }
-
   return (
     <View style={styles.nav}>
       <TouchableOpacity
@@ -34,8 +28,7 @@ const NavBar = ({ title, navigate, full }) => {
         <MaterialIcons name="arrow-back-ios" size={24} color="black" />
       </TouchableOpacity>
 
-      <Text style={styles.header}>{title}</Text>
-
+      <BigText blackTextColor>{title}</BigText>
       {full && (
         <TouchableOpacity
           onPress={() => handleNavigation()}
@@ -58,17 +51,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 10,
     marginBottom: 10,
-    position: "relative"
+    position: "relative",
     // paddingHorizontal:20
   },
-
-  header: {
-    color: "black",
-    fontSize: 20,
-    letterSpacing: 1,
-    fontWeight: "200",
-    fontFamily: "semibold"
-    // textAlign: "center",
-    // alignItems: "center",
-  }
 });

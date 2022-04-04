@@ -7,17 +7,24 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  FlatList,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import pics from "../images/bg.png";
 import Card from "./Card";
 import NavBar from "./NavBar";
+import { useSelector } from "react-redux";
+import WalletItems from "./WalletItems";
 
-const Wallet = ({ navigation }) => {
+const Wallet = () => {
+  const { withdrawHistory } = useSelector(
+    (state) => state.BankTransactionReducer
+  );
+
+  // console.log("withdrawHistory", withdrawHistory);
   return (
     <SafeAreaView style={styles.container}>
-
       {/* **********NavBar********************* */}
       <NavBar title="Wallet" />
 
@@ -27,10 +34,24 @@ const Wallet = ({ navigation }) => {
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.title}>No Transaction yet</Text>
-        <Text style={styles.sub_title}>
-          Any transaction you make will appear here. let's start trading!
-        </Text>
+        {withdrawHistory?.length === 0 ? (
+          <View style={{ width: "90%", alignItems: "center" }}>
+            <Text style={styles.title}>No Transaction yet</Text>
+            <Text style={styles.sub_title}>
+              Any transaction you make will appear here. let's start trading!
+            </Text>
+          </View>
+        ) : (
+          <View style={{ width: "100%", paddingBottom: 60 }}>
+            <Text style={styles.title}>Transaction History</Text>
+            <FlatList
+              data={withdrawHistory}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item, index) => item + index.toString()}
+              renderItem={({ item }) => <WalletItems item={item} />}
+            />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -50,52 +71,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  nav_text: {},
 
   up_section: {
-    // width: "100%",
-    // height: 170,
-    // backgroundColor: "#8CC3F2",
-    // // borderRadius: 20,
-    // justifyContent: "center",
-    // alignItems: "center",
-    flexGrow: .08,
-    marginTop: 20
-  },
-
-  up_section_text: {
-    fontWeight: "100",
-  },
-  price_icon: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    // backgroundColor: "gray",
-    width: 130,
-    marginVertical: 7,
-  },
-  price: {
-    fontWeight: "bold",
-    fontSize: 15,
-  },
-
-  // nav: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   justifyContent: "space-between",
-  //   width: "58%",
-  //   marginTop: 20,
-  //   marginLeft: 10,
-  //   marginBottom: 30,
-  // },
-
-  header: {
-    color: "black",
-    fontSize: 20,
-    letterSpacing: 1,
-    fontWeight: "bold",
-    textAlign: "center",
-    alignItems: "center",
+    flexGrow: 0.08,
+    marginTop: 20,
   },
 
   body: {
@@ -106,6 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flex: 1,
     width: "100%",
+    paddingHorizontal: 10,
   },
   title: {
     fontSize: 20,

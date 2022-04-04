@@ -19,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from "../context";
 import { RFValue } from "react-native-responsive-fontsize";
 import Refer from "../images/refer.svg";
+import { MediumText, RegularText, SmallText } from "./Text";
 
 const Dashboard = ({ navigation }) => {
   const { user } = useSelector((state) => state.UserReducer);
@@ -123,11 +124,11 @@ const Dashboard = ({ navigation }) => {
       {/* up section container */}
 
       <View style={styles.nav_container}>
-        <Text style={styles.boldVav_text}>Hello {user?.firstname},</Text>
+        <MediumText blackTextColor>Hello {user?.firstname},</MediumText>
         <View style={styles.text_icon}>
-          <Text style={styles.nav_text}>
+          <RegularText>
             Today {alphaDay}, {getDate} {alphaMonth},
-          </Text>
+          </RegularText>
           <TouchableOpacity
             onPress={() => navigation.navigate("NotificcationScreen")}
             style={{ position: "relative" }}
@@ -200,13 +201,15 @@ const Dashboard = ({ navigation }) => {
       {/* ************ Refer a friend down section container *******************/}
       <TouchableOpacity
         style={styles.bottom_section}
-        onPress={() => navigation.navigate("ReceiptScreen")} // ReferScreen
+        onPress={() => navigation.navigate("ReferScreen")} //
       >
         <View style={styles.bttm_txt_container}>
-          <Text style={styles.bottom_bold_text}>Refer and earn</Text>
-          <Text style={styles.bottom_text}>
+          <MediumText blackTextColor bold>
+            Refer and earn
+          </MediumText>
+          <SmallText>
             Refer a friend today and earn N5000 to N10,000 weekly
-          </Text>
+          </SmallText>
         </View>
 
         <Refer />

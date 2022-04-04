@@ -9,8 +9,10 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import { useNavigation } from "@react-navigation/native";
 
-const LinearButton = ({ navigation, title, onPress, loading, navigate }) => {
+const LinearButton = ({ title, onPress, loading, navigate }) => {
+  const navigation = useNavigation();
   const handleSubmit = () => {
     if (!onPress || loading) return;
     onPress();

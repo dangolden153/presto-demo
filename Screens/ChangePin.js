@@ -13,13 +13,8 @@ const ChangePin = ({ navigation }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const {
-    openModal,
-    token,
-    setModalMessage,
-    setOpenModal,
-    message
-  } = useContext(Context);
+  const { openModal, token, setModalMessage, setOpenModal, message } =
+    useContext(Context);
   const dispatch = useDispatch();
   // console.log("code", typeof code);
 
@@ -47,7 +42,7 @@ const ChangePin = ({ navigation }) => {
               style={{
                 color: "red",
                 textAlign: "center",
-                marginTop: 30
+                marginTop: 30,
               }}
             >
               {error}
@@ -61,17 +56,19 @@ const ChangePin = ({ navigation }) => {
         <View style={styles.sub_container}>
           <View style={styles.pin_text}>
             <SmoothPinCodeInput
+              password
+              mask="﹡"
               value={code}
-              onTextChange={code => setCode(code)}
+              onTextChange={(code) => setCode(code)}
               //   onFulfill={this._checkCode}
               //   onBackspace={this._focusePrevInput}
               cellStyle={{
                 borderColor: "#0084f4",
                 borderWidth: 1,
-                marginHorizontal: 20
+                marginHorizontal: 20,
               }}
               cellStyleFocused={{
-                borderColor: "black"
+                borderColor: "black",
               }}
               // containerStyle={{
 
@@ -103,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     position: "relative",
-    backgroundColor: "white"
+    backgroundColor: "white",
     // alignItems: "center",
     // justifyContent: "center",
   },
@@ -113,35 +110,35 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "60%",
     marginTop: 60,
-    marginLeft: 10
+    marginLeft: 10,
   },
 
   header: {
     color: "black",
     fontSize: 20,
     letterSpacing: 1,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   Sub_header: {
     color: "#999999",
     fontSize: 15,
-    marginTop: 10
+    marginTop: 10,
   },
   sub_container: {
     alignItems: "center",
     justifyContent: "space-between",
     flex: 1,
-    marginVertical: 50
+    marginVertical: 50,
   },
   pin_text: {
     height: 200,
     marginTop: 40,
-    alignItems: "center"
+    alignItems: "center",
   },
   btn: {
     marginTop: 50,
-    width: 250
-  }
+    width: 250,
+  },
 });
 
 // const styles = StyleSheet.create({})

@@ -65,11 +65,10 @@ const ValidatePinScreen = ({ navigation }) => {
           setLoading(false);
           // navigation.navigate("ButtomTab");
           return null;
-         
         }
         setLoading(false);
-       
-        setIsAuthenticated(true)
+
+        setIsAuthenticated(true);
       })
       .catch((error) => {
         setLoading(false);
@@ -107,6 +106,8 @@ const ValidatePinScreen = ({ navigation }) => {
       <View style={styles.sub_container}>
         <View style={styles.pin_text}>
           <SmoothPinCodeInput
+            password
+            mask="﹡"
             value={code}
             onTextChange={(code) => setCode(code)}
             //   onFulfill={this._checkCode}

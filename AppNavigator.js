@@ -48,6 +48,7 @@ import ReferScreen from "./Screens/ReferScreen";
 import { getPushDataObject } from "native-notify";
 import ReceiptScreen from "./Screens/ReceiptScreen";
 import ConfirmWithdrawal from "./Screens/ConfirmWithdrawal";
+import EmailUsScreen from "./Screens/EmailUsScreen";
 
 const AppNavigator = () => {
   const {
@@ -302,11 +303,12 @@ const AppNavigator = () => {
             options={{ headerShown: false }}
             ReceiptScreen
           />
-          {/* <Stack.Screen
-            name="ReferScreen"
-            component={ReferScreen}
-            options={{ headerShown: false }}ReceiptScreen
-          /> */}
+          <Stack.Screen
+            name="EmailUsScreen"
+            component={EmailUsScreen}
+            options={{ headerShown: false }}
+            ReceiptScreen
+          />
         </>
       ) : (
         <>

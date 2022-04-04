@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import {
   AntDesign,
@@ -14,7 +14,7 @@ import {
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
-  MaterialIcons
+  MaterialIcons,
 } from "@expo/vector-icons";
 import pics from "../images/Memoji.png";
 import AppLoading from "expo-app-loading";
@@ -32,9 +32,11 @@ import logout from "../images/log-out.png";
 import help from "../images/help.png";
 import { useSelector } from "react-redux";
 import NavBar from "./NavBar";
+import { SvgUri } from "react-native-svg";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const Settings = ({ navigation }) => {
-  const { user } = useSelector(state => state.UserReducer);
+  const { user } = useSelector((state) => state.UserReducer);
   const { setIsAuthenticated, setToken } = useContext(Context);
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
@@ -52,7 +54,7 @@ const Settings = ({ navigation }) => {
 
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf")
+    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
   });
 
   if (!firstLoaded) {
@@ -66,26 +68,18 @@ const Settings = ({ navigation }) => {
 
       <TouchableOpacity
         style={{
-          width: 150,
-          height: 150,
+          width: RFValue(110, 580),
+          height: RFValue(110, 580),
           borderRadius: 100,
           borderWidth: 10,
           borderColor: "#f4fafe",
           alignSelf: "center",
-          marginVertical: 25,
+          marginVertical: RFValue(13, 580),
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
       >
-        <Image
-          source={{ uri: user?.profile_pic || nullAvatar }}
-          style={{
-            width: 100,
-            height: 100,
-            resizeMode: "contain",
-            borderRadius: 200
-          }}
-        />
+        <SvgUri uri={user?.profile_pic || nullAvatar} />
       </TouchableOpacity>
 
       {/* ***********   profile account Bvn ***************** * */}
@@ -236,7 +230,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
 
   nav: {
@@ -245,7 +239,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     // width: "68%",
     marginTop: 20,
-    marginLeft: 10
+    marginLeft: 10,
     // marginBottom: 10,
   },
 
@@ -255,7 +249,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     fontWeight: "200",
     textAlign: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   body: {
     backgroundColor: "#f4fafe",
@@ -265,7 +259,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     // flex: 1,
     width: "100%",
-    padding: 10
+    padding: RFValue(5, 580),
   },
 
   Settings_items: {
@@ -274,35 +268,35 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "white",
     margin: 5,
-    padding: 7
+    padding: 7,
   },
 
   box_text: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
     // width: "45%",
   },
   box: {
-    height: 50,
-    width: 50,
+    height: RFValue(40, 580),
+    width: RFValue(40, 580),
     borderRadius: 10,
     marginRight: 15,
     backgroundColor: "#0B365B",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   heading: {
     fontSize: 16,
     fontFamily: "semiBold",
     color: "#999999",
     paddingTop: 15,
-    paddingLeft: 20
+    paddingLeft: 20,
     // backgroundColor: "pink",
   },
   text: {
-    fontSize: 16,
-    fontFamily: "semiBold"
+    fontSize: RFValue(12, 580),
+    fontFamily: "semiBold",
     // alignSelf: "flex-start",
-  }
+  },
 });

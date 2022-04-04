@@ -4,7 +4,9 @@ import NavBar from "../components/NavBar";
 import { RFValue } from "react-native-responsive-fontsize";
 import LinearButton from "../components/LinearButton";
 
-const ReceiptScreen = () => {
+const ReceiptScreen = ({ route }) => {
+  const transationDetails = route?.params?.result;
+  // console.log("transationDetails :>> ", transationDetails);
   return (
     <View style={styles.container}>
       <NavBar title="Receipt" />
@@ -13,7 +15,7 @@ const ReceiptScreen = () => {
         contentContainerStyle={styles.body}
       >
         <View style={styles.text_container}>
-          <Text style={[styles.text, { fontSize: RFValue(11, 580) }]}>
+          <Text style={[styles.text, { fontSize: 12 }]}>
             On Feb 23 2022 at 12:23pm
           </Text>
           <Text
@@ -22,23 +24,29 @@ const ReceiptScreen = () => {
               { fontWeight: "bold", marginVertical: RFValue(5, 580) },
             ]}
           >
-            5000
+            {transationDetails?.amount}
           </Text>
-          <Text style={styles.text}>OLanrewaju Daniel</Text>
+          <Text style={styles.text}>{transationDetails?.name}</Text>
         </View>
 
         <View style={styles.description_container}>
           <Text style={styles.text}>To</Text>
-          <Text style={styles.border_text}>Zenith Bank</Text>
+          <Text style={styles.border_text}>
+            {transationDetails?.bank === "null"
+              ? "bank name unavailable"
+              : transationDetails?.bank}
+          </Text>
         </View>
 
         <View style={styles.description_container}>
           <Text style={styles.text}>Description</Text>
-          <Text style={styles.border_text}>Gift card withdrawal </Text>
+          <Text style={styles.border_text}>{transationDetails?.note}</Text>
         </View>
         <View style={styles.status}>
           <Text style={styles.text}>Status</Text>
-          <Text style={styles.text}>Sucess</Text>
+          <Text style={styles.text}>
+            {transationDetails?.status === 200 ? "Success" : "failed"}
+          </Text>
         </View>
 
         <View
@@ -48,7 +56,7 @@ const ReceiptScreen = () => {
             marginBottom: RFValue(15, 580),
           }}
         >
-          <LinearButton title="close" />
+          <LinearButton title="close" navigate="ButtomTab" />
         </View>
       </ScrollView>
     </View>
@@ -80,7 +88,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#0B365B",
-    fontSize: RFValue(14, 580),
+    fontSize: 15,
   },
   border_text: {
     backgroundColor: "white",

@@ -9,13 +9,13 @@ import {
   SafeAreaView,
   TextInput,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import {
   AntDesign,
   Feather,
   Ionicons,
-  MaterialIcons
+  MaterialIcons,
 } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
@@ -25,6 +25,7 @@ import { Context } from "../context";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "../Redux/Actions/user";
 import { ModalComponent } from "../components/Modal";
+import { SvgUri } from "react-native-svg";
 
 const EditProfile = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
@@ -33,7 +34,7 @@ const EditProfile = ({ navigation }) => {
   const [phone, setPhone] = useState("");
 
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.UserReducer);
+  const { user } = useSelector((state) => state.UserReducer);
   const {
     loading,
     token,
@@ -41,7 +42,7 @@ const EditProfile = ({ navigation }) => {
     openModal,
     setOpenModal,
     handleRefresh,
-    setLoading
+    setLoading,
   } = useContext(Context);
 
   const nullAvatar =
@@ -64,7 +65,7 @@ const EditProfile = ({ navigation }) => {
   };
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf")
+    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
   });
 
   if (!firstLoaded) {
@@ -87,23 +88,16 @@ const EditProfile = ({ navigation }) => {
             marginVertical: 25,
             alignItems: "center",
             justifyContent: "center",
-            position: "relative"
+            position: "relative",
           }}
         >
-          <Image
-            source={{ uri: user?.profile_pic || nullAvatar }}
-            style={{
-              width: 100,
-              height: 100,
-              resizeMode: "contain",
-              borderRadius: 200
-            }}
-          />
+          <SvgUri uri={user?.profile_pic || nullAvatar} />
+
           <TouchableOpacity
             style={{
               position: "absolute",
               right: 5,
-              bottom: 0
+              bottom: 0,
             }}
             onPress={() => navigation.navigate("SelectAvatar")}
           >
@@ -122,7 +116,7 @@ const EditProfile = ({ navigation }) => {
               <Text style={styles.input_text}>First Name</Text>
               <TextInput
                 value={firstName}
-                onChangeText={text => setFirstName(text)}
+                onChangeText={(text) => setFirstName(text)}
                 style={styles.input}
                 placeholder="Adenike"
               />
@@ -132,13 +126,13 @@ const EditProfile = ({ navigation }) => {
               <Text style={styles.input_text}>Last Name</Text>
               <TextInput
                 value={lastName}
-                onChangeText={text => setLastName(text)}
+                onChangeText={(text) => setLastName(text)}
                 style={styles.input}
                 placeholder="Sola"
               />
             </View>
 
-            <View style={styles.text_input}>
+            {/* <View style={styles.text_input}>
               <Text style={styles.input_text}>Email</Text>
               <TextInput
                 value={email}
@@ -146,13 +140,13 @@ const EditProfile = ({ navigation }) => {
                 style={styles.input}
                 placeholder="AdenikeSola@gmail.com"
               />
-            </View>
+            </View> */}
 
             <View style={styles.text_input}>
               <Text style={styles.input_text}>Phone number</Text>
               <TextInput
                 value={phone}
-                onChangeText={text => setPhone(text)}
+                onChangeText={(text) => setPhone(text)}
                 style={styles.input}
                 placeholder="08011223344"
               />
@@ -165,7 +159,7 @@ const EditProfile = ({ navigation }) => {
           </View>
         </ScrollView>
       </View>
-      {openModal && <ModalComponent />}
+      {openModal && <ModalComponent navigate="ButtomTab" />}
     </>
   );
 };
@@ -174,7 +168,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
 
   body: {
@@ -183,14 +177,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     // flex: 1,
     width: "100%",
-    padding: 10
+    padding: 10,
   },
   input_text: {
     fontFamily: "semiBold",
-    fontSize: 16
+    fontSize: 16,
   },
   text_input: {
-    marginTop: 7
+    marginTop: 7,
   },
   input: {
     padding: 15,
@@ -201,20 +195,20 @@ const styles = StyleSheet.create({
     width: "100%",
     alignSelf: "center",
     fontSize: 16,
-    fontFamily: "regular"
+    fontFamily: "regular",
   },
   text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   btn: {
     marginTop: 7,
     width: "100%",
     paddingVertical: 15,
     borderRadius: 10,
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  },
 });
 
 export default EditProfile;
