@@ -48,19 +48,19 @@ const ButtomTab = () => {
   // *************fetch card transaction **************************
   useEffect(() => {
     dispatch(fetchCardTransactions(token, setModalMessage));
-  }, []);
+  }, [refresh]);
 
   // *************fetch BTC transaction **************************
   useEffect(() => {
     dispatch(fetchBTCTransactions(token, setModalMessage));
-  }, []);
+  }, [refresh]);
 
   // *************fetch USDT transaction **************************
   useEffect(() => {
     dispatch(fetchUSDTTransactions(token, setModalMessage));
-  }, []);
+  }, [refresh]);
 
-  // *************fetch USDT transaction **************************
+  // *************fetch CardRate **************************
   useEffect(() => {
     dispatch(fetchCardRate(token, setModalMessage));
   }, []);
@@ -98,7 +98,7 @@ const ButtomTab = () => {
   // *************fetch Withdrawals **************************
   useEffect(() => {
     dispatch(fetchWithdrawals(token));
-  }, []);
+  }, [refresh]);
 
   return (
     <View style={{ flex: 1 }}>

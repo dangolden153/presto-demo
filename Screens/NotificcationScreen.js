@@ -39,12 +39,12 @@ const NotificcationScreen = ({ route }) => {
 
   const notif = [
     {
-      time: "1:00",
+      time: "1:00pm",
       message:
         "we are one stop shop to sell your giftcards and bitcoin. fast, secured & swift payment.",
     },
     {
-      time: "1:00",
+      time: "1:00am",
       message: "Sell Your Gift Cards for Instant Cash and Naira!.",
     },
   ];
@@ -61,7 +61,7 @@ const NotificcationScreen = ({ route }) => {
           <NotificationItem body={notifyMessage} time={time} />
         ) : null}
         <FlatList
-          data={notif}
+          data={notifications}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => item + index.toString()}
           renderItem={({ item }) => <NotificationItem item={item} />}

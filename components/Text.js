@@ -15,6 +15,7 @@ export const BigText = ({
   uppercase,
   capitalize,
   regular,
+  bold,
   mediumWeight,
   right,
   center,
@@ -50,7 +51,10 @@ export const BigText = ({
             color: color,
             textTransform:
               (uppercase && "uppercase") || (capitalize && "capitalize"),
-            fontFamily: (mediumWeight && "medium") || (regular && "regular"),
+            fontFamily:
+              (mediumWeight && "medium") ||
+              (regular && "regular") ||
+              (bold && "bold"),
             textAlign: (right && "right") || (center && "center"),
           },
         ]}
@@ -130,7 +134,7 @@ export const RegularText = ({
   blackTextColor,
   uppercase,
   capitalize,
-  mediumWeight,
+  medium,
   right,
   center,
 }) => {
@@ -165,7 +169,7 @@ export const RegularText = ({
             color: color,
             textTransform:
               (uppercase && "uppercase") || (capitalize && "capitalize"),
-            fontFamily: mediumWeight && "medium",
+            fontFamily: medium && "medium",
             textAlign: (right && "right") || (center && "center"),
           },
         ]}

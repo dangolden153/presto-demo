@@ -37,8 +37,7 @@ SplashScreen.preventAutoHideAsync().catch(() => {
 });
 
 export default function App() {
-  registerNNPushToken(2267, "MyP35yWdfoWlM79sdA0wG3");
-
+  registerNNPushToken(2428, "XWwJ73vel8wZTUd9jHRdMz");
   return (
     <AnimatedAppLoader>
       <View style={{ flex: 1 }}>
@@ -305,12 +304,14 @@ function AnimatedSplashScreen({ children, image }) {
 // // passing in bank image url and bank name when a user is adding an account.✅
 // // fonts ✅ ..
 // change pin in confirm widthdral ✅
-// // qrcoderr
+// notification ✅
+// withdrawal transaction history on one history data ✅
+// // onoarding screen✅
 
 // chat us on whatsazpp ..✅
-// // onoarding screen
-// // yup validation 30min
+// Instruct SplashScreen not to hide yet, we want to do this manually ✅
+// // qrcoderr
 // // google playstore
-// Instruct SplashScreen not to hide yet, we want to do this manually
+// // yup validation 30min
 
 // n b =

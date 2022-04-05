@@ -14,6 +14,7 @@ export const ContextProvider = ({ children }) => {
   const [isViewed, setIsViewed] = useState("pending");
   const [existinguser, setExistinguser] = useState(null);
   const [cardPictures, setCardPictures] = useState([]);
+  const [onboarding, setOnboarding] = useState(null);
 
   const handleRefresh = () => {
     setRefresh(!refresh);
@@ -46,6 +47,8 @@ export const ContextProvider = ({ children }) => {
         setNotifyMessage,
         isViewed,
         setIsViewed,
+        onboarding,
+        setOnboarding,
       }}
     >
       {children}

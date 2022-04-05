@@ -1,71 +1,44 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import pics from "../images/Group-2.png";
-import { Button } from "react-native-elements";
-import AppLoading from "expo-app-loading";
-import { useFonts } from "expo-font";
+import { View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
+import Board from "../images/board_1.svg";
 import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
+import { BigText, RegularText } from "../components/Text";
+import { RFValue } from "react-native-responsive-fontsize";
+import { useNavigation } from "@react-navigation/native";
 
-const OnboardingScreen = ({ navigation }) => {
-  let [firstLoaded, error] = useFonts({
-    JosefinSans: require("../assets/fonts/JosefinSans-Italic-VariableFont_wght.ttf"),
-    JosefinSansBold: require("../assets/fonts/JosefinSans-VariableFont_wght.ttf"),
-  });
-
-  if (!firstLoaded) {
-    return <AppLoading />;
-  }
-
+const OnboardingScreen = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
       <View style={styles.img_bg}>
-        <Image
-          source={pics}
-          style={{ width: 250, height: 250, resizeMode: "contain" }}
-        />
+        <Board />
       </View>
 
       <View style={styles.text_container}>
-        <Text style={[styles.header]}>
+        <BigText blackTextColor bold>
           The best wey to trade your gift cards{" "}
-        </Text>
-        <Text style={styles.Sub_header}>
+        </BigText>
+        <View style={{ marginVertical: RFValue(2, 580) }} />
+        <RegularText>
           presto allows you trade your gift cards with ease, fast and reliable
-        </Text>
+        </RegularText>
       </View>
 
       <View style={styles.btn_container}>
-        {/* <Button
-          containerStyle={styles.btn}
-          buttonStyle={{
-            backgroundColor: "#0084F4",
-            paddingVertical: 15,
-            borderRadius: 10,
-          }}
-          title="Next"
-          // raised
-          // loading={loading}
-          onPress={() => navigation.navigate("ButtomTab")}
-        /> */}
-
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => navigation.navigate("SecondOnboardingScreen")}  //    ButtomTab
-          //  ButtomTab
+          onPress={() => navigation.navigate("SecondOnboardingScreen")}
         >
           <LinearGradient
             // Button Linear Gradient
-            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            colors={["#0B365B", "#0B365B", "#124672"]}
             style={styles.btn}
           >
-            <Text style={styles.text}>Next</Text>
+            <RegularText whiteTextColor center medium>
+              Next
+            </RegularText>
           </LinearGradient>
         </TouchableOpacity>
         <View style={styles.dots}>
@@ -73,7 +46,7 @@ const OnboardingScreen = ({ navigation }) => {
             style={{
               width: 30,
               height: 7,
-              backgroundColor: "#0084F4",
+              backgroundColor: "#0B365B",
               borderRadius: 50,
             }}
           />
@@ -122,30 +95,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // backgroundColor: "gray",
     width: "100%",
-    marginBottom: 40,
-  },
-  header: {
-    color: "black",
-    fontSize: 25,
-    letterSpacing: 1,
-    fontWeight: "bold",
-    // fontFamily: "JosefinSans",
-  },
-  Sub_header: {
-    color: "#999999",
-    fontSize: 15,
-    marginTop: 10,
+    marginBottom: RFValue(40, 580),
   },
 
-  text: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 17,
-  },
   btn: {
-    // marginTop: 50,
     width: 200,
     paddingVertical: 15,
     borderRadius: 10,
@@ -156,7 +110,6 @@ const styles = StyleSheet.create({
     width: 60,
     alignItems: "center",
     justifyContent: "space-between",
-    // backgroundColor: "pink",
   },
 });
 

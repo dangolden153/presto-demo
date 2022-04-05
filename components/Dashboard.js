@@ -124,7 +124,9 @@ const Dashboard = ({ navigation }) => {
       {/* up section container */}
 
       <View style={styles.nav_container}>
-        <MediumText blackTextColor>Hello {user?.firstname},</MediumText>
+        <MediumText blackTextColor capitalize>
+          Hello {user?.firstname},
+        </MediumText>
         <View style={styles.text_icon}>
           <RegularText>
             Today {alphaDay}, {getDate} {alphaMonth},

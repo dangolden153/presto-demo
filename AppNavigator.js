@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 
 import {
   createStackNavigator,
-  TransitionPresets,
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 import RegistrationScreen from "./Screens/RegistrationScreen";
@@ -11,7 +10,6 @@ import CheckVerification from "./Screens/CheckVerification";
 import VerifiedScreen from "./Screens/VerifiedScreen";
 import CreatePin from "./Screens/CreatePin";
 import HomeScreen from "./Screens/HomeScreen";
-// import SellGiftCard from "./Screens/SellGiftCardScreen";
 import ButtomTab from "./Screens/ButtomTab";
 import EditProfile from "./Screens/EditProfile";
 import Accounts from "./Screens/Accounts";
@@ -23,7 +21,6 @@ import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import OtpScreen from "./Screens/OtpScreen";
 import SellGiftCardScreen from "./Screens/SellGiftCardScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import ValidatePinSreen from "./Screens/ValidatePinScreen";
 import ValidatePinScreen from "./Screens/ValidatePinScreen";
 import UploadGiftcardScreen from "./Screens/UploadGiftcardScreen";
 import CryptoScreen from "./Screens/CryptoScreen";
@@ -49,17 +46,21 @@ import { getPushDataObject } from "native-notify";
 import ReceiptScreen from "./Screens/ReceiptScreen";
 import ConfirmWithdrawal from "./Screens/ConfirmWithdrawal";
 import EmailUsScreen from "./Screens/EmailUsScreen";
+import OnboardingScreen from "./Screens/OnboardingScreen";
+import SecondOnboardingScreen from "./Screens/SecondOnboardingScreen";
+import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
+import CheckIsLogin from "./Screens/CheckIsLogin";
+import isOnboardingChecked from "./Screens/isOnboardingChecked";
 
 const AppNavigator = () => {
   const {
     token,
-    existinguser,
-    setExistinguser,
-    isAuthenticated,
     setNotification,
     setNotifyMessage,
     isViewed,
     setIsViewed,
+    setOnboarding,
+    onboarding,
   } = useContext(Context);
   // console.log("isViewed App:>> ", isViewed);
 
@@ -83,23 +84,10 @@ const AppNavigator = () => {
       return;
     }
   });
-  // ***************check for existing user*********************
-  useEffect(() => {
-    const getItems = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@email");
-        setExistinguser(value);
-        // console.log("existing username fetched", value);
-      } catch (error) {
-        console.log("username cant be updated", error);
-      }
-    };
-    getItems();
-  }, [isAuthenticated]);
-  // console.log("existinguser existinguser", existinguser);
 
   const Stack = createStackNavigator();
 
+  // **********screen animation function************
   const config = {
     animation: "spring",
     config: {
@@ -312,25 +300,30 @@ const AppNavigator = () => {
         </>
       ) : (
         <>
-          {/* <Stack.Screen
-                  name="OnboardingScreen"
-                  component={OnboardingScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="SecondOnboardingScreen"
-                  component={SecondOnboardingScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="ThirdOnboardingScreen"
-                  component={ThirdOnboardingScreen}
-                  options={{ headerShown: false }}
-                /> */}
+          <Stack.Screen
+            name="isOnboardingChecked"
+            component={isOnboardingChecked}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OnboardingScreen"
+            component={OnboardingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SecondOnboardingScreen"
+            component={SecondOnboardingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ThirdOnboardingScreen"
+            component={ThirdOnboardingScreen}
+            options={{ headerShown: false }}
+          />
 
           <Stack.Screen
             name="ExistingUserLogin"
-            component={existinguser !== null ? ExistingUserLogin : LoginScreen}
+            component={ExistingUserLogin}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -338,7 +331,11 @@ const AppNavigator = () => {
             component={LoginScreen}
             options={{ headerShown: false }}
           />
-
+          <Stack.Screen
+            name="CheckIsLogin"
+            component={CheckIsLogin}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPassword}

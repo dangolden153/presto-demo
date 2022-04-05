@@ -30,7 +30,7 @@ const SellUsdtScreen = ({ navigation }) => {
   const { getCyptoRate, getUSDTAddress } = useSelector(
     (state) => state.TransactionReducer
   );
-  const { token, openModal, setOpenModal, setModalMessage } =
+  const { token, openModal, setOpenModal, setModalMessage, handleRefresh } =
     useContext(Context);
   const dispatch = useDispatch();
 
@@ -70,7 +70,7 @@ const SellUsdtScreen = ({ navigation }) => {
     }
   };
 
-  ///***************submit card function *********************
+  ///***************submit usdt *********************
   const handleSubmit = () => {
     dispatch(
       handleSellUsdt(
@@ -80,7 +80,8 @@ const SellUsdtScreen = ({ navigation }) => {
         setModalMessage,
         setOpenModal,
         setLoading,
-        setImage
+        setImage,
+        handleRefresh
       )
     );
   };

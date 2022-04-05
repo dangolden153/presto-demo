@@ -35,7 +35,14 @@ const Wallet = () => {
 
       <View style={styles.body}>
         {withdrawHistory?.length === 0 ? (
-          <View style={{ width: "90%", alignItems: "center" }}>
+          <View
+            style={{
+              width: "90%",
+              alignItems: "center",
+              justifyContent: "center",
+              flex: 1,
+            }}
+          >
             <Text style={styles.title}>No Transaction yet</Text>
             <Text style={styles.sub_title}>
               Any transaction you make will appear here. let's start trading!
@@ -80,9 +87,9 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: "#f4fafe",
     alignItems: "center",
-    justifyContent: "center",
     marginTop: 20,
     borderRadius: 20,
+    // justifyContent: "flex-start",
     flex: 1,
     width: "100%",
     paddingHorizontal: 10,
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 70,
+    marginVertical: 10,
   },
   sub_title: {
     fontSize: 18,

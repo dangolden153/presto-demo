@@ -17,7 +17,8 @@ export const handleSellBtc =
     setModalMessage,
     setOpenResModal,
     setLoading,
-    setImage
+    setImage,
+    handleRefresh
   ) =>
   (dispatch) => {
     setLoading(true);
@@ -53,11 +54,14 @@ export const handleSellBtc =
           setImage("");
           setOpenResModal(true);
           setModalMessage({ status: "ok", text: result?.result });
+          handleRefresh();
+        } else {
+          setModalMessage({
+            status: "fail",
+            text: "unable to process transaction, try again",
+          });
+          setOpenResModal(true);
         }
-        //  else {
-        //   setModalMessage({ status: "fail", text: "unable to process transaction, try again" });
-        //   setOpenResModal(true)
-        // }
         // setOpenResModal(true);
         // console.log("card result", result);
       })
@@ -82,7 +86,8 @@ export const handleSellUsdt =
     setModalMessage,
     setOpenResModal,
     setLoading,
-    setImage
+    setImage,
+    handleRefresh
   ) =>
   (dispatch) => {
     setLoading(true);
@@ -118,6 +123,7 @@ export const handleSellUsdt =
           setModalMessage({ status: "ok", text: result?.result });
           setOpenResModal(true);
           setImage("");
+          handleRefresh();
         } else {
           setOpenResModal(true);
           setModalMessage({
@@ -316,7 +322,8 @@ export const sellGiftcard =
     setType,
     setCountry,
     setValue,
-    setAmount
+    setAmount,
+    handleRefresh
   ) =>
   (dispatch) => {
     setLoading(true);
@@ -441,6 +448,7 @@ export const sellGiftcard =
         if (result?.result === "Transaction Sent") {
           setModalMessage({ status: "ok", text: result?.result });
           setOpenModal(true);
+          handleRefresh();
         } else {
           setOpenModal(true);
           setModalMessage({

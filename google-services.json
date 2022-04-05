@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "915308185218",
-    "firebase_url": "https://chat-app-d5d8f-default-rtdb.firebaseio.com",
-    "project_id": "chat-app-d5d8f",
-    "storage_bucket": "chat-app-d5d8f.appspot.com"
+    "project_number": "545435045793",
+    "project_id": "presto-app-1fd0e",
+    "storage_bucket": "presto-app-1fd0e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:915308185218:android:b113133e92d32f7652569b",
+        "mobilesdk_app_id": "1:545435045793:android:8a7e935237755683ebc5e0",
         "android_client_info": {
           "package_name": "com.presto.presto"
         }
       },
       "oauth_client": [
         {
-          "client_id": "915308185218-2gld050a6ruh58gjo6ovfdogcoe6mf21.apps.googleusercontent.com",
+          "client_id": "545435045793-nuqg31jde0fqotdn2tup8s97hooauqpt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAwhsMvwOTMjxlnCr4EPQhRmwUeKO4ONi0"
+          "current_key": "AIzaSyB8E_Gw8PmqnrWS8Emw7JdZ8c9x3rEo7OI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "915308185218-2gld050a6ruh58gjo6ovfdogcoe6mf21.apps.googleusercontent.com",
+              "client_id": "545435045793-nuqg31jde0fqotdn2tup8s97hooauqpt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

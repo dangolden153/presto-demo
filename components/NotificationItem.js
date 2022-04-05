@@ -23,7 +23,11 @@ const NotificationItem = ({ item, body, time }) => {
   };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <TouchableOpacity style={styles.notify_container} activeOpacity={0.6}>
+      <TouchableOpacity
+        style={styles.notify_container}
+        activeOpacity={0.6}
+        onPress={() => handleToggle()}
+      >
         <View style={styles.header}>
           <Presto style={{ marginRight: RFValue(5, 580) }} />
           <Text style={[styles.text, { color: "#124672" }]}>Presto</Text>

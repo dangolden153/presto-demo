@@ -73,13 +73,10 @@ const ChangePasswordScreen = ({ navigation }) => {
           <TextInput
             value={setEmail}
             onChangeText={(text) => setEmail(text)}
-            placeholderTextColor="red"
-            placeholder="adenikeSola@gmail.com"
+            // placeholderTextColor="red"
+            // placeholder="adenikeSola@gmail.com"
             style={styles.input}
           />
-          {/* <Text style={styles.error_text}>
-          Invalid email address please check and try again
-        </Text> */}
         </View>
 
         <LinearButton
@@ -87,7 +84,6 @@ const ChangePasswordScreen = ({ navigation }) => {
           loading={loading}
           onPress={handlePasswordUpdate}
         />
-       
       </SafeAreaView>
 
       {/* *********response modal************************** */}
@@ -108,7 +104,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    paddingHorizontal: 25,
     backgroundColor: "white",
   },
 
@@ -136,7 +131,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   input: {
-    borderColor: "red",
+    // borderColor: "red",
     borderWidth: 1,
     padding: 10,
     marginVertical: 10,

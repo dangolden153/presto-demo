@@ -25,7 +25,7 @@ const VerifiedScreen = ({ navigation }) => {
         }}
       >
         <Text style={styles.text}>
-          You have sucessfully validate your account
+          You have sucessfully validated your account.
         </Text>
 
         <Button

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Linking,
 } from "react-native";
 import {
   AntDesign,
@@ -16,20 +17,8 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import pics from "../images/Memoji.png";
-import AppLoading from "expo-app-loading";
-import { useFonts } from "expo-font";
-import { LinearGradient } from "expo-linear-gradient";
 import { Context } from "../context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import profile from "../images/profile.png";
-import account from "../images/account.png";
-import pass from "../images/pass.png";
-import pin from "../images/pin.png";
-import star from "../images/star.png";
-import about from "../images/about.png";
-import logout from "../images/log-out.png";
-import help from "../images/help.png";
 import { useSelector } from "react-redux";
 import NavBar from "./NavBar";
 import { SvgUri } from "react-native-svg";
@@ -41,6 +30,7 @@ const Settings = ({ navigation }) => {
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
+  // *********logout******************
   const Logout = async () => {
     try {
       await AsyncStorage.removeItem("@prestoToken");
@@ -52,14 +42,22 @@ const Settings = ({ navigation }) => {
     }
   };
 
-  let [firstLoaded, error] = useFonts({
-    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-  });
+  const url = "https://prestohq.io/#about";
 
-  if (!firstLoaded) {
-    return <AppLoading />;
-  }
+  // ************open link to presto website****************
+  const handlePress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  }, [url]);
+
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
@@ -79,7 +77,19 @@ const Settings = ({ navigation }) => {
           justifyContent: "center",
         }}
       >
-        <SvgUri uri={user?.profile_pic || nullAvatar} />
+        {user?.profile_pic ? (
+          <SvgUri uri={user?.profile_pic || nullAvatar} />
+        ) : (
+          <Image
+            source={{ uri: nullAvatar }}
+            style={{
+              width: 100,
+              height: 100,
+              resizeMode: "contain",
+              borderRadius: 300,
+            }}
+          />
+        )}
       </TouchableOpacity>
 
       {/* ***********   profile account Bvn ***************** * */}
@@ -187,7 +197,7 @@ const Settings = ({ navigation }) => {
           <TouchableOpacity
             style={styles.Settings_items}
             // onPress={() => navigation.navigate("Accounts")}
-            // onPress={() => Logout()}
+            onPress={() => handlePress()}
           >
             <View style={styles.box_text}>
               <TouchableOpacity style={styles.box}>

@@ -91,8 +91,20 @@ const EditProfile = ({ navigation }) => {
             position: "relative",
           }}
         >
-          <SvgUri uri={user?.profile_pic || nullAvatar} />
-
+          {/* <SvgUri uri={user?.profile_pic || nullAvatar} /> */}
+          {user?.profile_pic ? (
+            <SvgUri uri={user?.profile_pic || nullAvatar} />
+          ) : (
+            <Image
+              source={{ uri: nullAvatar }}
+              style={{
+                width: 100,
+                height: 100,
+                resizeMode: "contain",
+                borderRadius: 300,
+              }}
+            />
+          )}
           <TouchableOpacity
             style={{
               position: "absolute",

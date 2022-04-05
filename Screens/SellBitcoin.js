@@ -33,7 +33,7 @@ const SellBitcoin = ({ navigation }) => {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [copiedText, setCopiedText] = useState("");
-  const { token, openModal, setOpenModal, setModalMessage } =
+  const { token, openModal, setOpenModal, setModalMessage, handleRefresh } =
     useContext(Context);
   const { getCyptoRate, getBTCAddress } = useSelector(
     (state) => state.TransactionReducer
@@ -71,7 +71,7 @@ const SellBitcoin = ({ navigation }) => {
     }
   };
 
-  ///*******************submit card function *********************
+  ///*******************handle Submit btc*********************
   const handleSubmit = () => {
     dispatch(
       handleSellBtc(
@@ -81,7 +81,8 @@ const SellBitcoin = ({ navigation }) => {
         setModalMessage,
         setOpenModal,
         setLoading,
-        setImage
+        setImage,
+        handleRefresh
       )
     );
   };

@@ -30,6 +30,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     setModalMessage,
     cardPictures,
     setCardPictures,
+    handleRefresh,
   } = useContext(Context);
 
   const {
@@ -100,7 +101,8 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
         setType,
         setCountry,
         setValue,
-        setAmount
+        setAmount,
+        handleRefresh
       )
     );
   };

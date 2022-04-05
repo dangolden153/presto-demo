@@ -1,30 +1,27 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import pics from "../images/Group.png";
+import { View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import Board from "../images/board_3.svg";
+import { BigText, RegularText } from "../components/Text";
+import { RFValue } from "react-native-responsive-fontsize";
+
 const ThirdOnboardingScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.img_bg}>
-        <Image
-          source={pics}
-          style={{ width: 250, height: 250, resizeMode: "contain" }}
-        />
+        <Board />
       </View>
 
       <View style={styles.text_container}>
-        <Text style={styles.header}>Swift Payment and Amazing rates </Text>
-        <Text style={styles.Sub_header}>
+        <BigText blackTextColor bold>
+          Swift Payment and Amazing rates{" "}
+        </BigText>
+        <View style={{ marginVertical: RFValue(2, 580) }} />
+
+        <RegularText>
           we've got amazing rates for all your gift cards and crypto assets and
           our payment is very fast!
-        </Text>
+        </RegularText>
       </View>
 
       <View style={styles.btn_container}>
@@ -34,10 +31,12 @@ const ThirdOnboardingScreen = ({ navigation }) => {
         >
           <LinearGradient
             // Button Linear Gradient
-            colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+            colors={["#0B365B", "#0B365B", "#124672"]}
             style={styles.btn}
           >
-            <Text style={styles.text}>Next</Text>
+            <RegularText center whiteTextColor bold>
+              Next
+            </RegularText>
           </LinearGradient>
         </TouchableOpacity>
         <View style={styles.dots}>
@@ -61,7 +60,7 @@ const ThirdOnboardingScreen = ({ navigation }) => {
             style={{
               width: 30,
               height: 7,
-              backgroundColor: "#0084F4",
+              backgroundColor: "#0B365B",
               borderRadius: 50,
             }}
           />
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
   },
   img_bg: {
     width: "85%",
-    backgroundColor: "#FFF0F0",
+    backgroundColor: "#FEF6E9",
     alignItems: "center",
     height: 400,
     borderBottomEndRadius: 150,
@@ -96,29 +95,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // backgroundColor: "gray",
     width: "100%",
     marginBottom: 40,
   },
-  header: {
-    color: "black",
-    fontSize: 25,
-    letterSpacing: 1,
-    fontWeight: "bold",
-  },
-  Sub_header: {
-    color: "#999999",
-    fontSize: 15,
-    marginTop: 10,
-  },
 
-  text: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 17,
-  },
   btn: {
-    // marginTop: 50,
     width: 200,
     paddingVertical: 15,
     borderRadius: 10,
@@ -128,6 +109,5 @@ const styles = StyleSheet.create({
     width: 60,
     alignItems: "center",
     justifyContent: "space-between",
-    // backgroundColor: "pink",
   },
 });

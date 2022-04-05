@@ -57,7 +57,7 @@ const RegistrationScreen = ({ navigation }) => {
     } else if (!phoneno) {
       alert("phone number canot be empty!");
       return false;
-    } else if (!password && password.length < 6) {
+    } else if (!password || password.length < 6) {
       alert("password too short!");
       return false;
     } else if (passwordConfirmation !== password) {
@@ -83,6 +83,7 @@ const RegistrationScreen = ({ navigation }) => {
     formdata.append("password_confirmation", passwordConfirmation);
     formdata.append("lastname", lastName);
     formdata.append("phoneno", phoneno);
+    formdata.append("reference", referralCode);
 
     var requestOptions = {
       method: "POST",
@@ -97,12 +98,15 @@ const RegistrationScreen = ({ navigation }) => {
         if (res?.status === "201") {
           return navigation.navigate("CheckVerification");
         }
-        // console.log("res", JSON.parse(res).email);
+        // console.log("res", JSON.parse(res).password);
+        console.log("response", res);
         setOpenModal(true);
         setModalMessage({
           status: "fail",
           text: JSON.parse(res).email
             ? JSON.parse(res).email[0]
+            : JSON.parse(res).password
+            ? JSON.parse(res).password[0]
             : "invalid credentials given.",
         });
       })
@@ -365,52 +369,20 @@ const styles = StyleSheet.create({
   },
   input_container: {
     marginTop: 20,
-    // marginBottom:40,
-    // flexGrow: 0.8,
-    // flex: 1,
     height: "55%",
-    // backgroundColor: "green",
-    //  justifyContent: "center",
-    //  paddingTop:10
   },
   inputTextContainer: {
     marginTop: 7,
   },
   input_text: {
     marginBottom: 5,
-    // top: 10,
     paddingHorizontal: 10,
-    // backgroundColor: "pink",
     zIndex: 200,
-    // width: 100,
-    // textAlign: "center",
     color: "gray",
     fontSize: 14,
     fontWeight: "bold",
   },
-  // input_textNumber: {
-  //   marginLeft: 30,
-  //   top: 10,
-  //   paddingHorizontal: 10,
-  //   backgroundColor: "#ffff",
-  //   zIndex: 200,
-  //   width: 140,
-  //   textAlign: "center",
-  //   color: "gray",
-  //   fontSize: 15,
-  // },
 
-  // input_password: {
-  //   marginLeft: 30,
-  //   top: 10,
-  //   paddingHorizontal: 10,
-  //   backgroundColor: "#ffff",
-  //   zIndex: 200,
-  //   width: 160,
-  //   textAlign: "center",
-  //   color: "gray",
-  //   fontSize: 15,
-  // },
   icon_input: {
     borderWidth: 1,
     borderColor: "#e8e6ea",
@@ -475,5 +447,3 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-
-// messsage : {firsname :"please insert "}, {lastnme:""},{email:""}

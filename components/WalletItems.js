@@ -22,10 +22,10 @@ const WalletItems = ({ item }) => {
         }}
       />
       <View>
-        <Text style={styles.text}>{item?.bank} bank</Text>
+        <Text style={styles.text}>{item?.bank}...</Text>
         <Text style={styles.text}>****{accountNum}</Text>
       </View>
-      <Text style={styles.text}>{numberWithCommas(item?.amount)}</Text>
+      <Text style={styles.text}>N{numberWithCommas(item?.amount)}</Text>
     </TouchableOpacity>
   );
 };

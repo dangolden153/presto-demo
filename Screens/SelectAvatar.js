@@ -73,26 +73,10 @@ const SelectAvatar = () => {
 
           {/* ********************************************************* */}
           <TouchableOpacity
-            onPress={() => setImage(avatar7)}
+            onPress={() => setImage(avatar6)}
             style={styles.img_container}
           >
             <SvgUri uri={avatar6} />
-          </TouchableOpacity>
-
-          {/* ********************************************************* */}
-          <TouchableOpacity
-            onPress={() => setImage(avatar)}
-            style={styles.img_container}
-          >
-            <SvgUri uri={avatar2} />
-          </TouchableOpacity>
-
-          {/* ********************************************************* */}
-          <TouchableOpacity
-            onPress={() => setImage(avatar1)}
-            style={styles.img_container}
-          >
-            <SvgUri uri={avatar3} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -100,7 +84,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar2)}
             style={styles.img_container}
           >
-            <SvgUri uri={avatar4} />
+            <SvgUri uri={avatar2} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -108,7 +92,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar3)}
             style={styles.img_container}
           >
-            <SvgUri uri={avatar5} />
+            <SvgUri uri={avatar3} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -116,7 +100,7 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar4)}
             style={styles.img_container}
           >
-            <SvgUri uri={avatar6} />
+            <SvgUri uri={avatar4} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
@@ -124,12 +108,28 @@ const SelectAvatar = () => {
             onPress={() => setImage(avatar5)}
             style={styles.img_container}
           >
-            <SvgUri uri={avatar7} />
+            <SvgUri uri={avatar5} />
           </TouchableOpacity>
 
           {/* ********************************************************* */}
           <TouchableOpacity
             onPress={() => setImage(avatar6)}
+            style={styles.img_container}
+          >
+            <SvgUri uri={avatar6} />
+          </TouchableOpacity>
+
+          {/* ********************************************************* */}
+          <TouchableOpacity
+            onPress={() => setImage(avatar7)}
+            style={styles.img_container}
+          >
+            <SvgUri uri={avatar7} />
+          </TouchableOpacity>
+
+          {/* ********************************************************* */}
+          <TouchableOpacity
+            onPress={() => setImage(avatar8)}
             style={styles.img_container}
           >
             <SvgUri uri={avatar8} />
@@ -151,7 +151,7 @@ const SelectAvatar = () => {
           handleAvatarUpdate={handleAvatarUpdate}
         />
       )}
-      {openModal && <ModalComponent />}
+      {openModal && <ModalComponent navigate="ButtomTab" />}
     </>
   );
 };
