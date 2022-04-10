@@ -51,6 +51,7 @@ import SecondOnboardingScreen from "./Screens/SecondOnboardingScreen";
 import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
 import CheckIsLogin from "./Screens/CheckIsLogin";
 import isOnboardingChecked from "./Screens/isOnboardingChecked";
+import walletRecieptScreen from "./Screens/walletRecieptScreen";
 
 const AppNavigator = () => {
   const {
@@ -297,6 +298,12 @@ const AppNavigator = () => {
             options={{ headerShown: false }}
             ReceiptScreen
           />
+          <Stack.Screen
+            name="walletRecieptScreen"
+            component={walletRecieptScreen}
+            options={{ headerShown: false }}
+            ReceiptScreen
+          />
         </>
       ) : (
         <>
@@ -320,10 +327,9 @@ const AppNavigator = () => {
             component={ThirdOnboardingScreen}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
-            name="ExistingUserLogin"
-            component={ExistingUserLogin}
+            name="CheckIsLogin"
+            component={CheckIsLogin}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -332,10 +338,11 @@ const AppNavigator = () => {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="CheckIsLogin"
-            component={CheckIsLogin}
+            name="ExistingUserLogin"
+            component={ExistingUserLogin}
             options={{ headerShown: false }}
           />
+
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPassword}

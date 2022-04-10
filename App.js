@@ -315,3 +315,9 @@ function AnimatedSplashScreen({ children, image }) {
 // // yup validation 30min
 
 // n b =
+
+// refreal to 5k ✅
+// total_amount with naira logo / amount in dollar logo in transaction details screen ✅
+// reciept for withdrawal ✅
+// edit profile -- username ✅
+// bank logos ..

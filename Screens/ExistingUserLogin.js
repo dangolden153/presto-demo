@@ -23,10 +23,11 @@ import { useToast } from "react-native-toast-notifications";
 import { SvgUri } from "react-native-svg";
 import { BigText, MediumText, RegularText } from "../components/Text";
 import { RFValue } from "react-native-responsive-fontsize";
+import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const ExistingUserLogin = ({ navigation }) => {
+const ExistingUserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -44,7 +45,7 @@ const ExistingUserLogin = ({ navigation }) => {
     setToken,
     setAccessToken,
   } = useContext(Context);
-
+  const navigation = useNavigation();
   let trimPassword = password.trim();
   const bgHeight = windowHeight * 0.28;
 

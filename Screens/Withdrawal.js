@@ -13,15 +13,12 @@ import {
 import { Context } from "../context";
 import { ModalComponent } from "../components/Modal";
 import { useSelector } from "react-redux";
-import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
 import NavBar from "../components/NavBar";
-import LinearButton from "../components/LinearButton";
 import NoAccountDetails from "../components/NoAccountDetails";
 import { RFValue } from "react-native-responsive-fontsize";
 import { colors } from "../components/Colors";
 import { LinearGradient } from "expo-linear-gradient";
-import { SvgUri } from "react-native-svg";
+import { RegularText, SmallText } from "../components/Text";
 
 const Withdrawal = ({ navigation }) => {
   const [amount, setAmount] = useState("");
@@ -33,26 +30,7 @@ const Withdrawal = ({ navigation }) => {
 
   // console.log("bankDetails :>> ", bankDetails);
 
-  const {
-    token,
-    message,
-    setModalMessage,
-    openModal,
-    setOpenModal,
-    setLoading,
-    loading,
-  } = useContext(Context);
-
-  let [firstLoaded, error] = useFonts({
-    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
-    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
-  });
-
-  if (!firstLoaded) {
-    return <AppLoading />;
-  }
+  const { message, openModal, setOpenModal, loading } = useContext(Context);
 
   // **************validate form***********************
   const handleDetails = (detail) => {
@@ -92,6 +70,9 @@ const Withdrawal = ({ navigation }) => {
   };
 
   // console.log("details :>> ", details);
+
+  const pics =
+    "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg";
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -125,36 +106,21 @@ const Withdrawal = ({ navigation }) => {
                   ]}
                   onPress={() => handleDetails(item)}
                 >
-                  {/* {item?.image ? (
-                    <SvgUri
-                      height="70"
-                      width="70"
-                      // resizeMode="contain"
-                      uri={item?.image}
-                    />
-                  ) : (
-                   
-                  )} */}
                   <Image
                     source={{
-                      uri: "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg",
+                      uri: item?.image || pics,
                     }}
                     style={{
-                      height: 70,
-                      width: 70,
-                      // borderRadius: 10,
+                      height: 100,
+                      width: "100%",
                       marginBottom: 5,
                       resizeMode: "contain",
                     }}
                   />
 
-                  <Text style={styles.title} numberOfLines={1}>
-                    {item?.bank || "no bank name"}
-                  </Text>
-                  <Text style={styles.title} numberOfLines={1}>
-                    {item?.accountname}
-                  </Text>
-                  <Text style={styles.time}>{item?.accountno}</Text>
+                  <RegularText>{item?.bank || "no bank name"}</RegularText>
+                  <RegularText>{item?.accountname}</RegularText>
+                  <SmallText lightTextColor>{item?.accountno}</SmallText>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -204,7 +170,9 @@ const Withdrawal = ({ navigation }) => {
                 colors={["#0B365B", "#0B365B", "#124672"]}
                 style={styles.btn}
               >
-                <Text style={styles.text}>Withdraw</Text>
+                <RegularText whiteTextColor center>
+                  Withdraw
+                </RegularText>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -257,43 +225,7 @@ const styles = StyleSheet.create({
     width: RFValue(120, 580),
     backgroundColor: "white",
   },
-  form: {},
-  // wallet_title: {
-  //   fontSize: 20,
-  //   fontWeight: "bold",
-  // },
-  sub_title: {
-    fontSize: 18,
-    color: "#999999",
-    width: "90%",
-    textAlign: "center",
-    marginTop: 15,
-  },
-  img_title: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 15,
-    // marginHorizontal: 10,
-    marginVertical: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-  },
-  title_sub: {
-    alignItems: "flex-end",
-    // backgroundColor: "pink",
-    width: "65%",
-  },
-  title: {
-    fontSize: 14,
-    color: "#666666",
 
-    // fontFamily: "semiBold",
-  },
-  time: {
-    fontFamily: "regular",
-    color: "#999999",
-  },
   input: {
     padding: 15,
     // paddingVertical:20,

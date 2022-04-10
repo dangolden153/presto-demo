@@ -45,7 +45,7 @@ const ReferScreen = ({}) => {
         <Refer />
         <Text style={styles.bold}>Refer and earn</Text>
         <Text style={[styles.text, { fontWeight: "bold" }]}>
-          Refer a friend today and earn up to {"\n"}N2,000 when they trade{"\n"}
+          Refer a friend today and earn up to {"\n"}N5,000 when they trade{"\n"}
           up to $1,000.
         </Text>
 

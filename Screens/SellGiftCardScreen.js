@@ -34,6 +34,10 @@ const SellGiftCardScreen = ({ navigation }) => {
   const image_big = type?.image_big;
   const image_small = type?.image_small;
   const total = amount * rate;
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   // console.log("type :>> ", type);
 
   //******navigate to upload card screen with card prpos********
@@ -140,12 +144,14 @@ const SellGiftCardScreen = ({ navigation }) => {
         <View style={styles.rate_container}>
           <View style={styles.rate}>
             <Text style={styles.rate_text}>Rate:</Text>
-            <Text style={styles.price}>{rate}/$</Text>
+            <Text style={styles.price}>{rate && numberWithCommas(rate)}/$</Text>
           </View>
 
           <View style={styles.rate}>
             <Text style={styles.rate_text}>Total amount</Text>
-            <Text style={styles.price}>N{total || ""}</Text>
+            <Text style={styles.price}>
+              N{(total && numberWithCommas(total)) || ""}
+            </Text>
           </View>
         </View>
       </ScrollView>

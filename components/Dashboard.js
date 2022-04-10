@@ -1,18 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import PaymentCard from "../images/card.svg";
 import Coin from "../images/Coin.svg";
-import AppLoading from "expo-app-loading";
-import { useFonts } from "expo-font";
 import { useSelector } from "react-redux";
 import Card from "./Card";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,10 +16,11 @@ import { Context } from "../context";
 import { RFValue } from "react-native-responsive-fontsize";
 import Refer from "../images/refer.svg";
 import { MediumText, RegularText, SmallText } from "./Text";
+import { SvgUri } from "react-native-svg";
 
 const Dashboard = ({ navigation }) => {
   const { user } = useSelector((state) => state.UserReducer);
-  // console.log('user', user);
+  // console.log("user", user);
   const date = new Date();
   const getMonth = date.getMonth();
   const getDay = date.getDay();
@@ -107,26 +104,27 @@ const Dashboard = ({ navigation }) => {
     getItems();
   }, [isAuthenticated]);
 
-  const [fontLoaded, error] = useFonts({
-    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
-    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
-  });
-
-  if (!fontLoaded) {
-    return <AppLoading />;
-  }
-  // console.log("user", user);
+  // console.log("user");
 
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
 
       <View style={styles.nav_container}>
-        <MediumText blackTextColor capitalize>
-          Hello {user?.firstname},
-        </MediumText>
+        <TouchableOpacity
+          style={{ flexDirection: "row", alignItems: "center" }}
+        >
+          <SvgUri
+            width="40"
+            height="40"
+            uri={user?.profile_pic || nullAvatar}
+            style={{ marginRight: RFValue(5, 580) }}
+          />
+          <RegularText bold blackTextColor capitalize>
+            Hello {user?.username || user?.firstname},
+          </RegularText>
+        </TouchableOpacity>
+
         <View style={styles.text_icon}>
           <RegularText>
             Today {alphaDay}, {getDate} {alphaMonth},

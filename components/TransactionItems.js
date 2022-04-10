@@ -17,7 +17,10 @@ const windowHeight = Dimensions.get("window").height;
 
 const TransactionItems = ({ datas, btc, usdt, card }) => {
   const navigation = useNavigation();
-  // console.log("10 * windowWidth", 0.1 * windowWidth);
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  // console.log("datas", datas);
   const status =
     datas?.status == "0"
       ? "pending"
@@ -34,7 +37,7 @@ const TransactionItems = ({ datas, btc, usdt, card }) => {
 
   const Img = btc ? Bitcoin : USDT;
   const title = btc ? "BTC" : usdt ? "USDT" : datas.type;
-  const amount = btc ? datas.amount : usdt ? datas.amount : datas.value;
+  const amount = btc ? datas.amount : usdt ? datas.amount : datas.amount;
   return (
     <TouchableOpacity
       style={styles.gift_card}
@@ -67,7 +70,7 @@ const TransactionItems = ({ datas, btc, usdt, card }) => {
 
       <View style={styles.price_status}>
         <Text numberOfLines={1} style={[styles.time, { textAlign: "right" }]}>
-          ${amount}
+          ${amount && numberWithCommas(amount)}
         </Text>
         {datas.failure && (
           <Text
@@ -82,7 +85,6 @@ const TransactionItems = ({ datas, btc, usdt, card }) => {
     </TouchableOpacity>
   );
 };
-
 export default TransactionItems;
 
 const styles = StyleSheet.create({

@@ -22,6 +22,10 @@ const windowHeight = Dimensions.get("window").height;
 
 const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
   const Address = "";
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   // console.log("datas :>> ", datas);
   const status =
     datas?.status === 0
@@ -32,7 +36,7 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
 
   const colors =
     datas?.status === 0 ? "#ff9d3a" : datas?.status === 1 ? "green" : "#f9886c";
-  const amount = card ? datas?.value : datas?.amount;
+  const amount = card ? datas?.amount : datas?.amount;
   const Img = btc ? Bitcoin : USDT;
   const prefix = btc ? "BTC" : usdt ? "USDT" : "";
   const [fontLoaded, error] = useFonts({
@@ -88,15 +92,6 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
             )}
           </TouchableOpacity>
           <View style={styles.gift_card}>
-            {/* ******************Amount************************ */}
-            <View style={styles.img_title}>
-              <Text style={styles.title}>Amount</Text>
-              <Text style={styles.upload_text}>
-                {amount}
-                {prefix}
-              </Text>
-            </View>
-
             {/* ******************status************************ */}
             <View style={styles.img_title}>
               <Text style={styles.title}>status</Text>
@@ -105,7 +100,7 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
 
             {/* ******************sub_title************************ */}
             <View style={styles.img_title}>
-              <Text style={styles.title}>time</Text>
+              <Text style={styles.title}>date</Text>
               <Text style={styles.sub_title}>
                 {moment(datas?.created_at).format("ll")}
               </Text>
@@ -126,6 +121,33 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
                 <Text style={styles.sub_title}>{Address}</Text>
               </View>
             ) : null}
+            {/* ******************card value************************ */}
+            {card && (
+              <View style={styles.img_title}>
+                <Text style={styles.title}>card value</Text>
+                <Text style={styles.upload_text}>{datas?.value}</Text>
+              </View>
+            )}
+            {/* ******************Amount************************ */}
+            <View style={styles.img_title}>
+              <Text style={styles.title}>Amount</Text>
+              <Text style={styles.upload_text}>
+                {card && "$"}
+                {amount && numberWithCommas(amount)}
+                {prefix}
+              </Text>
+            </View>
+
+            {/* ******************total Amount************************ */}
+            {card && (
+              <View style={styles.img_title}>
+                <Text style={styles.title}>Total amount</Text>
+                <Text style={styles.upload_text}>
+                  N
+                  {datas?.total_amount && numberWithCommas(datas?.total_amount)}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </View>

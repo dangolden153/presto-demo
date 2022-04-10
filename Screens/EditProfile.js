@@ -30,7 +30,7 @@ import { SvgUri } from "react-native-svg";
 const EditProfile = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
 
   const dispatch = useDispatch();
@@ -53,13 +53,13 @@ const EditProfile = ({ navigation }) => {
       updateProfile(
         firstName,
         lastName,
-        email,
         phone,
         token,
         setModalMessage,
         setOpenModal,
         handleRefresh,
-        setLoading
+        setLoading,
+        username
       )
     );
   };
@@ -130,7 +130,7 @@ const EditProfile = ({ navigation }) => {
                 value={firstName}
                 onChangeText={(text) => setFirstName(text)}
                 style={styles.input}
-                placeholder="Adenike"
+                // placeholder="Adenike"
               />
             </View>
 
@@ -140,19 +140,18 @@ const EditProfile = ({ navigation }) => {
                 value={lastName}
                 onChangeText={(text) => setLastName(text)}
                 style={styles.input}
-                placeholder="Sola"
+                // placeholder="Sola"
               />
             </View>
 
-            {/* <View style={styles.text_input}>
-              <Text style={styles.input_text}>Email</Text>
+            <View style={styles.text_input}>
+              <Text style={styles.input_text}>Username</Text>
               <TextInput
-                value={email}
-                onChangeText={text => setEmail(text)}
+                value={username}
+                onChangeText={(text) => setUsername(text)}
                 style={styles.input}
-                placeholder="AdenikeSola@gmail.com"
               />
-            </View> */}
+            </View>
 
             <View style={styles.text_input}>
               <Text style={styles.input_text}>Phone number</Text>
@@ -160,7 +159,6 @@ const EditProfile = ({ navigation }) => {
                 value={phone}
                 onChangeText={(text) => setPhone(text)}
                 style={styles.input}
-                placeholder="08011223344"
               />
             </View>
             <LinearButton

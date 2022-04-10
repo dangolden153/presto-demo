@@ -123,7 +123,7 @@ const LoginScreen = ({ navigation }) => {
           setLoading(false);
           setModalMessage({
             status: "fail",
-            text: "Invalid credentials",
+            text: result?.error || "Invalid credentials",
           });
         }
       })

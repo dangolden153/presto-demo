@@ -1,18 +1,16 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Image,
   ScrollView,
 } from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
 import { Context } from "../context";
 import * as ImagePicker from "expo-image-picker";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ModalComponent } from "../components/Modal";
 import { sellGiftcard } from "../Redux/Actions/crptoTransaction";
 import { useDispatch } from "react-redux";
@@ -47,20 +45,55 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     setAmount,
   } = route?.params?.giftcardData;
 
-  /// pick image from photo library
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
-    if (!result.cancelled) {
-      setImage(result.uri);
-      return;
-    }
-  };
+  let photoData = cardPictures.map((pics) => {
+    return pics.uri;
+  });
+  console.log("photoData :>> ", photoData);
+  // *************sending image to php backend server************************
+  let filename = receipt.split("/").pop();
+  let match = /\.(\w+)$/.exec(filename);
+  let type = match ? `image/${match[1]}` : `image`;
+
+  let photoFile_1 = photoData[0] && photoData[0].split("/").pop();
+  let matchFile_1 = /\.(\w+)$/.exec(photoFile_1);
+  let typeFile_1 = matchFile_1 ? `image/${matchFile_1[1]}` : `image`;
+
+  let photoFile_2 = photoData[1] && photoData[1].split("/").pop();
+  let matchFile_2 = /\.(\w+)$/.exec(photoFile_2);
+  let typeFile_2 = matchFile_2 ? `image/${matchFile_2[1]}` : `image`;
+
+  let photoFile_3 = photoData[2] && photoData[2].split("/").pop();
+  let matchFile_3 = /\.(\w+)$/.exec(photoFile_3);
+  let typeFile_3 = matchFile_3 ? `image/${matchFile_3[1]}` : `image`;
+
+  let photoFile_4 = photoData[3] && photoData[3].split("/").pop();
+  let matchFile_4 = /\.(\w+)$/.exec(photoFile_4);
+  let typeFile_4 = matchFile_4 ? `image/${matchFile_4[1]}` : `image`;
+
+  let photoFile_5 = photoData[4] && photoData[4].split("/").pop();
+  let matchFile_5 = /\.(\w+)$/.exec(photoFile_5);
+  let typeFile_5 = matchFile_5 ? `image/${matchFile_5[1]}` : `image`;
+
+  let photoFile_6 = photoData[5] && photoData[5].split("/").pop();
+  let matchFile_6 = /\.(\w+)$/.exec(photoFile_6);
+  let typeFile_6 = matchFile_6 ? `image/${matchFile_6[1]}` : `image`;
+
+  let photoFile_7 = photoData[6] && photoData[6].split("/").pop();
+  let matchFile_7 = /\.(\w+)$/.exec(photoFile_7);
+  let typeFile_7 = matchFile_7 ? `image/${matchFile_7[1]}` : `image`;
+
+  let photoFile_8 = photoData[7] && photoData[7].split("/").pop();
+  let matchFile_8 = /\.(\w+)$/.exec(photoFile_8);
+  let typeFile_8 = matchFile_8 ? `image/${matchFile_8[1]}` : `image`;
+
+  let photoFile_9 = photoData[8] && photoData[8].split("/").pop();
+  let matchFile_9 = /\.(\w+)$/.exec(photoFile_9);
+  let typeFile_9 = matchFile_9 ? `image/${matchFile_9[1]}` : `image`;
+  // *************sending image to php backend server************************
 
   /// pick Receipt from photo library
   const pickReceipt = async () => {
@@ -102,14 +135,31 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
         setCountry,
         setValue,
         setAmount,
-        handleRefresh
+        handleRefresh,
+        filename,
+        type,
+        total,
+        photoFile_1,
+        photoFile_2,
+        photoFile_3,
+        photoFile_4,
+        photoFile_5,
+        photoFile_6,
+        photoFile_7,
+        photoFile_8,
+        photoFile_9,
+        typeFile_1,
+        typeFile_2,
+        typeFile_3,
+        typeFile_4,
+        typeFile_5,
+        typeFile_6,
+        typeFile_7,
+        typeFile_8,
+        typeFile_9
       )
     );
   };
-
-  let photoData = cardPictures.map((pics) => {
-    return pics.uri;
-  });
 
   ///////function to display either image preview or instruction text to upload images
   const handleImagePreview = () => {
@@ -158,12 +208,16 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
 
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Amount:</Text>
-                <Text style={styles.rate}>{amount || ""}</Text>
+                <Text style={styles.rate}>
+                  ${numberWithCommas(amount) || ""}
+                </Text>
               </View>
 
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Total Amount:</Text>
-                <Text style={styles.rate}>{total || ""}</Text>
+                <Text style={styles.rate}>
+                  N{numberWithCommas(total) || ""}
+                </Text>
               </View>
             </View>
           </View>

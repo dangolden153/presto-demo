@@ -6,7 +6,7 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import pics from "../images/envelop.png";
@@ -33,7 +33,7 @@ const CheckVerification = ({ navigation }) => {
       >
         <LinearGradient
           // Button Linear Gradient
-          colors={["#2998f7", "#2e9bf7", "#86c6fd"]}
+          colors={["#0B365B", "#0B365B", "#124672"]}
           style={styles.btn}
         >
           <Text style={styles.btn_text}>Next</Text>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffff",
     paddingHorizontal: 20,
-    justifyContent: "center"
+    justifyContent: "center",
     // alignItems: "center",
   },
   text: {
@@ -57,23 +57,23 @@ const styles = StyleSheet.create({
     color: "#999999",
     width: 270,
     textAlign: "center",
-    fontSize: 16
+    fontSize: 16,
   },
   link: {
     color: "#0084F4",
     marginTop: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
 
   btn_text: {
     color: "white",
     textAlign: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   btn: {
     marginTop: 80,
     width: "100%",
     paddingVertical: 15,
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
 });

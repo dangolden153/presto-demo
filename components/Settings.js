@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 16,
-    fontFamily: "semiBold",
+    // fontFamily: "semiBold",
     color: "#999999",
     paddingTop: 15,
     paddingLeft: 20,
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: RFValue(12, 580),
-    fontFamily: "semiBold",
+    // fontFamily: "semiBold",
     // alignSelf: "flex-start",
   },
 });

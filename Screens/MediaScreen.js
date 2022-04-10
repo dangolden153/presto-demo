@@ -1,13 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useMemo, useState } from "react";
 import { AssetsSelector } from "expo-images-picker";
-import {
-  AntDesign,
-  Feather,
-  Ionicons,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Context } from "../context";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const MediaScreen = ({ navigation }) => {
   const { setCardPictures } = useContext(Context);
@@ -101,5 +97,6 @@ export default MediaScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: RFValue(30, 580),
   },
 });

@@ -135,6 +135,7 @@ export const RegularText = ({
   uppercase,
   capitalize,
   medium,
+  bold,
   right,
   center,
 }) => {
@@ -163,13 +164,14 @@ export const RegularText = ({
   return (
     <View>
       <Text
+        numberOfLines={1}
         style={[
           styles.RegularText,
           {
             color: color,
             textTransform:
               (uppercase && "uppercase") || (capitalize && "capitalize"),
-            fontFamily: medium && "medium",
+            fontFamily: (medium && "medium") || (bold && "bold"),
             textAlign: (right && "right") || (center && "center"),
           },
         ]}
@@ -246,11 +248,11 @@ const styles = StyleSheet.create({
   },
   RegularText: {
     fontFamily: "regular",
-    fontSize: RFValue(12, 580),
+    fontSize: RFValue(10, 580),
   },
 
   SmallText: {
     fontFamily: "regular",
-    fontSize: RFValue(10, 580),
+    fontSize: RFValue(9, 580),
   },
 });

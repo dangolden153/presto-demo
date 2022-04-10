@@ -86,13 +86,13 @@ export const updateProfile =
   (
     firstName,
     lastName,
-    email,
     phone,
     token,
     setModalMessage,
     setOpenResModal,
     handleRefresh,
-    setLoading
+    setLoading,
+    username
   ) =>
   (dispatch) => {
     setLoading(true);
@@ -101,8 +101,8 @@ export const updateProfile =
     myHeaders.append("Authorization", "Bearer " + token);
     formdata.append("firstname", firstName);
     formdata.append("lastname", lastName);
-    formdata.append("email", email);
     formdata.append("phoneno", phone);
+    formdata.append("username", username);
 
     let requestOptions = {
       method: "POST",

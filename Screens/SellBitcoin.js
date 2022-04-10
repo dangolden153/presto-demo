@@ -71,11 +71,20 @@ const SellBitcoin = ({ navigation }) => {
     }
   };
 
+  // *************sending image to php backend server************************
+  let filename = image.split("/").pop();
+  // Infer the type of the image
+  let match = /\.(\w+)$/.exec(filename);
+  let type = match ? `image/${match[1]}` : `image`;
+  // *************sending image to php backend server************************
+
   ///*******************handle Submit btc*********************
   const handleSubmit = () => {
     dispatch(
       handleSellBtc(
         image,
+        filename,
+        type,
         amount,
         token,
         setModalMessage,

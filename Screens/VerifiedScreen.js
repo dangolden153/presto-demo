@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
 import pics from "../images/Memoji.png";
+import { LinearGradient } from "expo-linear-gradient";
 
 const VerifiedScreen = ({ navigation }) => {
   return (
@@ -22,26 +23,26 @@ const VerifiedScreen = ({ navigation }) => {
           justifyContent: "space-between",
           overFlow: "hidden",
           marginBottom: 20,
+          width: "100%",
         }}
       >
         <Text style={styles.text}>
           You have sucessfully validated your account.
         </Text>
 
-        <Button
-          // containerStyle={styles.btn}
-          buttonStyle={{
-            backgroundColor: "#0084F4",
-            padding: 15,
-            borderRadius: 10,
-            width: 300,
-            overFlow: "hidden",
-          }}
-          title="Contine"
-          //   raised
-          // loading={loading}
+        <TouchableOpacity
+          activeOpacity={0.7}
           onPress={() => navigation.navigate("CreatePin")}
-        />
+          style={{ width: "100%" }}
+        >
+          <LinearGradient
+            // Button Linear Gradient
+            colors={["#0B365B", "#0B365B", "#124672"]}
+            style={styles.btn}
+          >
+            <Text style={styles.btn_text}>Contine</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -70,5 +71,16 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     fontWeight: "600",
     marginTop: 20,
+  },
+  btn: {
+    marginTop: 80,
+    width: "100%",
+    paddingVertical: 15,
+    borderRadius: 10,
+  },
+  btn_text: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 17,
   },
 });

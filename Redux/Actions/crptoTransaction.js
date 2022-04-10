@@ -12,6 +12,8 @@ import {
 export const handleSellBtc =
   (
     image,
+    filename,
+    type,
     amount,
     token,
     setModalMessage,
@@ -29,11 +31,13 @@ export const handleSellBtc =
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
 
-    formdata.append("proof", {
-      name: "dan",
-      type: "image/jpeg",
-      uri: image,
-    });
+    // formdata.append("proof", {
+    //   name: "dan",
+    //   type: "image/jpeg",
+    //   uri: image,
+    // });
+
+    formdata.append("proof", { uri: image, name: filename, type });
     formdata.append("amount", amount);
 
     // formdata.append("receipt", receipt);
@@ -142,6 +146,195 @@ export const handleSellUsdt =
           text: "unable to process transaction, try again",
         });
         console.log("error", error);
+      });
+  };
+
+// *************** sell Giftcard*****************************
+export const sellGiftcard =
+  (
+    token,
+    country,
+    amount,
+    value,
+    tpe,
+    image,
+    receipt,
+    photoData,
+    setLoading,
+    setModalMessage,
+    setOpenModal,
+    image_big,
+    image_small,
+    cardPictures,
+    setType,
+    setCountry,
+    setValue,
+    setAmount,
+    handleRefresh,
+    filename,
+    type,
+    total,
+    photoFile_1,
+    photoFile_2,
+    photoFile_3,
+    photoFile_4,
+    photoFile_5,
+    photoFile_6,
+    photoFile_7,
+    photoFile_8,
+    photoFile_9,
+    typeFile_1,
+    typeFile_2,
+    typeFile_3,
+    typeFile_4,
+    typeFile_5,
+    typeFile_6,
+    typeFile_7,
+    typeFile_8,
+    typeFile_9
+  ) =>
+  (dispatch) => {
+    setLoading(true);
+
+    let myHeaders = new Headers();
+    // console.log("photoData[1] :>> ", photoData[1]);
+    myHeaders.append("Authorization", "Bearer " + token);
+    let formdata = new FormData();
+    formdata.append("country", country);
+    formdata.append("amount", amount);
+    formdata.append("amount", amount);
+    formdata.append("value", value);
+    formdata.append("type", tpe);
+    formdata.append("image", image_big);
+    formdata.append("image_small", image_small);
+    formdata.append("total_amount", total);
+
+    // {
+    //   receipt &&
+    //     formdata.append("receipt", {
+    //       name: "dan",
+    //       type: "image/jpeg",
+    //       uri: receipt,
+    //     });
+    // }
+    {
+      receipt &&
+        formdata.append("receipt", { uri: receipt, name: filename, type });
+    }
+
+    {
+      photoData[0] &&
+        formdata.append("picture_1", {
+          uri: photoData[0],
+          name: photoFile_1,
+          type: typeFile_1,
+        });
+    }
+    {
+      photoData[1] &&
+        formdata.append("picture_2", {
+          uri: photoData[1],
+          name: photoFile_2,
+          type: typeFile_2,
+        });
+    }
+    {
+      photoData[2] &&
+        formdata.append("picture_3", {
+          uri: photoData[2],
+          name: photoFile_3,
+          type: typeFile_3,
+        });
+    }
+    {
+      photoData[3] &&
+        formdata.append("picture_4", {
+          name: photoFile_4,
+          type: typeFile_4,
+          uri: photoData[3],
+        });
+    }
+    {
+      photoData[4] &&
+        formdata.append("picture_5", {
+          name: photoFile_5,
+          type: typeFile_5,
+          uri: photoData[4],
+        });
+    }
+    {
+      photoData[5] &&
+        formdata.append("picture_6", {
+          name: photoFile_6,
+          type: typeFile_6,
+          uri: photoData[5],
+        });
+    }
+    {
+      photoData[6] &&
+        formdata.append("picture_7", {
+          name: photoFile_7,
+          type: typeFile_7,
+          uri: photoData[6],
+        });
+    }
+    {
+      photoData[7] &&
+        formdata.append("picture_8", {
+          name: photoFile_8,
+          type: typeFile_8,
+          uri: photoData[7],
+        });
+    }
+    {
+      photoData[8] &&
+        formdata.append("picture", {
+          name: photoFile_9,
+          type: typeFile_9,
+          uri: photoData[8],
+        });
+    }
+
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch("https://api.prestohq.io/api/cardtransaction", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        photoData = null;
+        cardPictures([]);
+        setType("");
+        setCountry("");
+        setValue("");
+        setAmount("");
+        setLoading(false);
+        console.log("card result", result);
+        if (result?.result === "Transaction Sent") {
+          setModalMessage({ status: "ok", text: result?.result });
+          setOpenModal(true);
+          handleRefresh();
+        } else {
+          cardPictures([]);
+          setOpenModal(true);
+          setModalMessage({
+            status: "fail",
+            text: "unable to process transaction, try again",
+          });
+        }
+      })
+      .catch((error) => {
+        cardPictures([]);
+        setLoading(false);
+        setOpenModal(true);
+        setModalMessage({
+          status: "fail",
+          text: "unable to process transaction, try again",
+        });
+        console.log("card error", error);
       });
   };
 
@@ -301,169 +494,3 @@ export const fetchUBTCAddress = () => (dispatch) => {
       console.log("error", error);
     });
 };
-
-// ***************post sellGiftcard*****************************
-export const sellGiftcard =
-  (
-    token,
-    country,
-    amount,
-    value,
-    tpe,
-    image,
-    receipt,
-    photoData,
-    setLoading,
-    setModalMessage,
-    setOpenModal,
-    image_big,
-    image_small,
-    cardPictures,
-    setType,
-    setCountry,
-    setValue,
-    setAmount,
-    handleRefresh
-  ) =>
-  (dispatch) => {
-    setLoading(true);
-
-    let myHeaders = new Headers();
-    // console.log("photoData[1] :>> ", photoData[1]);
-    myHeaders.append("Authorization", "Bearer " + token);
-    let formdata = new FormData();
-    formdata.append("country", country);
-    formdata.append("amount", amount);
-    formdata.append("value", value);
-    formdata.append("type", tpe);
-    formdata.append("image", image_big);
-    formdata.append("image_small", image_small);
-    // {
-    //   image &&
-    //     formdata.append("image", {
-    //       name: "dan",
-    //       type: "image/jpeg",
-    //       uri: image,
-    //     });
-    // }
-    {
-      receipt &&
-        formdata.append("receipt", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: receipt,
-        });
-    }
-    {
-      photoData[0] &&
-        formdata.append("picture_1", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[0],
-        });
-    }
-    {
-      photoData[1] &&
-        formdata.append("picture_2", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[1],
-        });
-    }
-    {
-      photoData[2] &&
-        formdata.append("picture_3", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[2],
-        });
-    }
-    {
-      photoData[3] &&
-        formdata.append("picture_4", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[3],
-        });
-    }
-    {
-      photoData[4] &&
-        formdata.append("picture_5", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[4],
-        });
-    }
-    {
-      photoData[5] &&
-        formdata.append("picture_6", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[5],
-        });
-    }
-    {
-      photoData[6] &&
-        formdata.append("picture_7", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[6],
-        });
-    }
-    {
-      photoData[7] &&
-        formdata.append("picture_8", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[7],
-        });
-    }
-    {
-      photoData[8] &&
-        formdata.append("receipt", {
-          name: "dan",
-          type: "image/jpeg",
-          uri: photoData[8],
-        });
-    }
-
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    fetch("https://api.prestohq.io/api/cardtransaction", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        photoData = null;
-        cardPictures([]);
-        setType("");
-        setCountry("");
-        setValue("");
-        setAmount("");
-        setLoading(false);
-        console.log("card result", result);
-        if (result?.result === "Transaction Sent") {
-          setModalMessage({ status: "ok", text: result?.result });
-          setOpenModal(true);
-          handleRefresh();
-        } else {
-          setOpenModal(true);
-          setModalMessage({
-            status: "fail",
-            text: "unable to process transaction, try again",
-          });
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        setOpenModal(true);
-        setModalMessage({
-          status: "fail",
-          text: "unable to process transaction, try again",
-        });
-        console.log("card error", error);
-      });
-  };

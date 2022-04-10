@@ -1,7 +1,10 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const WalletItems = ({ item }) => {
+  const navigation = useNavigation();
+
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -14,7 +17,10 @@ const WalletItems = ({ item }) => {
   // console.log("item :>> ", item);
 
   return (
-    <TouchableOpacity style={styles.content}>
+    <TouchableOpacity
+      style={styles.content}
+      onPress={() => navigation.navigate("walletRecieptScreen", { item })}
+    >
       <Image
         style={styles.img}
         source={{
