@@ -320,4 +320,11 @@ function AnimatedSplashScreen({ children, image }) {
 // total_amount with naira logo / amount in dollar logo in transaction details screen ✅
 // reciept for withdrawal ✅
 // edit profile -- username ✅
-// bank logos ..
+// bank logos ..✅
+
+// image on card details ✅ ... expand image
+// make note optional  ✅
+// Nordstrom
+// removing the selected Images
+// add previous banks to the add acount screen ..
+// ability to refresh

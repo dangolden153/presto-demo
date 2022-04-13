@@ -52,7 +52,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
   let photoData = cardPictures.map((pics) => {
     return pics.uri;
   });
-  console.log("photoData :>> ", photoData);
+  // console.log("photoData :>> ", photoData);
   // *************sending image to php backend server************************
   let filename = receipt.split("/").pop();
   let match = /\.(\w+)$/.exec(filename);

@@ -6,10 +6,25 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
+  const [isImageDeleted, setIsImageDeleted] = useState(false);
+  const removeImage = (image) => {
+    console.log("remove image :>> ", photoData.indexOf(image));
+    let index = photoData.indexOf(image);
+    if (index > -1) {
+      photoData.splice(index, 1);
+      setIsImageDeleted(!isImageDeleted);
+      return;
+    }
+  };
+
+  useEffect(() => {
+    // console.log("photoData :>>> ", photoData);
+  }, [isImageDeleted]);
+
   return (
     <>
       <ScrollView
@@ -56,10 +71,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[0] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[0])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[0] }}
@@ -71,10 +86,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[1] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[1])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[1] }}
@@ -86,10 +101,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[2] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[2])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[2] }}
@@ -100,10 +115,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[3] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[3])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[3] }}
@@ -114,10 +129,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[4] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[4])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[4] }}
@@ -128,10 +143,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[5] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[5])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[5] }}
@@ -142,10 +157,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[6] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[6])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[6] }}
@@ -156,10 +171,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[7] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[7])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[7] }}
@@ -170,10 +185,10 @@ const CardImage = ({ image, receipt, photoData, setReceipt, setImage }) => {
         {photoData[8] && (
           <View style={{ position: "relative" }}>
             <TouchableOpacity
-            // style={styles.icon_container}
-            // onPress={() => setReceipt("")}
+              style={styles.icon_container}
+              onPress={() => removeImage(photoData[8])}
             >
-              {/* <Ionicons name="close" color="white" size={25} /> */}
+              <Ionicons name="close" color="white" size={25} />
             </TouchableOpacity>
             <Image
               source={{ uri: photoData[8] }}

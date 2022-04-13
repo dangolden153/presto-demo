@@ -197,7 +197,7 @@ export const sellGiftcard =
     setLoading(true);
 
     let myHeaders = new Headers();
-    // console.log("photoData[1] :>> ", photoData[1]);
+    // console.log("photoData[1] api:>> ", photoData);
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
     formdata.append("country", country);

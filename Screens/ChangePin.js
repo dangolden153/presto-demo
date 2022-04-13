@@ -51,7 +51,7 @@ const ChangePin = ({ navigation }) => {
         )}
 
         {/* ********nav************************ */}
-        <NavBar title="change PIN" navigation={navigation} />
+        <NavBar title="Change PIN" navigation={navigation} />
 
         <View style={styles.sub_container}>
           <View style={styles.pin_text}>

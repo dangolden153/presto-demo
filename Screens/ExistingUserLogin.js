@@ -24,6 +24,7 @@ import { SvgUri } from "react-native-svg";
 import { BigText, MediumText, RegularText } from "../components/Text";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useNavigation } from "@react-navigation/native";
+import { bankData } from "../utils/selectBankData";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -191,6 +192,7 @@ const ExistingUserLogin = () => {
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
+  console.log("object :>> ");
   return (
     <>
       <View style={styles.container}>

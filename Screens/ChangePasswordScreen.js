@@ -18,6 +18,8 @@ import { useDispatch } from "react-redux";
 import { Context } from "../context";
 import { ModalComponent } from "../components/Modal";
 import LinearButton from "../components/LinearButton";
+import NavBar from "../components/NavBar";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const ChangePasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -49,26 +51,11 @@ const ChangePasswordScreen = ({ navigation }) => {
     <>
       <SafeAreaView style={styles.container}>
         {/* up section container */}
-
-        <View style={styles.nav}>
-          <TouchableOpacity
-            style={{ position: "absolute", left: 0, top: 8 }}
-            onPress={() => navigation.goBack()}
-          >
-            <MaterialIcons
-              name="arrow-back-ios"
-              // style={{ marginLeft: 15 }}
-              size={24}
-              color="black"
-            />
-          </TouchableOpacity>
-
-          <Text style={styles.header}>Change Password</Text>
-        </View>
+        <NavBar title="Change Password" navigation={navigation} />
 
         {/* <Text style={styles.text}>how do you want to recieve a reset code?</Text> */}
 
-        <View>
+        <View style={{ marginTop: RFValue(50, 580) }}>
           <Text style={styles.text}>Enter your email address</Text>
           <TextInput
             value={setEmail}

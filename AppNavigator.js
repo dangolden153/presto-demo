@@ -52,6 +52,7 @@ import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
 import CheckIsLogin from "./Screens/CheckIsLogin";
 import isOnboardingChecked from "./Screens/isOnboardingChecked";
 import walletRecieptScreen from "./Screens/walletRecieptScreen";
+// import MyTabs from "./Topbar/navigation";
 
 const AppNavigator = () => {
   const {
@@ -125,6 +126,14 @@ const AppNavigator = () => {
     >
       {token !== null ? (
         <>
+          {/* <Stack.Screen
+            name="MyTabs"
+            component={MyTabs}
+            options={{
+              headerShown: false,
+              // gestureDirection: "vertical",
+            }}
+          /> */}
           <Stack.Screen
             name="ButtomTab"
             component={ButtomTab}

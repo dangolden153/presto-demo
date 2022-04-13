@@ -12,7 +12,7 @@ const TransactionDetail = ({ route, navigation }) => {
   const { transaction } = useSelector((state) => state.TransactionReducer);
   const { token, setModalMessage } = useContext(Context);
   const { card, datas, btc, usdt } = route?.params;
-  // console.log("transaction", transaction);
+  // console.log("datas", datas);
   const lastTransaction = transaction[transaction.length - 1];
   // console.log("lastTransaction", route ?.params);
 

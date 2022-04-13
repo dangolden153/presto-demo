@@ -57,17 +57,6 @@ const Card = () => {
     getData();
   }, [hideBalance]);
 
-  const [fontLoaded, error] = useFonts({
-    regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
-    medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),
-    semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
-    bold: require("../assets/fonts/raleway/Raleway-Bold.ttf"),
-  });
-
-  if (!fontLoaded) {
-    return <AppLoading />;
-  }
-
   return (
     <TouchableOpacity
       // onPress={() => navigation.navigate("ButtomTab")}
@@ -153,9 +142,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 
-  up_section_text: {
-    fontFamily: "regular",
-  },
   icon_price: {
     flexDirection: "row",
     justifyContent: "center",
@@ -166,15 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     // backgroundColor: "gray",
-    // width: 120,
     marginBottom: 7,
-    // overflow: "hidden",
     alignSelf: "center",
-  },
-  price: {
-    // fontFamily: "medium",
-    fontSize: 18,
-    color: "black",
-    marginRight: 20,
   },
 });

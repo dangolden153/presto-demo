@@ -26,7 +26,7 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  // console.log("datas :>> ", datas);
+  console.log("datas :>> ", datas);
   const status =
     datas?.status === 0
       ? "pending"
@@ -97,7 +97,6 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
               <Text style={styles.title}>status</Text>
               <Text style={{ color: colors }}>{status}</Text>
             </View>
-
             {/* ******************sub_title************************ */}
             <View style={styles.img_title}>
               <Text style={styles.title}>date</Text>
@@ -105,7 +104,6 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
                 {moment(datas?.created_at).format("ll")}
               </Text>
             </View>
-
             {/* ******************Error detail************************ */}
             {datas?.failure ? (
               <View style={styles.img_title}>
@@ -113,7 +111,6 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
                 <Text style={styles.sub_title}>{datas.failure}</Text>
               </View>
             ) : null}
-
             {/* ******************Address************************ */}
             {Address ? (
               <View style={styles.img_title}>
@@ -137,7 +134,6 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
                 {prefix}
               </Text>
             </View>
-
             {/* ******************total Amount************************ */}
             {card && (
               <View style={styles.img_title}>
@@ -146,6 +142,20 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
                   N
                   {datas?.total_amount && numberWithCommas(datas?.total_amount)}
                 </Text>
+              </View>
+            )}
+            {datas?.failure_pic && (
+              <View style={[styles.img_title, { alignItems: "flex-start" }]}>
+                <Text style={styles.title}>Description image </Text>
+                <TouchableOpacity>
+                  <Image
+                    source={{ uri: datas?.failure_pic }}
+                    style={{
+                      height: RFValue(80, 580),
+                      width: RFValue(80, 580),
+                    }}
+                  />
+                </TouchableOpacity>
               </View>
             )}
           </View>

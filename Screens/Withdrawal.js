@@ -37,10 +37,6 @@ const Withdrawal = ({ navigation }) => {
     if (!amount) {
       return alert("Please enter amount");
     }
-
-    if (!note) {
-      return alert("Please kindly fill in a note");
-    }
     setDetails(detail);
   };
 

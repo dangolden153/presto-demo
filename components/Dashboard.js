@@ -17,6 +17,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Refer from "../images/refer.svg";
 import { MediumText, RegularText, SmallText } from "./Text";
 import { SvgUri } from "react-native-svg";
+import { useRoute } from "@react-navigation/native";
 
 const Dashboard = ({ navigation }) => {
   const { user } = useSelector((state) => state.UserReducer);
@@ -44,6 +45,8 @@ const Dashboard = ({ navigation }) => {
   const alphaDay = days[getDay];
   const { setIsAuthenticated, isAuthenticated, setExistinguser, notification } =
     useContext(Context);
+  const nullAvatar =
+    "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
   // **************set username to the local storage*****************
   useEffect(() => {
@@ -105,30 +108,36 @@ const Dashboard = ({ navigation }) => {
   }, [isAuthenticated]);
 
   // console.log("user");
-
+  // useEffect(() => {
+  //   console.log("dashboard :>>");
+  // });
+  // const route = useRoute();
+  // console.log("route", route);
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
 
       <View style={styles.nav_container}>
-        <TouchableOpacity
-          style={{ flexDirection: "row", alignItems: "center" }}
-        >
-          <SvgUri
-            width="40"
-            height="40"
-            uri={user?.profile_pic || nullAvatar}
-            style={{ marginRight: RFValue(5, 580) }}
-          />
-          <RegularText bold blackTextColor capitalize>
-            Hello {user?.username || user?.firstname},
-          </RegularText>
-        </TouchableOpacity>
-
         <View style={styles.text_icon}>
-          <RegularText>
-            Today {alphaDay}, {getDate} {alphaMonth},
-          </RegularText>
+          <TouchableOpacity
+            style={{ flexDirection: "row", alignItems: "center" }}
+          >
+            <SvgUri
+              width="40"
+              height="40"
+              uri={user?.profile_pic || nullAvatar}
+              style={{ marginRight: RFValue(5, 580) }}
+            />
+            <View>
+              <RegularText bold blackTextColor capitalize>
+                Hello {user?.username || user?.firstname},
+              </RegularText>
+              <RegularText>
+                Today {alphaDay}, {getDate} {alphaMonth},
+              </RegularText>
+            </View>
+          </TouchableOpacity>
+
           <TouchableOpacity
             onPress={() => navigation.navigate("NotificcationScreen")}
             style={{ position: "relative" }}
