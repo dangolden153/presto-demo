@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   TextInput,
   ScrollView,
+  Pressable,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
@@ -23,13 +24,16 @@ import DropdownCardType from "../components/Dropdown/DropdownCardType";
 import { useNavigation } from "@react-navigation/native";
 import { AddBankAccountDetails } from "../Redux/Actions/bankTransactions";
 import { bankData } from "../utils/selectBankData";
+import BankData from "../components/BankData";
+import ModalCom from "../components/ModalCom";
 
 const Accounts = ({}) => {
   const [bank, setBank] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
-  const [accountName, setAccountName] = useState("");
   const [validate, setValidate] = useState("");
   const { user, allBanks } = useSelector((state) => state.UserReducer);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const {
     token,
     setModalMessage,
@@ -61,6 +65,9 @@ const Accounts = ({}) => {
   // ***********handle Submit account detail***************
   const handleSubmit = () => {
     setValidate("");
+    if (!accountNumber) {
+      return alert("Please enter a bank account");
+    }
     dispatch(
       AddBankAccountDetails(
         token,
@@ -89,6 +96,11 @@ const Accounts = ({}) => {
   // console.log(" bank", bank?.name);
   // console.log("filterBank :>> ", filterBank[0]?.imgURL);
 
+  const handleDetails = () => {
+    console.log("handleDetails :>> ");
+  };
+
+  let details = null;
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -105,6 +117,9 @@ const Accounts = ({}) => {
         {/****************** form body*******************/}
         <ScrollView style={styles.body}>
           <Text style={styles.input_text}>Add Account</Text>
+
+          <BankData handleDetails={handleDetails} details={details} />
+
           <DropdownCardType
             placeholder={bank?.name || "Select bank"}
             data={allBanks}
@@ -148,8 +163,20 @@ const Accounts = ({}) => {
             />
           </View>
         </ScrollView>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Show Modal</Text>
+        </Pressable>
       </SafeAreaView>
       {openModal && <ModalComponent />}
+      {modalVisible && (
+        <ModalCom
+          setModalVisible={setModalVisible}
+          modalVisible={modalVisible}
+        />
+      )}
     </>
   );
 };

@@ -19,6 +19,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { colors } from "../components/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 import { RegularText, SmallText } from "../components/Text";
+import BankData from "../components/BankData";
 
 const Withdrawal = ({ navigation }) => {
   const [amount, setAmount] = useState("");
@@ -29,6 +30,7 @@ const Withdrawal = ({ navigation }) => {
   const { bankDetails } = useSelector((state) => state.BankTransactionReducer);
 
   // console.log("bankDetails :>> ", bankDetails);
+  // console.log("bankDetails :>> ", details);
 
   const { message, openModal, setOpenModal, loading } = useContext(Context);
 
@@ -67,8 +69,6 @@ const Withdrawal = ({ navigation }) => {
 
   // console.log("details :>> ", details);
 
-  const pics =
-    "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg";
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -78,49 +78,8 @@ const Withdrawal = ({ navigation }) => {
         {bankDetails?.length > 0 ? (
           <View style={styles.body}>
             <Text style={styles.title}>Bank Account</Text>
-
-            {/* ***********bank array*********************** */}
-            <ScrollView
-              contentContainerStyle={styles.banks}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              {bankDetails.map((item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.bank_content,
-                    {
-                      borderWidth:
-                        item.accountno === details?.accountno ? 2 : null,
-                      borderColor:
-                        item.accountno === details?.accountno
-                          ? colors?.primaryColor
-                          : null,
-                      borderRadius: RFValue(10, 580),
-                    },
-                  ]}
-                  onPress={() => handleDetails(item)}
-                >
-                  <Image
-                    source={{
-                      uri: item?.image || pics,
-                    }}
-                    style={{
-                      height: 100,
-                      width: "100%",
-                      marginBottom: 5,
-                      resizeMode: "contain",
-                    }}
-                  />
-
-                  <RegularText>{item?.bank || "no bank name"}</RegularText>
-                  <RegularText>{item?.accountname}</RegularText>
-                  <SmallText lightTextColor>{item?.accountno}</SmallText>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-
+            {/* *************Bank list******************* */}
+            <BankData handleDetails={handleDetails} details={details} />
             {/* *************form container******************* */}
             <ScrollView
               contentContainerStyle={styles.form}
@@ -207,19 +166,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 20,
     paddingHorizontal: 10,
-  },
-  banks: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: RFValue(10, 580),
-    paddingVertical: RFValue(10, 580),
-    borderRadius: RFValue(10, 580),
-  },
-  bank_content: {
-    margin: RFValue(10, 580),
-    padding: RFValue(10, 580),
-    width: RFValue(120, 580),
-    backgroundColor: "white",
   },
 
   input: {

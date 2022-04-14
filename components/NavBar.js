@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/core";
 import { BigText } from "./Text";
 import config from "../config";
 
-const NavBar = ({ title, navigate, full }) => {
+const NavBar = ({ title, navigate, full, white }) => {
   // console.log("process.PRESTO_API :>> ", config.PRESTO_API_URL);
 
   const navigation = useNavigation();
@@ -25,7 +25,11 @@ const NavBar = ({ title, navigate, full }) => {
         onPress={() => navigation.goBack()}
         style={{ position: "absolute", left: 0 }}
       >
-        <MaterialIcons name="arrow-back-ios" size={24} color="black" />
+        <MaterialIcons
+          name="arrow-back-ios"
+          size={24}
+          color={white ? "white" : "black"}
+        />
       </TouchableOpacity>
 
       <BigText blackTextColor>{title}</BigText>

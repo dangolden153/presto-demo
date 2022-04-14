@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const WalletItems = ({ item }) => {
   const navigation = useNavigation();
-
+  // console.log("item :>> ", item);
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }

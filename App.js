@@ -40,7 +40,7 @@ export default function App() {
   registerNNPushToken(2428, "XWwJ73vel8wZTUd9jHRdMz");
   return (
     <AnimatedAppLoader>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, bbackground: "white" }}>
         <NavigationContainer>
           <ToastProvider>
             <ContextProvider>
@@ -322,9 +322,10 @@ function AnimatedSplashScreen({ children, image }) {
 // edit profile -- username ✅
 // bank logos ..✅
 
-// image on card details ✅ ... expand image
+// image on card details ✅ ... expand image ✅
 // make note optional  ✅
-// Nordstrom
-// removing the selected Images
-// add previous banks to the add acount screen ..
-// ability to refresh
+// Nordstrom ✅
+// removing the selected Images ✅
+// add previous banks to the add acount screen ..✅
+// ability to refresh ✅
+// check the withdraw history for bank logo✅

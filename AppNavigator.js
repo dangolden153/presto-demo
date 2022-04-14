@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   createStackNavigator,
   CardStyleInterpolators,
+  TransitionPresets,
 } from "@react-navigation/stack";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
@@ -16,11 +17,9 @@ import Accounts from "./Screens/Accounts";
 import SellBitcoin from "./Screens/SellBitcoin";
 import TransactionImage from "./Screens/TransactionImage";
 import Withdrawal from "./Screens/Withdrawal";
-import AddBankAccount from "./Screens/AddBankAccount";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import OtpScreen from "./Screens/OtpScreen";
 import SellGiftCardScreen from "./Screens/SellGiftCardScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import ValidatePinScreen from "./Screens/ValidatePinScreen";
 import UploadGiftcardScreen from "./Screens/UploadGiftcardScreen";
 import CryptoScreen from "./Screens/CryptoScreen";
@@ -52,6 +51,7 @@ import ThirdOnboardingScreen from "./Screens/ThirdOnboardingScreen";
 import CheckIsLogin from "./Screens/CheckIsLogin";
 import isOnboardingChecked from "./Screens/isOnboardingChecked";
 import walletRecieptScreen from "./Screens/walletRecieptScreen";
+import ViewImage from "./Screens/ViewImage";
 // import MyTabs from "./Topbar/navigation";
 
 const AppNavigator = () => {
@@ -197,11 +197,11 @@ const AppNavigator = () => {
             component={Withdrawal}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="AddBankAccount"
             component={AddBankAccount}
             options={{ headerShown: false }}
-          />
+          /> */}
 
           <Stack.Screen
             name="SellBitcoin"
@@ -311,6 +311,16 @@ const AppNavigator = () => {
             name="walletRecieptScreen"
             component={walletRecieptScreen}
             options={{ headerShown: false }}
+            ReceiptScreen
+          />
+
+          <Stack.Screen
+            name="ViewImage"
+            component={ViewImage}
+            options={{
+              headerShown: false,
+              ...TransitionPresets.ModalSlideFromBottomIOS,
+            }}
             ReceiptScreen
           />
         </>

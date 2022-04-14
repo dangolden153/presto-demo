@@ -21,6 +21,8 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
+  const navigation = useNavigation();
+
   const Address = "";
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -34,6 +36,7 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
       ? "successful"
       : "failed";
 
+  const failedImage = datas?.failure_pic;
   const colors =
     datas?.status === 0 ? "#ff9d3a" : datas?.status === 1 ? "green" : "#f9886c";
   const amount = card ? datas?.amount : datas?.amount;
@@ -147,7 +150,11 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
             {datas?.failure_pic && (
               <View style={[styles.img_title, { alignItems: "flex-start" }]}>
                 <Text style={styles.title}>Description image </Text>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("ViewImage", { failedImage })
+                  }
+                >
                   <Image
                     source={{ uri: datas?.failure_pic }}
                     style={{

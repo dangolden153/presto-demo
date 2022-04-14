@@ -1,31 +1,43 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import { Image } from "react-native";
 import {
-  Feather,
+  Ionicons,
   FontAwesome,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
 import pics from "../images/bg.png";
 import { useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MediumText, RegularText } from "./Text";
 import { RFValue } from "react-native-responsive-fontsize";
+import { Context } from "../context";
 
 const Card = () => {
   const [hideBalance, setHideBalance] = useState(true);
   const [balance, setBalance] = useState(null);
   const { user } = useSelector((state) => state.UserReducer);
   const navigation = useNavigation();
-
+  const { handleRefresh, refresh, setRefresh } = useContext(Context);
   const handleToggle = () => {
     setHideBalance(!hideBalance);
     storeData();
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRefresh(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [refresh]);
 
   function numberWithCommas(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -59,10 +71,20 @@ const Card = () => {
 
   return (
     <TouchableOpacity
-      // onPress={() => navigation.navigate("ButtomTab")}
+      onPress={() => handleRefresh()}
       style={styles.up_section}
       activeOpacity={0.9}
     >
+      <TouchableOpacity
+        onPress={() => handleRefresh()}
+        style={{ position: "absolute", opacity: 10, right: 10, top: 10 }}
+      >
+        {refresh ? (
+          <ActivityIndicator color="black" size="small" />
+        ) : (
+          <Ionicons name="ios-refresh-outline" size={24} color="black" />
+        )}
+      </TouchableOpacity>
       <Image
         source={pics}
         style={{

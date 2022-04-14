@@ -43,7 +43,12 @@ export const AddBankAccountDetails =
         if (result?.status === 201) {
           navigation.navigate("AccountVerScreen", result?.accountname);
         } else {
-          console.log("transaction err ");
+          // console.log("transaction err ");
+          setOpenModal(true);
+          setModalMessage({
+            status: "fail",
+            text: "invalid credentials, try again",
+          });
         }
       })
       .catch((error) => {

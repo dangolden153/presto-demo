@@ -181,18 +181,9 @@ const ExistingUserLogin = () => {
     setUserEmail();
   }, [email]);
 
-  const removeToken = async () => {
-    try {
-      await AsyncStorage.removeItem("@email");
-      console.log("username removed");
-    } catch (error) {
-      console.log("username removed", error);
-    }
-  };
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
-  console.log("object :>> ");
   return (
     <>
       <View style={styles.container}>
