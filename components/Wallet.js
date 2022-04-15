@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  SafeAreaView,
-  FlatList,
-} from "react-native";
-import { Button } from "react-native-elements";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
-import pics from "../images/bg.png";
+import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 import Card from "./Card";
 import NavBar from "./NavBar";
 import { useSelector } from "react-redux";

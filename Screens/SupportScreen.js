@@ -45,7 +45,8 @@ const SupportScreen = ({ navigation }) => {
           activeOpacity={0.5}
           onPress={() => {
             Linking.openURL(
-              "http://api.whatsapp.com/send?phone=+2347033201529"
+              // "http://api.whatsapp.com/send?phone=+2347033201529"
+              "http://api.whatsapp.com/send?phone=+2349135041035"
             );
           }}
         >

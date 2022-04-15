@@ -55,6 +55,7 @@ const Withdrawal = ({ navigation }) => {
     const accountName = details.accountname;
     const bankName = details.bank;
     const bankCode = details.bankcode;
+    const bankImage = details.image;
     navigation.navigate("ConfirmWithdrawal", {
       details: {
         amount,
@@ -63,6 +64,7 @@ const Withdrawal = ({ navigation }) => {
         accountName,
         bankName,
         bankCode,
+        bankImage,
       },
     });
   };

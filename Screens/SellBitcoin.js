@@ -26,6 +26,7 @@ import { ModalComponent } from "../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSellBtc } from "../Redux/Actions/crptoTransaction";
 import { useToast } from "react-native-toast-notifications";
+import { QRCode as CustomQRCode } from "react-native-custom-qr-codes-expo";
 
 const SellBitcoin = ({ navigation }) => {
   const [image, setImage] = useState("");
@@ -44,6 +45,7 @@ const SellBitcoin = ({ navigation }) => {
     return rate?.btcrate;
   });
 
+  // console.log("getBTCAddress :>> ", getBTCAddress[0]?.barcode);
   const USD =
     amount < 100 ? btcRate[0] : amount < 1000 ? btcRate[1] : btcRate[2];
   const UsdToNaira = amount * USD;
@@ -129,15 +131,21 @@ const SellBitcoin = ({ navigation }) => {
           contentContainerStyle={styles.body}
           scroll
         >
+          <TouchableOpacity style={{ alignItems: "center" }}>
+            <CustomQRCode
+              innerEyeStyle="diamond"
+              content={getBTCAddress[0]?.barcode}
+            />
+          </TouchableOpacity>
           <View style={{ alignItems: "center" }}>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <AntDesign
                 style={styles.code}
                 name="qrcode"
                 size={180}
                 color="black"
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Text style={[styles.btc_address, { fontWeight: "bold" }]}>
               BTC Wallet Details
             </Text>

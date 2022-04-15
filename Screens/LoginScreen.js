@@ -24,6 +24,7 @@ import Log_in from "../images/Login.svg";
 import { useToast } from "react-native-toast-notifications";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import ModalCom from "../components/ModalCom";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -269,7 +270,7 @@ const LoginScreen = ({ navigation }) => {
       </View>
 
       {/* *********response modal************************** */}
-      {openModal && <ModalComponent />}
+      {openModal && <ModalCom />}
     </>
   );
 };

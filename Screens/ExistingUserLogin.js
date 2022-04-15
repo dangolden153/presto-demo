@@ -25,6 +25,7 @@ import { BigText, MediumText, RegularText } from "../components/Text";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useNavigation } from "@react-navigation/native";
 import { bankData } from "../utils/selectBankData";
+import ModalCom from "../components/ModalCom";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -302,7 +303,7 @@ const ExistingUserLogin = () => {
       </View>
 
       {/* *********response modal************************** */}
-      {openModal && <ModalComponent />}
+      {openModal && <ModalCom />}
     </>
   );
 };

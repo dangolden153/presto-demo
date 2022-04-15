@@ -1,8 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
-import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/core";
 import { BigText } from "./Text";
 import config from "../config";

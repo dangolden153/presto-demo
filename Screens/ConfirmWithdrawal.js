@@ -24,12 +24,18 @@ const ConfirmWithdrawal = ({ route }) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const transationDetails = route?.params?.details;
-  const { amount, note, accountNumber, accountName, bankName, bankCode } =
-    transationDetails;
+  const {
+    amount,
+    note,
+    accountNumber,
+    accountName,
+    bankName,
+    bankCode,
+    bankImage,
+  } = transationDetails;
   const navigation = useNavigation();
   let withdraw = true;
   let navigate = false;
-  let name = "DANIEL";
 
   // ************notification ***********
   const handleToast = (message) => {
@@ -58,7 +64,8 @@ const ConfirmWithdrawal = ({ route }) => {
         setOpenModal,
         handleRefresh,
         handleToast,
-        navigation
+        navigation,
+        bankImage
       )
     );
   };

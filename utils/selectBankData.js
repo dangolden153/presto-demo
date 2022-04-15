@@ -74,4 +74,10 @@ export const bankData = [
     code: "232",
     id: 179,
   },
+  {
+    name: "Kuda",
+    imgURL: "https://nigerialogos.com/logos/kuda_bank/kuda_bank.png",
+    code: "090267",
+    id: 254,
+  },
 ];

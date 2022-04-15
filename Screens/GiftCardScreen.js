@@ -28,7 +28,8 @@ const GiftCardScreen = ({ navigation }) => {
           activeOpacity={0.7}
           onPress={() => {
             Linking.openURL(
-              "http://api.whatsapp.com/send?phone=+2347033201529"
+              // "http://api.whatsapp.com/send?phone=+2347033201529"
+              "http://api.whatsapp.com/send?phone=+2348076771441"
             );
           }}
         >

@@ -1,5 +1,5 @@
 import { GET_Back_DETAILS, GET_WITHDRAWALS } from "../Types/type";
-
+import env from "../../config";
 // **************Add Bank Account Details**************************
 export const AddBankAccountDetails =
   (
@@ -18,7 +18,6 @@ export const AddBankAccountDetails =
     setLoading(true);
 
     let myHeaders = new Headers();
-    console.log("imageee", image);
 
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
@@ -34,7 +33,7 @@ export const AddBankAccountDetails =
       redirect: "follow",
     };
 
-    fetch("https://api.prestohq.io/api/auth/updateaccount", requestOptions)
+    fetch(`${env.PRESTO_API}/api/auth/updateaccount`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log("bank result", result);
@@ -47,7 +46,9 @@ export const AddBankAccountDetails =
           setOpenModal(true);
           setModalMessage({
             status: "fail",
-            text: "invalid credentials, try again",
+            text:
+              JSON.parse(result)?.accountno[0] ||
+              "invalid credentials, try again",
           });
         }
       })
@@ -71,7 +72,7 @@ export const fetchBankDetails = (token) => (dispatch) => {
     headers: myHeaders,
   };
 
-  fetch("https://api.prestohq.io/api/auth/viewaccount", config)
+  fetch(`${env.PRESTO_API}/api/auth/viewaccount`, config)
     .then((response) => response.json())
     .then((result) => {
       //   console.log(result);
@@ -95,12 +96,13 @@ export const requestWithdraw =
     setOpenModal,
     handleRefresh,
     handleToast,
-    navigation
+    navigation,
+    bank_image
   ) =>
   (dispatch) => {
     setLoading(true);
     let myHeaders = new Headers();
-    console.log("token", token);
+    console.log("bank_image", bank_image);
 
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
@@ -110,6 +112,7 @@ export const requestWithdraw =
     formdata.append("bank", bankName);
     formdata.append("accountname", accountName);
     formdata.append("accountno", accountNumber);
+    formdata.append("bank_image", bank_image);
 
     let requestOptions = {
       method: "POST",
@@ -118,10 +121,10 @@ export const requestWithdraw =
       redirect: "follow",
     };
 
-    fetch("https://api.prestohq.io/api/requestwithdrawal", requestOptions)
+    fetch(`${env.PRESTO_API}/api/requestwithdrawal`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log("bank result", result?.result);
+        console.log("bank result", result);
         setLoading(false);
         if (result?.status === 200) {
           handleRefresh();
@@ -156,7 +159,7 @@ export const fetchWithdrawals = (token) => (dispatch) => {
     headers: myHeaders,
   };
 
-  fetch("https://api.prestohq.io/api/selectwithdrawal", config)
+  fetch(`${env.PRESTO_API}/api/selectwithdrawal`, config)
     .then((response) => response.json())
     .then((result) => {
       // console.log("GET_WITHDRAWALS", result);

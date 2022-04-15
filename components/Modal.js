@@ -32,66 +32,72 @@ export function ModalComponent({ modalVisible, setModalVisible, navigate }) {
 
   return (
     <NativeBaseProvider>
-      {/* <Center flex={1}> */}
-      <Modal
-        isOpen={openModal}
-        onClose={setOpenModal}
-        size="md"
-        // style={{ position: "relative", fle }}
-      >
-        <Modal.Content style={styles.container}>
-          <Modal.Body
-            style={{ justifyContent: "center", alignItems: "center" }}
-          >
-            <View
-              style={{
-                height: 110,
-                width: 110,
-                backgroundColor: "#f4fafe",
-                borderRadius: 100,
-                justifyContent: "center",
-                alignItems: "center",
-                elevation: 10,
-                marginTop: 10,
-              }}
+      <Center flex={1}>
+        <Modal
+          isOpen={openModal}
+          onClose={setOpenModal}
+          size="md"
+          style={{ position: "relative" }}
+          // _backdrop={{
+          //   _dark: {
+          //     bg: "coolGray.800",
+          //   },
+          //   bg: "#001e5a13",
+          // }}
+        >
+          <Modal.Content style={styles.container}>
+            <Modal.Body
+              style={{ justifyContent: "center", alignItems: "center" }}
             >
-              <Image
-                source={message.status == "ok" ? pics : errorPics}
+              <View
                 style={{
-                  height: 100,
-                  width: 100,
-                  backgroundColor: "white",
+                  height: 110,
+                  width: 110,
+                  backgroundColor: "#f4fafe",
                   borderRadius: 100,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  elevation: 10,
+                  marginTop: 10,
                 }}
-              />
-            </View>
+              >
+                <Image
+                  source={message.status == "ok" ? pics : errorPics}
+                  style={{
+                    height: 100,
+                    width: 100,
+                    backgroundColor: "white",
+                    borderRadius: 100,
+                  }}
+                />
+              </View>
 
-            <ScrollView>
-              <Text
-                style={{
-                  textAlign: "center",
-                  marginTop: 5,
-                  fontWeight: "bold",
-                }}
-              >
-                {message.text}
-              </Text>
-            </ScrollView>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button.Group space={1}>
-              <Button
-                variant="ghost"
-                colorScheme="blueGray"
-                onPress={() => handleModal()}
-              >
-                Ok
-              </Button>
-            </Button.Group>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
-      {/* </Center> */}
+              <ScrollView>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    marginTop: 5,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {message.text}
+                </Text>
+              </ScrollView>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button.Group space={1}>
+                <Button
+                  variant="ghost"
+                  colorScheme="blueGray"
+                  onPress={() => handleModal()}
+                >
+                  Ok
+                </Button>
+              </Button.Group>
+            </Modal.Footer>
+          </Modal.Content>
+        </Modal>
+      </Center>
     </NativeBaseProvider>
   );
 }

@@ -1,9 +1,10 @@
 import { Fetch_BANKS, USER_DATA } from "../Types/type";
-
+import env from "../../config";
 // *************user details function**************************
 export const fetchUserDetails = (token) => (dispatch) => {
   let myHeaders = new Headers();
-  // console.log("fetchUserDetails token", token);
+  // console.log("env.PRESTO_API", env.PRESTO_API);
+  // console.log("env.PRESTO_API", env.PRESTO_API);
 
   myHeaders.append("Authorization", "Bearer " + token);
   let requestOptions = {
@@ -12,7 +13,7 @@ export const fetchUserDetails = (token) => (dispatch) => {
     redirect: "follow",
   };
 
-  fetch("https://api.prestohq.io/api/auth/profile", requestOptions)
+  fetch(`${env.PRESTO_API}/api/auth/profile`, requestOptions)
     .then((response) => response.json())
     .then((result) => {
       // console.log("users details", result);
@@ -51,7 +52,7 @@ export const updateAvatar =
       redirect: "follow",
     };
 
-    fetch("https://api.prestohq.io/api/auth/updatepic", requestOptions)
+    fetch(`${env.PRESTO_API}/api/auth/updatepic`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log("reset result", result);
@@ -111,7 +112,7 @@ export const updateProfile =
       redirect: "follow",
     };
 
-    fetch("https://api.prestohq.io/api/auth/updateprofile", requestOptions)
+    fetch(`${env.PRESTO_API}/api/auth/updateprofile`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log("reset result", result);
@@ -142,18 +143,36 @@ export const updateProfile =
   };
 
 // ************get All Banks****************************
+// export const getAllBanks = () => (dispatch) => {
+//   let myHeaders = new Headers();
+//   myHeaders.append("Authorization", "Bearer FLWSECK_TEST-SANDBOXDEMOKEY-X");
+//   let requestOptions = {
+//     method: "GET",
+//     headers: myHeaders,
+//   };
+
+//   fetch("https://api.flutterwave.com/v3/banks/NG", requestOptions)
+//     .then((response) => response.json())
+//     .then((result) => {
+//       //   console.log(result);
+//       dispatch({ type: Fetch_BANKS, payload: result?.data });
+//     })
+//     .catch((err) => console.log("getting all banks error", err));
+// };
+
+// ************get All Banks****************************
 export const getAllBanks = () => (dispatch) => {
   let myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer FLWSECK_TEST-SANDBOXDEMOKEY-X");
+  myHeaders.append("api-key", env.FINCRA_API_KEY);
   let requestOptions = {
     method: "GET",
     headers: myHeaders,
   };
 
-  fetch("https://api.flutterwave.com/v3/banks/NG", requestOptions)
+  fetch(env.FINCRA_API_URL, requestOptions)
     .then((response) => response.json())
     .then((result) => {
-      //   console.log(result);
+      // console.log("fincra", result?.data);
       dispatch({ type: Fetch_BANKS, payload: result?.data });
     })
     .catch((err) => console.log("getting all banks error", err));

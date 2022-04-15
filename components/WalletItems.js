@@ -1,10 +1,11 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import { SmallText } from "./Text";
 
 const WalletItems = ({ item }) => {
   const navigation = useNavigation();
-  // console.log("item :>> ", item);
+  console.log("item :>> ", item);
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -12,6 +13,8 @@ const WalletItems = ({ item }) => {
   const accountNumber = item?.accountno.toString();
   let lastIndex = accountNumber[accountNumber.length - 1];
   const accountNum = accountNumber.substr(6, lastIndex);
+  const pics =
+    "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg";
   //   console.log("accountNumber :>> ", accountNum);
 
   // console.log("item :>> ", item);
@@ -24,14 +27,14 @@ const WalletItems = ({ item }) => {
       <Image
         style={styles.img}
         source={{
-          uri: "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg",
+          uri: item?.bank_image || pics,
         }}
       />
       <View>
-        <Text style={styles.text}>{item?.bank}...</Text>
-        <Text style={styles.text}>****{accountNum}</Text>
+        <SmallText blackTextColor>{item?.bank}</SmallText>
+        <SmallText blackTextColor>****{accountNum}</SmallText>
       </View>
-      <Text style={styles.text}>N{numberWithCommas(item?.amount)}</Text>
+      <SmallText blackTextColor>N{numberWithCommas(item?.amount)}</SmallText>
     </TouchableOpacity>
   );
 };
@@ -48,5 +51,6 @@ const styles = StyleSheet.create({
   img: {
     width: 60,
     height: 60,
+    resizeMode: "contain",
   },
 });

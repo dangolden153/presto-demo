@@ -59,7 +59,7 @@ const Accounts = ({}) => {
 
   // ***********handle bank img***************
   const filterBank = bankData.filter((bankItem) => {
-    return bankItem.id === bank?.id;
+    return bankItem.code === bank?.code;
   });
 
   // ***********handle Submit account detail***************
@@ -93,7 +93,7 @@ const Accounts = ({}) => {
     return <AppLoading />;
   }
 
-  // console.log(" bank", bank?.name);
+  // console.log(" bank", bank);
   // console.log("filterBank :>> ", filterBank[0]?.imgURL);
 
   const handleDetails = () => {
@@ -163,20 +163,8 @@ const Accounts = ({}) => {
             />
           </View>
         </ScrollView>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Show Modal</Text>
-        </Pressable>
       </SafeAreaView>
-      {openModal && <ModalComponent />}
-      {modalVisible && (
-        <ModalCom
-          setModalVisible={setModalVisible}
-          modalVisible={modalVisible}
-        />
-      )}
+      {openModal && <ModalCom />}
     </>
   );
 };

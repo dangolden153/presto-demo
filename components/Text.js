@@ -138,6 +138,7 @@ export const RegularText = ({
   bold,
   right,
   center,
+  numberOfLines,
 }) => {
   const color = primaryColor
     ? colors?.primaryColor
@@ -163,21 +164,39 @@ export const RegularText = ({
 
   return (
     <View>
-      <Text
-        numberOfLines={1}
-        style={[
-          styles.RegularText,
-          {
-            color: color,
-            textTransform:
-              (uppercase && "uppercase") || (capitalize && "capitalize"),
-            fontFamily: (medium && "medium") || (bold && "bold"),
-            textAlign: (right && "right") || (center && "center"),
-          },
-        ]}
-      >
-        {children}
-      </Text>
+      {numberOfLines ? (
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.RegularText,
+            {
+              color: color,
+              textTransform:
+                (uppercase && "uppercase") || (capitalize && "capitalize"),
+              fontFamily: (medium && "medium") || (bold && "bold"),
+              textAlign: (right && "right") || (center && "center"),
+              width: 120,
+            },
+          ]}
+        >
+          {children}
+        </Text>
+      ) : (
+        <Text
+          style={[
+            styles.RegularText,
+            {
+              color: color,
+              textTransform:
+                (uppercase && "uppercase") || (capitalize && "capitalize"),
+              fontFamily: (medium && "medium") || (bold && "bold"),
+              textAlign: (right && "right") || (center && "center"),
+            },
+          ]}
+        >
+          {children}
+        </Text>
+      )}
     </View>
   );
 };
@@ -194,6 +213,7 @@ export const SmallText = ({
   mediumWeight,
   right,
   center,
+  numberOfLines,
 }) => {
   const color = primaryColor
     ? colors?.primaryColor
@@ -218,20 +238,39 @@ export const SmallText = ({
 
   return (
     <View>
-      <Text
-        style={[
-          styles.SmallText,
-          {
-            color: color,
-            textTransform:
-              (uppercase && "uppercase") || (capitalize && "capitalize"),
-            fontFamily: mediumWeight && "medium",
-            textAlign: (right && "right") || (center && "center"),
-          },
-        ]}
-      >
-        {children}
-      </Text>
+      {numberOfLines ? (
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.SmallText,
+            {
+              color: color,
+              textTransform:
+                (uppercase && "uppercase") || (capitalize && "capitalize"),
+              fontFamily: mediumWeight && "medium",
+              textAlign: (right && "right") || (center && "center"),
+              width: 120,
+            },
+          ]}
+        >
+          {children}
+        </Text>
+      ) : (
+        <Text
+          style={[
+            styles.SmallText,
+            {
+              color: color,
+              textTransform:
+                (uppercase && "uppercase") || (capitalize && "capitalize"),
+              fontFamily: mediumWeight && "medium",
+              textAlign: (right && "right") || (center && "center"),
+            },
+          ]}
+        >
+          {children}
+        </Text>
+      )}
     </View>
   );
 };

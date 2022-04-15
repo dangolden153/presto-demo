@@ -24,7 +24,7 @@ const ReferScreen = ({}) => {
 
   // ************notification ***********
   const handleToast = () => {
-    toast.show("address copied!", {
+    toast.show("copied!", {
       type: "custom",
       placement: "top",
       duration: 4000,

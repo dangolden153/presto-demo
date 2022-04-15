@@ -58,6 +58,7 @@ const Settings = ({ navigation }) => {
     }
   }, [url]);
 
+  // console.log("user :>> ", user);
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
@@ -81,7 +82,7 @@ const Settings = ({ navigation }) => {
           <SvgUri uri={user?.profile_pic || nullAvatar} />
         ) : (
           <Image
-            source={{ uri: nullAvatar }}
+            source={{ uri: user?.profile_pic || nullAvatar }}
             style={{
               width: 100,
               height: 100,
