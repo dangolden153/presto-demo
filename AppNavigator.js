@@ -52,6 +52,7 @@ import CheckIsLogin from "./Screens/CheckIsLogin";
 import isOnboardingChecked from "./Screens/isOnboardingChecked";
 import walletRecieptScreen from "./Screens/walletRecieptScreen";
 import ViewImage from "./Screens/ViewImage";
+import AboutUsScreen from "./Screens/AboutUsScreen";
 // import MyTabs from "./Topbar/navigation";
 
 const AppNavigator = () => {
@@ -299,19 +300,16 @@ const AppNavigator = () => {
             name="ConfirmWithdrawal"
             component={ConfirmWithdrawal}
             options={{ headerShown: false }}
-            ReceiptScreen
           />
           <Stack.Screen
             name="EmailUsScreen"
             component={EmailUsScreen}
             options={{ headerShown: false }}
-            ReceiptScreen
           />
           <Stack.Screen
             name="walletRecieptScreen"
             component={walletRecieptScreen}
             options={{ headerShown: false }}
-            ReceiptScreen
           />
 
           <Stack.Screen
@@ -321,7 +319,14 @@ const AppNavigator = () => {
               headerShown: false,
               ...TransitionPresets.ModalSlideFromBottomIOS,
             }}
-            ReceiptScreen
+          />
+          <Stack.Screen
+            name="AboutUsScreen"
+            component={AboutUsScreen}
+            options={{
+              headerShown: false,
+              ...TransitionPresets.ModalSlideFromBottomIOS,
+            }}
           />
         </>
       ) : (

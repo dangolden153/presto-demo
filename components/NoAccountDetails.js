@@ -4,18 +4,18 @@ import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import LinearButton from "./LinearButton";
 
-const NoAccountDetails = wallet => {
-  const { user } = useSelector(state => state.UserReducer);
+const NoAccountDetails = (wallet) => {
+  const { user } = useSelector((state) => state.UserReducer);
   const navigation = useNavigation();
   // console.log(wallet);
   return (
     <View style={styles.noAcct}>
       <Text style={styles.noAcctText}>
-        {user?.firstname}, you don't have a bank account on Presto, please
+        {user?.firstname}, seems you don't have a bank account on Presto, please
         kindly add a bank account and proceed with your transactions
       </Text>
 
-      <View style={{ marginVertical: 30 }} />
+      <View style={{ flex: 1, marginVertical: 10 }} />
       {wallet && (
         <LinearButton
           navigation={navigation}
@@ -31,7 +31,7 @@ export default NoAccountDetails;
 
 const styles = StyleSheet.create({
   noAcct: {
-    flex: 1
+    flex: 1,
     // padding: 15
   },
 
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: "regular",
     textAlign: "center",
-    marginTop: 40
-  }
+    marginTop: 40,
+  },
 });

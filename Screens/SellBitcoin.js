@@ -10,23 +10,17 @@ import {
   ScrollView,
   Clipboard,
 } from "react-native";
-import {
-  AntDesign,
-  Feather,
-  Ionicons,
-  MaterialIcons,
-} from "@expo/vector-icons";
-import { Button } from "react-native-elements";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import * as ImagePicker from "expo-image-picker";
 import BitcoinModalScreen from "../components/BitcoinModal";
 import { Context } from "../context";
 import LinearButton from "../components/LinearButton";
-import { ModalComponent } from "../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSellBtc } from "../Redux/Actions/crptoTransaction";
 import { useToast } from "react-native-toast-notifications";
 import { QRCode as CustomQRCode } from "react-native-custom-qr-codes-expo";
+import ModalCom from "../components/ModalCom";
 
 const SellBitcoin = ({ navigation }) => {
   const [image, setImage] = useState("");
@@ -45,7 +39,7 @@ const SellBitcoin = ({ navigation }) => {
     return rate?.btcrate;
   });
 
-  // console.log("getBTCAddress :>> ", getBTCAddress[0]?.barcode);
+  // console.log("image :>> ", image);
   const USD =
     amount < 100 ? btcRate[0] : amount < 1000 ? btcRate[1] : btcRate[2];
   const UsdToNaira = amount * USD;
@@ -244,7 +238,7 @@ const SellBitcoin = ({ navigation }) => {
       )}
 
       {/* *********response modal************************** */}
-      {openModal && <ModalComponent navigate="BtcTransactions" />}
+      {openModal && <ModalCom navigate="BtcTransactions" />}
     </>
   );
 };

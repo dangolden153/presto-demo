@@ -18,6 +18,7 @@ import Refer from "../images/refer.svg";
 import { MediumText, RegularText, SmallText } from "./Text";
 import { SvgUri } from "react-native-svg";
 import { useRoute } from "@react-navigation/native";
+import TypeWriter from "react-native-typewriter";
 
 const Dashboard = ({ navigation }) => {
   const { user } = useSelector((state) => state.UserReducer);
@@ -129,9 +130,16 @@ const Dashboard = ({ navigation }) => {
               style={{ marginRight: RFValue(5, 580) }}
             />
             <View>
-              <RegularText bold blackTextColor capitalize>
+              {/* <RegularText bold blackTextColor capitalize>
                 Hello {user?.username || user?.firstname},
-              </RegularText>
+              </RegularText> */}
+              <TypeWriter minDelay={200} typing={1}>
+                {user?.firstname && (
+                  <RegularText bold blackTextColor capitalize>
+                    Hello {user?.username || user?.firstname},
+                  </RegularText>
+                )}
+              </TypeWriter>
               <RegularText>
                 Today {alphaDay}, {getDate} {alphaMonth},
               </RegularText>

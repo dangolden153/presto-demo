@@ -15,6 +15,7 @@ import NotificationItem from "../components/NotificationItem";
 import { Context } from "../context";
 import { handleNotification } from "../Redux/Actions/notification";
 import { useDispatch, useSelector } from "react-redux";
+import { MediumText, RegularText } from "../components/Text";
 
 const NotificcationScreen = ({ route }) => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const NotificcationScreen = ({ route }) => {
   const { setNotification, notifyMessage, setIsViewed, token, notification } =
     useContext(Context);
   console.log("notifications", notifications.sort());
+  console.log("notifyMessage", notifyMessage);
   //   *********set notification to false on screeen is mounted and pass the message************
   useEffect(() => {
     setNotification(false);
@@ -52,6 +54,22 @@ const NotificcationScreen = ({ route }) => {
   const body = " ipsum dolor sit amet, consectetur adipiscing elit. ";
   const time = "now";
 
+  if (notifications.length === 0 && !notifyMessage) {
+    return (
+      <View style={styles.container}>
+        <NavBar title="Notification" />
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <RegularText center>
+            Welcome to Presto-Your reliable and one-stop Platform for converting
+            all your gift cards, digital assets such as Bitcoin, USDT and other
+            digital assets to NAIRA.
+          </RegularText>
+        </View>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <NavBar title="Notification" />

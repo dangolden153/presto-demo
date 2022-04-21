@@ -103,6 +103,11 @@ export const requestWithdraw =
     setLoading(true);
     let myHeaders = new Headers();
     console.log("bank_image", bank_image);
+    console.log("amount", amount);
+    console.log("bankCode", bankCode);
+    console.log("bankName", bankName);
+    console.log("accountNumber", accountNumber);
+    console.log("bank_image", bank_image);
 
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
@@ -140,7 +145,7 @@ export const requestWithdraw =
       })
       .catch((error) => {
         setLoading(false);
-        console.log("error", error);
+        console.log("request withdrawal error", error);
 
         setModalMessage({
           status: "fail",

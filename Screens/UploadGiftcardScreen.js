@@ -15,6 +15,7 @@ import { ModalComponent } from "../components/Modal";
 import { sellGiftcard } from "../Redux/Actions/crptoTransaction";
 import { useDispatch } from "react-redux";
 import CardImage from "../components/CardImage";
+import ModalCom from "../components/ModalCom";
 
 const UploadGiftcardScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -257,7 +258,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
       </View>
 
       {/* *********response modal************************** */}
-      {openModal && <ModalComponent navigate="TransactionHistory" />}
+      {openModal && <ModalCom navigate="TransactionHistory" />}
     </>
   );
 };

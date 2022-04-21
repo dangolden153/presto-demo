@@ -12,15 +12,18 @@ import { AntDesign } from "@expo/vector-icons";
 import Presto from "../images/presto_logo.svg";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { MediumText } from "./Text";
 
 const NotificationItem = ({ item, body, time }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { height } = useWindowDimensions();
   const { user } = useSelector((state) => state.UserReducer);
+  const { notifications } = useSelector((state) => state.notificationReducer);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
   };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <TouchableOpacity

@@ -33,6 +33,7 @@ const Accounts = ({}) => {
   const [validate, setValidate] = useState("");
   const { user, allBanks } = useSelector((state) => state.UserReducer);
   const [modalVisible, setModalVisible] = useState(false);
+  const { bankDetails } = useSelector((state) => state.BankTransactionReducer);
 
   const {
     token,
@@ -94,7 +95,7 @@ const Accounts = ({}) => {
   }
 
   // console.log(" bank", bank);
-  // console.log("filterBank :>> ", filterBank[0]?.imgURL);
+  // console.log("bankDetails :>> ", bankDetails);
 
   const handleDetails = () => {
     console.log("handleDetails :>> ");
@@ -107,7 +108,7 @@ const Accounts = ({}) => {
         {/****************** NavBar*******************/}
         <NavBar title="Account" navigation={navigation} />
 
-        {!user?.accountno && (
+        {bankDetails.length === 0 && (
           <Text style={styles.noAcctText}>
             {user?.firstname}, you don't have a bank account on Presto, please
             kindly add a bank account and proceed with your transactions

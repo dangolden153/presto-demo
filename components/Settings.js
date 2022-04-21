@@ -197,8 +197,8 @@ const Settings = ({ navigation }) => {
           {/* *********** About Us ***************** * */}
           <TouchableOpacity
             style={styles.Settings_items}
-            // onPress={() => navigation.navigate("Accounts")}
-            onPress={() => handlePress()}
+            onPress={() => navigation.navigate("AboutUsScreen")}
+            // onPress={() => handlePress()}
           >
             <View style={styles.box_text}>
               <TouchableOpacity style={styles.box}>

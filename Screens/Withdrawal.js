@@ -26,11 +26,7 @@ const Withdrawal = ({ navigation }) => {
   const [note, setNote] = useState("");
   const [validate, setValidate] = useState("");
   const [details, setDetails] = useState(null);
-  // const {width, height} = useWindowDimensions();
   const { bankDetails } = useSelector((state) => state.BankTransactionReducer);
-
-  // console.log("bankDetails :>> ", bankDetails);
-  // console.log("bankDetails :>> ", details);
 
   const { message, openModal, setOpenModal, loading } = useContext(Context);
 

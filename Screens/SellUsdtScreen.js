@@ -9,17 +9,17 @@ import {
   ScrollView,
   Clipboard,
 } from "react-native";
-import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import * as ImagePicker from "expo-image-picker";
 import { handleSellUsdt } from "../Redux/Actions/crptoTransaction";
-import { ModalComponent } from "../components/Modal";
 import BitcoinModalScreen from "../components/BitcoinModal";
 import { Context } from "../context";
 import { useDispatch, useSelector } from "react-redux";
 import LinearButton from "../components/LinearButton";
 import { useToast } from "react-native-toast-notifications";
 import WalletModal from "../components/WalletModal";
+import ModalCom from "../components/ModalCom";
 
 const SellUsdtScreen = ({ navigation }) => {
   const [image, setImage] = useState("");
@@ -223,7 +223,7 @@ const SellUsdtScreen = ({ navigation }) => {
       )}
 
       {/* *********response modal************************** */}
-      {openModal && <ModalComponent navigate="UsdtTransactions" />}
+      {openModal && <ModalCom navigate="UsdtTransactions" />}
     </>
   );
 };

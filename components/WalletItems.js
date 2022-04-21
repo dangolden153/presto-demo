@@ -5,7 +5,6 @@ import { SmallText } from "./Text";
 
 const WalletItems = ({ item }) => {
   const navigation = useNavigation();
-  console.log("item :>> ", item);
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -30,7 +29,7 @@ const WalletItems = ({ item }) => {
           uri: item?.bank_image || pics,
         }}
       />
-      <View>
+      <View style={styles.bank_acct}>
         <SmallText blackTextColor>{item?.bank}</SmallText>
         <SmallText blackTextColor>****{accountNum}</SmallText>
       </View>
@@ -52,5 +51,11 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     resizeMode: "contain",
+    // borderRadius: 200,
+  },
+  bank_acct: {
+    // backgroundColor: "plum",
+    width: "40%",
+    alignItems: "center",
   },
 });

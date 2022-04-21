@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   TouchableOpacity,
   Clipboard,
+  Share,
 } from "react-native";
 import React from "react";
 import NavBar from "../components/NavBar";
@@ -38,11 +39,23 @@ const ReferScreen = ({}) => {
     handleToast();
   };
 
+  // ************ Share referral code***********
+  const onShare = async () => {
+    try {
+      await Share.share({
+        message: `You can use this code *${user?.referralcode}* to Register on Presto `,
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <NavBar title="Refer & Earn" />
       <View style={styles.inner_container}>
         <Refer />
+
         <Text style={styles.bold}>Refer and earn</Text>
         <Text style={[styles.text, { fontWeight: "bold" }]}>
           Refer a friend today and earn up to {"\n"}N5,000 when they trade{"\n"}
@@ -69,15 +82,16 @@ const ReferScreen = ({}) => {
           Share the code between and ask them{"\n"} to enter it during sign up
         </Text>
       </View>
-      {/* <View
+
+      <View
         style={{
           flex: 1,
           margin: 10,
           justifyContent: "flex-end",
         }}
       >
-        <LinearButton title="Invite" />
-      </View> */}
+        <LinearButton title="Invite" onPress={onShare} />
+      </View>
     </SafeAreaView>
   );
 };

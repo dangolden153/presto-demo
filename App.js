@@ -322,10 +322,33 @@ function AnimatedSplashScreen({ children, image }) {
 // edit profile -- username ✅
 // bank logos ..✅
 
-// image on card details ✅ ... expand image ✅
+// image on card details ✅ ... expand error image ✅
 // make note optional  ✅
 // Nordstrom ✅
-// removing the selected Images ✅
-// add previous banks to the add acount screen ..✅
-// ability to refresh ✅
+// removing the selected Images for card transaction ✅
+// add previous banks to the add acount screen  ability to refresh balance ✅
 // check the withdraw history for bank logo✅
+
+// // tradig wahsap / customer care for setting ✅
+// withdraw history bank logo .. ✅
+// qr code ..✅
+// acount modal and work on the modal✅
+// bank edpoip ✅
+
+// check withdraw 30m ..✅
+// referal 20mi ✅
+// about us 20m .. ✅
+// modal on card - usdt ..✅
+// playstore pushing on or before 9 ..
+// remove card image
+// bottom tab
+
+// dashboard
+// sell_btc
+// wallet
+// card_trasaction
+// card_details
+// refer_and_earn
+// sell_card
+
+// n b

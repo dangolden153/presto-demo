@@ -24,6 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#20283F"
       },
+      "versionCode":1, 
       "package": "com.presto.presto",
       "googleServicesFile": "./google-services.json"
     },
