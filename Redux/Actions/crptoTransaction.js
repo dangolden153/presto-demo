@@ -191,18 +191,19 @@ export const sellGiftcard =
     typeFile_6,
     typeFile_7,
     typeFile_8,
-    typeFile_9
+    typeFile_9,
+    ecode
   ) =>
   (dispatch) => {
     setLoading(true);
 
     let myHeaders = new Headers();
-    // console.log("photoData[1] api:>> ", photoData);
+    console.log("ecode>> ", ecode);
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
     formdata.append("country", country);
     formdata.append("amount", amount);
-    formdata.append("amount", amount);
+    formdata.append("ecode", ecode);
     formdata.append("value", value);
     formdata.append("type", tpe);
     formdata.append("image", image_big);

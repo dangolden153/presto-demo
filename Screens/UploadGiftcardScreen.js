@@ -1,26 +1,31 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
 import { Context } from "../context";
 import * as ImagePicker from "expo-image-picker";
-import { ModalComponent } from "../components/Modal";
 import { sellGiftcard } from "../Redux/Actions/crptoTransaction";
 import { useDispatch } from "react-redux";
 import CardImage from "../components/CardImage";
 import ModalCom from "../components/ModalCom";
+import { SmallText } from "../components/Text";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const UploadGiftcardScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [receipt, setReceipt] = useState("");
+  const [ecode, setEcode] = useState("");
+  const [ecodeError, setEcodeError] = useState(false);
+
   const dispatch = useDispatch();
   const {
     token,
@@ -49,6 +54,9 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+
+  const valu = value.substr(0, 6);
+  const substr = valu == "E-code";
 
   let photoData = cardPictures.map((pics) => {
     return pics.uri;
@@ -94,7 +102,8 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
   let photoFile_9 = photoData[8] && photoData[8].split("/").pop();
   let matchFile_9 = /\.(\w+)$/.exec(photoFile_9);
   let typeFile_9 = matchFile_9 ? `image/${matchFile_9[1]}` : `image`;
-  // *************sending image to php backend server************************
+
+  //*************sending image to php backend server ************
 
   /// pick Receipt from photo library
   const pickReceipt = async () => {
@@ -111,10 +120,38 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     }
   };
 
-  ///*******************submit card function *********************
-  const handleSellGiftcard = () => {
+  ///************ ecode Check ***************
+  const ecodeCheck = () => {
+    if (substr) {
+      if (ecode.length === 0) {
+        alert("kindly type your code.");
+        setEcodeError(true);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  };
+
+  ///************ handle validate *********
+  const handleValidate = () => {
     if (photoData?.length === 0) {
-      return alert("kindly upload your card.");
+      alert("kindly upload your card.");
+      return false;
+    }
+    //  else if (ecodeCheck()) {
+    //   return false;
+    // }
+    else {
+      return true;
+    }
+  };
+  ///*******************submit card function *********
+  const handleSellGiftcard = () => {
+    if (!handleValidate() || !ecodeCheck()) {
+      return null;
     }
     dispatch(
       sellGiftcard(
@@ -157,11 +194,14 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
         typeFile_6,
         typeFile_7,
         typeFile_8,
-        typeFile_9
+        typeFile_9,
+        ecode
       )
     );
   };
 
+  console.log("substr :>> ", substr);
+  // console.log("ecodeCheck :>> ", ecodeCheck());
   ///////function to display either image preview or instruction text to upload images
   const handleImagePreview = () => {
     if (image || receipt || photoData) {
@@ -185,6 +225,14 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     }
   };
 
+  useEffect(() => {
+    if (ecode.length > 0) {
+      return setEcodeError(false);
+    }
+  }, [ecode]);
+  // console.log("value :>> ", value.substr(0, 7));  == "E-code";
+  // console.log("valu :>> ", valu);
+
   return (
     <>
       <View style={styles.container}>
@@ -193,6 +241,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
           contentContainerStyle={styles.body}
           showsVerticalScrollIndicator={false}
         >
+          {/* **************Summary table********************** */}
           <View style={styles.btc_table}>
             <Text style={styles.rate_header}>Summary</Text>
 
@@ -222,7 +271,31 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
               </View>
             </View>
           </View>
+          {/* **************ecode Input container **************** */}
 
+          <View style={styles.ecode_container}>
+            {ecodeError ? (
+              <Text style={{ color: "red", fontSize: RFValue(9, 580) }}>
+                Kindly type your code
+              </Text>
+            ) : (
+              <SmallText>Kindly type your code here</SmallText>
+            )}
+
+            <TextInput
+              style={[
+                styles.ecode_input,
+                {
+                  borderWidth: ecodeError ? 1 : null,
+                  borderColor: ecodeError ? "red" : null,
+                },
+              ]}
+              value={ecode}
+              onChangeText={(text) => setEcode(text)}
+            />
+          </View>
+
+          {/* **************upload Card picture container **************** */}
           <View style={styles.upload_container}>
             <Text style={styles.upload_textI}>Kindly upload your Card</Text>
             <TouchableOpacity
@@ -277,6 +350,15 @@ const styles = StyleSheet.create({
     // flex: 1,
     width: "100%",
     paddingHorizontal: 15,
+  },
+  ecode_container: {
+    marginTop: 10,
+  },
+  ecode_input: {
+    backgroundColor: "white",
+    marginTop: 3,
+    borderRadius: 10,
+    padding: 8,
   },
   upload_container: {
     marginTop: 30,
