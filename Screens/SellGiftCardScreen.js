@@ -38,7 +38,7 @@ const SellGiftCardScreen = ({ navigation }) => {
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-  // console.log("type :>> ", type);
+  // console.log("getCardRate :>> ", getCardRate);
 
   //******navigate to upload card screen with card prpos********
   const handleNavigation = () => {

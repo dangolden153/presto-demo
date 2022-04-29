@@ -27,6 +27,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
   const [ecodeError, setEcodeError] = useState(false);
 
   const dispatch = useDispatch();
+  // *******Context*********
   const {
     token,
     setOpenModal,
@@ -37,6 +38,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     handleRefresh,
   } = useContext(Context);
 
+  // *******route params*********
   const {
     country,
     tpe,
@@ -51,12 +53,10 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     setAmount,
   } = route?.params?.giftcardData;
 
+  // *******number With Commas*********
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-
-  const valu = value.substr(0, 6);
-  const substr = valu == "E-code";
 
   let photoData = cardPictures.map((pics) => {
     return pics.uri;
@@ -120,6 +120,9 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     }
   };
 
+  const valu = value.substr(0, 6);
+  const substr = valu == "E-code";
+
   ///************ ecode Check ***************
   const ecodeCheck = () => {
     if (substr) {
@@ -140,11 +143,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     if (photoData?.length === 0) {
       alert("kindly upload your card.");
       return false;
-    }
-    //  else if (ecodeCheck()) {
-    //   return false;
-    // }
-    else {
+    } else {
       return true;
     }
   };
@@ -200,7 +199,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     );
   };
 
-  console.log("substr :>> ", substr);
+  // console.log("substr :>> ", substr);
   // console.log("ecodeCheck :>> ", ecodeCheck());
   ///////function to display either image preview or instruction text to upload images
   const handleImagePreview = () => {

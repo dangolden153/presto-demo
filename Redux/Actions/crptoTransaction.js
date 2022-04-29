@@ -209,7 +209,7 @@ export const sellGiftcard =
     formdata.append("image", image_big);
     formdata.append("image_small", image_small);
     formdata.append("total_amount", total);
-
+    // console.log(total, value, amount, ecode);
     // {
     //   receipt &&
     //     formdata.append("receipt", {
@@ -432,11 +432,12 @@ export const fetchCardRate = (token, setModalMessage) => (dispatch) => {
     redirect: "follow",
   };
 
-  fetch(`https://prestobackend.herokuapp.com/api/card`, requestOptions)
+  // fetch(`https://prestobackend.herokuapp.com/api/card`, requestOptions)
+  fetch(`https://api.prestohq.io/api/cardrates`, requestOptions)
     .then((response) => response.json())
     .then((result) => {
       // console.log("get card rate", result);
-      dispatch({ type: CARD_RATE, payload: result });
+      dispatch({ type: CARD_RATE, payload: result[0]?.data });
     })
     .catch((error) => {
       console.log("error", error);
