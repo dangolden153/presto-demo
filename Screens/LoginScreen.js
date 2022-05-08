@@ -78,6 +78,17 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
+  // **************set password to the local storage*****************
+  const EmailToStorage = async (password) => {
+    console.log("password", password);
+    console.log("EmailToStorage :>> ", password);
+    try {
+      await AsyncStorage.setItem("@password", password);
+    } catch (error) {
+      console.log("username cant be updated", error);
+    }
+  };
+
   //  ************login function ***********
   const handleLogin = () => {
     if (!handleValidation()) {
@@ -110,6 +121,7 @@ const LoginScreen = ({ navigation }) => {
             console.log("null pin");
             setAccessToken(result?.access_token);
             navigation.navigate("VerifiedScreen");
+            EmailToStorage(trimPassword);
             return;
           }
           console.log("result?.access_token && result?.user?.pin");
@@ -117,6 +129,7 @@ const LoginScreen = ({ navigation }) => {
           setIsAuthenticated(true);
           setLoading(false);
           handleToast();
+          EmailToStorage(trimPassword);
         } else {
           setOpenModal(true);
           console.log("login error", result);

@@ -28,6 +28,7 @@
     "expo-image-picker-multiple": "^1.4.1",
     "expo-images-picker": "^2.2.5",
     "expo-linear-gradient": "~9.1.0",
+    "expo-local-authentication": "^12.2.0",
     "expo-notifications": "~0.11.6",
     "expo-sharing": "~9.1.2",
     "expo-splash-screen": "^0.14.2",

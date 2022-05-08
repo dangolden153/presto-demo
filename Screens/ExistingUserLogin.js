@@ -11,8 +11,9 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  Alert,
 } from "react-native";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from "../context";
@@ -28,13 +29,17 @@ import { bankData } from "../utils/selectBankData";
 import ModalCom from "../components/ModalCom";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+import * as LocalAuthentication from "expo-local-authentication";
+import { colors } from "../components/Colors";
 
 const ExistingUserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [imgUrl, setImgUrl] = useState("");
+  const [storedPassword, setStoredPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
+  const [isBiometricSupported, setIsBiometricSupported] = useState(false);
   const dispatch = useDispatch();
   const toast = useToast();
   const {
@@ -50,6 +55,64 @@ const ExistingUserLogin = () => {
   const navigation = useNavigation();
   let trimPassword = password.trim();
   const bgHeight = windowHeight * 0.28;
+
+  // **************set password to the local storage*****************
+  const EmailToStorage = async (password) => {
+    console.log("password", password);
+    console.log("EmailToStorage :>> ");
+    try {
+      await AsyncStorage.setItem("@password", password);
+    } catch (error) {
+      console.log("username cant be updated", error);
+    }
+  };
+
+  // To check whether biometrics are saved on the user’s device
+  useEffect(() => {
+    const handleBiometricAuth = async () => {
+      const savedBiometrics = await LocalAuthentication.isEnrolledAsync();
+      if (!savedBiometrics)
+        return Alert.alert(
+          "Biometric record not found",
+          "Please verify your identity with your password",
+          "OK"
+          // () => fallBackToDefaultAuth()
+        );
+    };
+
+    handleBiometricAuth();
+  }, []);
+
+  // To check whether biometrics is compatible on the user’s device
+  useEffect(() => {
+    (async () => {
+      const compatible = await LocalAuthentication.hasHardwareAsync();
+      setIsBiometricSupported(compatible);
+    })();
+  }, []);
+
+  // ************handle BiometricAuth function ***********
+  const handleBiometricAuth = async () => {
+    console.log("object :>> ");
+    await LocalAuthentication.authenticateAsync({
+      promptMessage: "Login with Biometrics",
+      disableDeviceFallback: true,
+      cancelLabel: "Cancel",
+    })
+      .then((response) => {
+        console.log("response", response);
+        if (response?.success) {
+          handleLogin(response?.success);
+        } else {
+          setOpenModal(true);
+          setModalMessage({ status: "fail", text: "please your passcode!" });
+        }
+        //
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -77,15 +140,17 @@ const ExistingUserLogin = () => {
   };
 
   //  ************login function ***********
-  const handleLogin = () => {
-    if (!handleValidation()) {
-      return null;
+  const handleLogin = (BiometricAuth) => {
+    if (!BiometricAuth) {
+      if (!handleValidation()) {
+        return null;
+      }
     }
 
     setLoading(true);
     var formdata = new FormData();
     formdata.append("email", email);
-    formdata.append("password", trimPassword);
+    formdata.append("password", storedPassword || trimPassword);
 
     let myHeaders = new Headers();
     myHeaders.append();
@@ -109,6 +174,7 @@ const ExistingUserLogin = () => {
             setAccessToken(result?.access_token);
             // setToken(result?.access_token)
             navigation.navigate("VerifiedScreen");
+            EmailToStorage(trimPassword);
             return;
           }
           console.log("result?.access_token && result?.user?.pin");
@@ -116,6 +182,7 @@ const ExistingUserLogin = () => {
           setIsAuthenticated(true);
           setLoading(false);
           handleToast();
+          EmailToStorage(trimPassword);
         } else {
           setOpenModal(true);
           console.log("login error", result?.error);
@@ -168,19 +235,32 @@ const ExistingUserLogin = () => {
     setUsername();
   }, [imgUrl]);
 
-  // **************get email to the local storage*****************
+  // **************get email from the local storage*****************
   useEffect(() => {
     const setUserEmail = async () => {
       try {
         const value = await AsyncStorage.getItem("@email");
         setEmail(value);
-        // console.log("username fetched");
       } catch (error) {
         console.log("username cant be updated", error);
       }
     };
     setUserEmail();
   }, [email]);
+
+  // **************get password from the local storage*****************
+  useEffect(() => {
+    const getStoredPassword = async () => {
+      try {
+        const value = await AsyncStorage.getItem("@password");
+        // console.log("value :>> ", value);
+        setStoredPassword(value);
+      } catch (error) {
+        console.log("username cant be updated", error);
+      }
+    };
+    getStoredPassword();
+  }, []);
 
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
@@ -298,6 +378,18 @@ const ExistingUserLogin = () => {
               </LinearGradient>
             </TouchableOpacity>
             {/* //CheckVerification */}
+
+            {/* ***********fingerprint*********** */}
+            {/* <TouchableOpacity
+              onPress={() => handleBiometricAuth()}
+              style={styles.fingerprint}
+            >
+              <Ionicons
+                name="finger-print-outline"
+                size={70}
+                color={colors.primaryColor}
+              />
+            </TouchableOpacity> */}
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -365,5 +457,17 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 15,
     borderRadius: 10,
+  },
+
+  fingerprint: {
+    borderWidth: 1,
+    height: RFValue(70, 580),
+    width: RFValue(70, 580),
+    borderRadius: 200,
+    marginTop: RFValue(50, 580),
+    borderColor: colors.primaryColor,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
   },
 });
