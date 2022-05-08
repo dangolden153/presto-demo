@@ -238,7 +238,7 @@ const SellBitcoin = ({ navigation }) => {
       )}
 
       {/* *********response modal************************** */}
-      {openModal && <ModalCom navigate="BtcTransactions" />}
+      {openModal && <ModalCom navigate="BtcTransactions" transaction />}
     </>
   );
 };

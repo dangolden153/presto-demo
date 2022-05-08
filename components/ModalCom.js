@@ -15,19 +15,17 @@ import errorPics from "../images/sad-memoji.png";
 import { useNavigation } from "@react-navigation/native";
 import { Context } from "../context";
 
-const ModalCom = ({ navigate }) => {
+const ModalCom = ({ navigate, transaction }) => {
   const { message, openModal, setOpenModal, setModalMessage } =
     useContext(Context);
   const navigation = useNavigation();
+  // **********handle navigation*********
   const handleModal = () => {
     if (!navigate) {
-      // navigation.navigate(navigate || "ButtomTab")
       setOpenModal(false);
       return;
     }
-    navigation.navigate(navigate || "ButtomTab");
-    // setModalMessage("")
-    // console.log("messg", message)
+    navigation.navigate(navigate || "ButtomTab", { transaction });
     setOpenModal(false);
   };
 

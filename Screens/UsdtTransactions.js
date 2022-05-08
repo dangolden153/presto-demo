@@ -14,10 +14,11 @@ import { Context } from "../context";
 import { fetchUSDTTransactions } from "../Redux/Actions/crptoTransaction";
 import NavBar from "../components/NavBar";
 
-const UsdtTransactions = ({ navigation }) => {
+const UsdtTransactions = ({ navigation, route }) => {
   const { usdtTransaction } = useSelector((state) => state.TransactionReducer);
   const { token, setModalMessage } = useContext(Context);
   const [refresh, setRefresh] = useState(false);
+  const transactionIsTrue = route?.params?.transaction;
 
   const dispatch = useDispatch();
 
@@ -29,7 +30,10 @@ const UsdtTransactions = ({ navigation }) => {
     <>
       <SafeAreaView style={styles.container}>
         {/* ***********up section container*********** */}
-        <NavBar navigation={navigation} title="USDT Transaction" />
+        <NavBar
+          title="USDT Transaction"
+          transactionIsTrue={transactionIsTrue}
+        />
 
         <View style={styles.body} showsVerticalScrollIndicator={false}>
           {/* <TextInput style={styles.input} placeholder="Search Transaction" /> */}

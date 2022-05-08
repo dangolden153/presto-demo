@@ -2,14 +2,10 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import {
   Select,
-  VStack,
   CheckIcon,
-  Center,
   NativeBaseProvider,
   extendTheme,
-  Container,
   FormControl,
-  WarningOutlineIcon
 } from "native-base";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
@@ -27,13 +23,13 @@ const theme = extendTheme({
         customDropdownIconProps: {
           size: "6",
           p: "1",
-          pl: "0"
-        }
+          pl: "0",
+        },
       },
       defaultProps: {},
-      sizes: "80"
-    }
-  }
+      sizes: "80",
+    },
+  },
 });
 
 const Dropdown = ({
@@ -43,16 +39,14 @@ const Dropdown = ({
   placeholder,
   label,
   selectItemLabel,
-  dataProps
+  dataProps,
 }) => {
-  // console.log(`card`, card)
   const [error, setError] = useState("");
   const [firstloading, Error] = useFonts({
     regular: require("../../assets/fonts/raleway/Raleway-Regular.ttf"),
-    bold: require("../../assets/fonts/raleway/Raleway-Bold.ttf")
+    bold: require("../../assets/fonts/raleway/Raleway-Bold.ttf"),
   });
 
-  // console.log("country", country);
   if (!firstloading) {
     return <AppLoading />;
   }
@@ -65,7 +59,7 @@ const Dropdown = ({
           placeholder={placeholder}
           _selectedItem={{
             bg: "teal.600",
-            endIcon: <CheckIcon size={5} />
+            endIcon: <CheckIcon size={5} />,
           }}
           mt="1"
         >
@@ -77,20 +71,17 @@ const Dropdown = ({
     return (
       <Select
         selectedValue={item}
-        onValueChange={itemValue => setItem(itemValue)}
-        // accessibilityLabel="Choose Service"
+        onValueChange={(itemValue) => setItem(itemValue)}
         placeholder={placeholder}
         _selectedItem={{
           bg: "teal.600",
-          endIcon: <CheckIcon size={5} />
+          endIcon: <CheckIcon size={5} />,
         }}
         mt="1"
       >
         {data?.map((dataItems, i) => (
           <Select.Item
             key={i}
-            // onPress={() => console.log(i)}
-            // label={dataItems.cardname || dataItems.countryName || dataItems}
             label={dataItems.cardname || dataItems || dataProps}
             value={dataItems}
           />
@@ -110,7 +101,7 @@ const Dropdown = ({
           flexGrow: 0.25,
           marginVertical: 15,
           width: "95%",
-          alignSelf: "center"
+          alignSelf: "center",
         }}
       >
         <NativeBaseProvider theme={theme}>
@@ -126,7 +117,7 @@ const Dropdown = ({
                 alignSelf: "center",
                 backgroundColor: "white",
                 paddingHorizontal: 10,
-                borderRadius: 10
+                borderRadius: 10,
               }}
             >
               {dataItems()}

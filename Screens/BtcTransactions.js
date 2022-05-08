@@ -14,10 +14,11 @@ import { Context } from "../context";
 import { fetchBTCTransactions } from "../Redux/Actions/crptoTransaction";
 import NavBar from "../components/NavBar";
 
-const BtcTransactions = ({ navigation }) => {
+const BtcTransactions = ({ navigation, route }) => {
   const { btcTransaction } = useSelector((state) => state.TransactionReducer);
   const { token, setModalMessage } = useContext(Context);
   const [refresh, setRefresh] = useState(false);
+  const transactionIsTrue = route?.params?.transaction;
 
   const dispatch = useDispatch();
 
@@ -42,12 +43,7 @@ const BtcTransactions = ({ navigation }) => {
     <>
       <SafeAreaView style={styles.container}>
         {/* up section container */}
-        <NavBar
-          navigation={navigation}
-          title="BTC Transaction"
-          // navigate="PendingTransactionScreen"
-          // full
-        />
+        <NavBar title="BTC Transaction" transactionIsTrue={transactionIsTrue} />
 
         <View style={styles.body} showsVerticalScrollIndicator={false}>
           {/* <TextInput style={styles.input} placeholder="Search Transaction" /> */}

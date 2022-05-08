@@ -223,7 +223,7 @@ const SellUsdtScreen = ({ navigation }) => {
       )}
 
       {/* *********response modal************************** */}
-      {openModal && <ModalCom navigate="UsdtTransactions" />}
+      {openModal && <ModalCom navigate="UsdtTransactions" transaction />}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 
 import {
   createStackNavigator,
@@ -53,18 +53,10 @@ import isOnboardingChecked from "./Screens/isOnboardingChecked";
 import walletRecieptScreen from "./Screens/walletRecieptScreen";
 import ViewImage from "./Screens/ViewImage";
 import AboutUsScreen from "./Screens/AboutUsScreen";
-// import MyTabs from "./Topbar/navigation";
 
 const AppNavigator = () => {
-  const {
-    token,
-    setNotification,
-    setNotifyMessage,
-    isViewed,
-    setIsViewed,
-    setOnboarding,
-    onboarding,
-  } = useContext(Context);
+  const { token, setNotification, setNotifyMessage, isViewed, setIsViewed } =
+    useContext(Context);
   // console.log("isViewed App:>> ", isViewed);
 
   let pushDataObject = getPushDataObject();
@@ -127,14 +119,6 @@ const AppNavigator = () => {
     >
       {token !== null ? (
         <>
-          {/* <Stack.Screen
-            name="MyTabs"
-            component={MyTabs}
-            options={{
-              headerShown: false,
-              // gestureDirection: "vertical",
-            }}
-          /> */}
           <Stack.Screen
             name="ButtomTab"
             component={ButtomTab}
@@ -198,11 +182,6 @@ const AppNavigator = () => {
             component={Withdrawal}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
-            name="AddBankAccount"
-            component={AddBankAccount}
-            options={{ headerShown: false }}
-          /> */}
 
           <Stack.Screen
             name="SellBitcoin"

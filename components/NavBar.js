@@ -6,13 +6,19 @@ import { useNavigation } from "@react-navigation/core";
 import { BigText } from "./Text";
 import config from "../config";
 
-const NavBar = ({ title, navigate, full, white }) => {
+const NavBar = ({ title, navigate, full, white, transactionIsTrue }) => {
   // console.log("process.PRESTO_API :>> ", config.PRESTO_API_URL);
 
   const navigation = useNavigation();
+
+  // ************handle Navigation*******************
   const handleNavigation = () => {
     if (!navigate) {
-      navigation.goBack();
+      if (transactionIsTrue) {
+        navigation.navigate("Dashboard"); //  ButtomTab
+      } else {
+        navigation.goBack();
+      }
     } else {
       navigation.navigate(navigate);
     }
@@ -21,7 +27,7 @@ const NavBar = ({ title, navigate, full, white }) => {
   return (
     <View style={styles.nav}>
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() => handleNavigation()}
         style={{ position: "absolute", left: 0 }}
       >
         <MaterialIcons
@@ -34,7 +40,7 @@ const NavBar = ({ title, navigate, full, white }) => {
       <BigText blackTextColor>{title}</BigText>
       {full && (
         <TouchableOpacity
-          onPress={() => handleNavigation()}
+          onPress={() => navigation.navigate("Dashboard")}
           style={{ position: "absolute", right: 0 }}
         >
           <Ionicons name="notifications-outline" size={24} color="black" />

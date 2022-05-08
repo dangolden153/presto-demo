@@ -152,5 +152,11 @@ function AnimatedSplashScreen({ children, image }) {
 // remove card image✅
 // bottom tab
 
-// check the logic of checkOnboarding
+// check the logic of checkOnboarding ✅
+
+// ecode check...✅
+// navigating to dashboard after transactions ✅
+// fingerprint ..
+// review
+// upload button on navbar
 // n b

@@ -14,13 +14,14 @@ import { Context } from "../context";
 import { fetchCardTransactions } from "../Redux/Actions/crptoTransaction";
 import NavBar from "../components/NavBar";
 
-const TransactionHistory = ({ navigation }) => {
+const TransactionHistory = ({ navigation, route }) => {
   const { transaction } = useSelector((state) => state.TransactionReducer);
   const { token, setModalMessage } = useContext(Context);
   const [refresh, setRefresh] = useState(false);
+  const transactionIsTrue = route?.params?.transaction;
+  // console.log("transactionIsTrue TransactionHistory:>> ", transactionIsTrue);
 
   const dispatch = useDispatch();
-
   const handleTrans = () => {
     dispatch(fetchCardTransactions(token, setModalMessage));
   };
@@ -28,15 +29,14 @@ const TransactionHistory = ({ navigation }) => {
   if (!transaction) {
     return <Loading />;
   }
+
   return (
     <>
       <SafeAreaView style={styles.container}>
         {/* up section container */}
         <NavBar
-          navigation={navigation}
           title="Card Transaction"
-          // navigate="PendingTransactionScreen"
-          // full
+          transactionIsTrue={transactionIsTrue}
         />
 
         <View style={styles.body} showsVerticalScrollIndicator={false}>

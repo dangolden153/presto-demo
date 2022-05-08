@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useContext, useEffect } from "react";
 import { Context } from "../context";
 import OnboardingScreen from "./OnboardingScreen";
@@ -12,18 +12,17 @@ const isOnboardingChecked = () => {
     isOnboardingCheck();
   }, [onboarding, setOnboarding]);
 
+  // ***************is onboarding Check function**************
   const isOnboardingCheck = async () => {
-    // try {
     const value = await AsyncStorage.getItem("@setOnboardingCheck");
     if (value) {
       setOnboarding(value);
-      console.log(`check onboarding`, value);
+      // console.log(`check onboarding`, value);
+      return;
     }
-    // } catch (error) {
-    //   console.log(`error`, error);
-    // }
   };
 
+  // ***************if onboarding is not false**************
   if (onboarding !== null) {
     return (
       <View style={{ flex: 1 }}>
@@ -31,6 +30,7 @@ const isOnboardingChecked = () => {
       </View>
     );
   }
+
   return (
     <View style={{ flex: 1 }}>
       <OnboardingScreen />

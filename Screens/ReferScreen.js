@@ -79,7 +79,7 @@ const ReferScreen = ({}) => {
             { color: "#124672", marginTop: RFValue(15, 580) },
           ]}
         >
-          Share the code between and ask them{"\n"} to enter it during sign up
+          Share the code above and ask them{"\n"} to enter it during sign up
         </Text>
       </View>
 

@@ -24,12 +24,25 @@ const CheckIsLogin = () => {
   }, [isAuthenticated]);
   //   console.log("existinguser existinguser", existinguser);
 
+  if (existinguser !== null) {
+    return (
+      <View style={{ flex: 1 }}>
+        <ExistingUserLogin />
+      </View>
+    );
+  }
   return (
     <View style={{ flex: 1 }}>
-      {existinguser !== null ? <ExistingUserLogin /> : <LoginScreen />}
+      <LoginScreen />
     </View>
   );
 };
+//   return (
+//     <View style={{ flex: 1 }}>
+//       {existinguser !== null ? <ExistingUserLogin /> : <LoginScreen />}
+//     </View>
+//   );
+// };
 
 export default CheckIsLogin;
 

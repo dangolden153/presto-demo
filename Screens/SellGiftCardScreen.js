@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   SafeAreaView,
   TextInput,
@@ -24,21 +23,28 @@ const SellGiftCardScreen = ({ navigation }) => {
   const [value, setValue] = useState("");
   const { getCardRate } = useSelector((state) => state.TransactionReducer);
   let emptyArray = [];
-  const countryIndex = type ? type.country.indexOf(country) : null;
-  const cardtypeArr = type ? type.cardtype[countryIndex] : [];
-  const cardtypeIndex = value ? cardtypeArr.indexOf(value) : null;
-  const rateArr = type ? type.rate[countryIndex] : [];
+  const countryIndex = type ? type?.country?.indexOf(country) : null;
+  const cardtypeArr = type ? type?.cardtype[countryIndex] : [];
+  const cardtypeIndex = value ? cardtypeArr?.indexOf(value) : null;
+  const rateArr = type ? type?.rate[countryIndex] : [];
   const rate = cardtypeArr ? rateArr[cardtypeIndex] : null;
-  const countryData = type ? type.country : null;
+  const countryData = type ? type?.country : null;
   const tpe = type?.cardname;
   const image_big = type?.image_big;
   const image_small = type?.image_small;
   const total = amount * rate;
+  const duration = type?.duration;
 
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-  // console.log("getCardRate :>> ", getCardRate);
+
+  const availableCard = getCardRate.filter((card) => card.available === "true");
+  // console.log("availableCard :>> ", availableCard);
+  // console.log(
+  //   "getCardRate :>> ",
+  //   getCardRate?.map((card) => card.available)
+  // );
 
   //******navigate to upload card screen with card prpos********
   const handleNavigation = () => {
@@ -59,6 +65,7 @@ const SellGiftCardScreen = ({ navigation }) => {
         setCountry,
         setValue,
         setAmount,
+        duration,
       },
     });
   };
@@ -97,7 +104,7 @@ const SellGiftCardScreen = ({ navigation }) => {
         <Dropdown
           label="Giftcard"
           placeholder={type.cardname || "Select a card"}
-          data={getCardRate}
+          data={availableCard}
           setItem={setType}
           item={type}
         />
@@ -117,9 +124,9 @@ const SellGiftCardScreen = ({ navigation }) => {
           label="Select a card"
           selectItemLabel="Select Country"
           placeholder={value || "Select Giftcard Value"}
-          data={type ? type.cardtype[countryIndex] : emptyArray}
+          data={type ? type?.cardtype[countryIndex] : emptyArray}
           setItem={setValue}
-          item={amount}
+          item={value}
         />
 
         <View style={styles.text_input}>

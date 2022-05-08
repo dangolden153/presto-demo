@@ -51,6 +51,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     setCountry,
     setValue,
     setAmount,
+    duration,
   } = route?.params?.giftcardData;
 
   // *******number With Commas*********
@@ -120,12 +121,17 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     }
   };
 
-  const valu = value.substr(0, 6);
-  const substr = valu == "E-code";
+  const ecodeIsTrue = value.includes("Ecode" || "E-code");
+  ///***** if ecode length is greeter than zero ***
+  useEffect(() => {
+    if (ecode.length > 0) {
+      return setEcodeError(false);
+    }
+  }, [ecode]);
 
   ///************ ecode Check ***************
   const ecodeCheck = () => {
-    if (substr) {
+    if (ecodeIsTrue) {
       if (ecode.length === 0) {
         alert("kindly type your code.");
         setEcodeError(true);
@@ -149,9 +155,16 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
   };
   ///*******************submit card function *********
   const handleSellGiftcard = () => {
-    if (!handleValidate() || !ecodeCheck()) {
-      return null;
+    if (ecodeIsTrue) {
+      if (!ecodeCheck()) {
+        return null;
+      }
+    } else {
+      if (!handleValidate()) {
+        return null;
+      }
     }
+
     dispatch(
       sellGiftcard(
         token,
@@ -199,8 +212,6 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     );
   };
 
-  // console.log("substr :>> ", substr);
-  // console.log("ecodeCheck :>> ", ecodeCheck());
   ///////function to display either image preview or instruction text to upload images
   const handleImagePreview = () => {
     if (image || receipt || photoData) {
@@ -224,13 +235,8 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
     }
   };
 
-  useEffect(() => {
-    if (ecode.length > 0) {
-      return setEcodeError(false);
-    }
-  }, [ecode]);
-  // console.log("value :>> ", value.substr(0, 7));  == "E-code";
-  // console.log("valu :>> ", valu);
+  // console.log("value :>> ", value);
+  // console.log("ecodeCheck :>> ", ecodeCheck());
 
   return (
     <>
@@ -245,16 +251,19 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
             <Text style={styles.rate_header}>Summary</Text>
 
             <View style={styles.value_table}>
+              {/* ************Country**************** */}
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Country:</Text>
                 <Text style={styles.rate}>{country.trim() || "USD"}</Text>
               </View>
 
+              {/* ************Card type**************** */}
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Card type:</Text>
                 <Text style={styles.rate}>{tpe || "Physical card"}</Text>
               </View>
 
+              {/* ************Amount**************** */}
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Amount:</Text>
                 <Text style={styles.rate}>
@@ -262,11 +271,18 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
                 </Text>
               </View>
 
+              {/* ************Total Amoun**************** */}
               <View style={styles.value_rates}>
                 <Text style={styles.value}>Total Amount:</Text>
                 <Text style={styles.rate}>
                   N{numberWithCommas(total) || ""}
                 </Text>
+              </View>
+
+              {/* ************Duration**************** */}
+              <View style={styles.value_rates}>
+                <Text style={styles.value}>Duration:</Text>
+                <Text style={styles.rate}>{duration}</Text>
               </View>
             </View>
           </View>
@@ -330,7 +346,7 @@ const UploadGiftcardScreen = ({ route, navigation }) => {
       </View>
 
       {/* *********response modal************************** */}
-      {openModal && <ModalCom navigate="TransactionHistory" />}
+      {openModal && <ModalCom navigate="TransactionHistory" transaction />}
     </>
   );
 };
