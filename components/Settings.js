@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Linking,
 } from "react-native";
 import {
   AntDesign,
@@ -23,10 +22,22 @@ import { useSelector } from "react-redux";
 import NavBar from "./NavBar";
 import { SvgUri } from "react-native-svg";
 import { RFValue } from "react-native-responsive-fontsize";
+import SwitchButton from "./SwitchButton";
+import ModalCom from "./ModalCom";
 
 const Settings = ({ navigation }) => {
+  const [fingerprintVal, setFingerprintVal] = useState(null);
   const { user } = useSelector((state) => state.UserReducer);
-  const { setIsAuthenticated, setToken } = useContext(Context);
+  const {
+    setIsAuthenticated,
+    setToken,
+    fingerprint,
+    setFingerprint,
+    setOpenModal,
+    setModalMessage,
+    openModal,
+  } = useContext(Context);
+
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
@@ -42,196 +53,268 @@ const Settings = ({ navigation }) => {
     }
   };
 
-  const url = "https://prestohq.io/#about";
+  //******toggle biometric switch *******
+  const toggleSwitch = () => {
+    setFingerprint(!fingerprint);
+    setFingerprintVal("true");
+    // handleModal();
+  };
 
-  // ************open link to presto website****************
-  const handlePress = useCallback(async () => {
-    // Checking if the link is supported for links with custom URL scheme.
-    const supported = await Linking.canOpenURL(url);
+  // *****set finger print boolean value to device storage***********
+  useEffect(() => {
+    if (!fingerprintVal) return;
+    const storeData = async () => {
+      // console.log("fingerprint storeData:>> ", fingerprint);
+      try {
+        await AsyncStorage.setItem("@fingerprint", JSON.stringify(fingerprint));
+      } catch (e) {
+        console.log("token error", e);
+      }
+    };
+    storeData();
+  }, [fingerprint]);
 
-    if (supported) {
-      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-      // by some browser in the mobile
-      await Linking.openURL(url);
+  // **** get finger print boolean value  value from storage*******
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("@fingerprint");
+        // console.log("local stg fingerprint setting", value);
+        if (value === "true") {
+          setFingerprint(true);
+        } else {
+          setFingerprint(false);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, [fingerprint]);
+
+  // ********open modal on fingerprint boolean value***************
+  useEffect(() => {
+    if (!fingerprintVal) return;
+
+    console.log("fingerprint handleModal:>> ", fingerprint);
+
+    if (fingerprint) {
+      setOpenModal(true);
+      setModalMessage({
+        status: "ok",
+        text: "Biometric Enabled.",
+      });
     } else {
-      Alert.alert(`Don't know how to open this URL: ${url}`);
+      setOpenModal(true);
+      setModalMessage({
+        status: "fail",
+        text: "Biometric Disabled.",
+      });
     }
-  }, [url]);
+  }, [fingerprint]);
 
-  // console.log("user :>> ", user);
+  // console.log("fingerprint :>> ", fingerprint);
+
   return (
-    <SafeAreaView style={styles.container}>
-      {/* up section container */}
+    <>
+      <SafeAreaView style={styles.container}>
+        {/* up section container */}
 
-      <NavBar title="Settings" full />
+        <NavBar title="Settings" full />
 
-      <TouchableOpacity
-        style={{
-          width: RFValue(110, 580),
-          height: RFValue(110, 580),
-          borderRadius: 100,
-          borderWidth: 10,
-          borderColor: "#f4fafe",
-          alignSelf: "center",
-          marginVertical: RFValue(13, 580),
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {user?.profile_pic ? (
-          <SvgUri uri={user?.profile_pic || nullAvatar} />
-        ) : (
-          <Image
-            source={{ uri: user?.profile_pic || nullAvatar }}
-            style={{
-              width: 100,
-              height: 100,
-              resizeMode: "contain",
-              borderRadius: 300,
-            }}
-          />
-        )}
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: RFValue(110, 580),
+            height: RFValue(110, 580),
+            borderRadius: 100,
+            borderWidth: 10,
+            borderColor: "#f4fafe",
+            alignSelf: "center",
+            marginVertical: RFValue(13, 580),
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {user?.profile_pic ? (
+            <SvgUri uri={user?.profile_pic || nullAvatar} />
+          ) : (
+            <Image
+              source={{ uri: user?.profile_pic || nullAvatar }}
+              style={{
+                width: 100,
+                height: 100,
+                resizeMode: "contain",
+                borderRadius: 300,
+              }}
+            />
+          )}
+        </TouchableOpacity>
 
-      {/* ***********   profile account Bvn ***************** * */}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.body}>
-          {/* ***********   Edit profile ***************** * */}
-          <TouchableOpacity
-            style={styles.Settings_items}
-            onPress={() => navigation.navigate("EditProfile")}
-          >
-            <View style={styles.box_text}>
-              <TouchableOpacity style={styles.box}>
-                <FontAwesome5 name="user" size={30} color="white" />
-              </TouchableOpacity>
-              <Text style={styles.text}>Edit profile</Text>
-            </View>
-            <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
+        {/* ***********   profile account Bvn ***************** * */}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.body}>
+            {/* ***********   Edit profile ***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              onPress={() => navigation.navigate("EditProfile")}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity style={styles.box}>
+                  <FontAwesome5 name="user" size={30} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.text}>Edit profile</Text>
+              </View>
+              <Ionicons name="ios-chevron-forward" size={24} color="black" />
+            </TouchableOpacity>
 
-          {/* ***********   account ***************** * */}
-          <TouchableOpacity
-            style={styles.Settings_items}
-            onPress={() => navigation.navigate("Accounts")}
-          >
-            <View style={styles.box_text}>
-              <TouchableOpacity style={styles.box}>
-                <FontAwesome5 name="calculator" size={30} color="white" />
-              </TouchableOpacity>
-              <Text style={styles.text}>Accounts</Text>
-            </View>
-            <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
+            {/* ***********   account ***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              onPress={() => navigation.navigate("Accounts")}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity style={styles.box}>
+                  <FontAwesome5 name="calculator" size={30} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.text}>Accounts</Text>
+              </View>
+              <Ionicons name="ios-chevron-forward" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
 
-        {/* ***********  change password and change pin ***************** * */}
-        <Text style={styles.heading}>Security</Text>
+          {/* ***********  change password and change pin ***************** * */}
+          <Text style={styles.heading}>Security</Text>
 
-        <View style={styles.body}>
-          {/* ***********  Change Password ***************** * */}
-          <TouchableOpacity
-            style={styles.Settings_items}
-            onPress={() => navigation.navigate("ChangePasswordScreen")}
-          >
-            <View style={styles.box_text}>
-              <TouchableOpacity style={styles.box}>
-                <Feather name="lock" size={30} color="white" />
-              </TouchableOpacity>
-              <Text style={styles.text}>Change Password</Text>
-            </View>
-            <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
+          <View style={styles.body}>
+            {/* ***********  Change Password ***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              onPress={() => navigation.navigate("ChangePasswordScreen")}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity style={styles.box}>
+                  <Feather name="lock" size={30} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.text}>Change Password</Text>
+              </View>
+              <Ionicons name="ios-chevron-forward" size={24} color="black" />
+            </TouchableOpacity>
 
-          {/* ***********  Change Pin ***************** * */}
-          <TouchableOpacity
-            style={styles.Settings_items}
-            onPress={() => navigation.navigate("ChangePin")}
-          >
-            <View style={styles.box_text}>
-              <TouchableOpacity style={styles.box}>
-                <MaterialCommunityIcons
-                  name="key-change"
-                  size={24}
-                  color="white"
-                />
-              </TouchableOpacity>
-              <Text style={styles.text}>Change Pin</Text>
-            </View>
-            <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
+            {/* ***********  Change Pin ***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              onPress={() => navigation.navigate("ChangePin")}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity style={styles.box}>
+                  <MaterialCommunityIcons
+                    name="key-change"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <Text style={styles.text}>Change Pin</Text>
+              </View>
+              <Ionicons name="ios-chevron-forward" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
 
-        {/* ***********  Account and support ***************** * */}
-        <Text style={styles.heading}>Account and Support</Text>
+          {/* ***********  Account and support ***************** * */}
+          <Text style={styles.heading}>Account and Support</Text>
 
-        <View style={styles.body}>
-          {/* *********** Rate Us ***************** * */}
-          <TouchableOpacity
-            style={styles.Settings_items}
-            onPress={() => navigation.navigate("RateUsScreen")}
-          >
-            <View style={styles.box_text}>
-              <TouchableOpacity style={styles.box}>
-                <Feather name="star" size={30} color="white" />
-              </TouchableOpacity>
-              <Text style={styles.text}>Rate Us</Text>
-            </View>
-            <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
+          <View style={styles.body}>
+            {/* *********** finger print***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              onPress={() => toggleSwitch()}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity style={styles.box} activeOpacity={0.9}>
+                  <Ionicons
+                    name="finger-print-outline"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <Text style={styles.text}>Enable Biometric</Text>
+              </View>
+              <SwitchButton
+                isEnabled={fingerprint}
+                toggleSwitch={toggleSwitch}
+              />
+            </TouchableOpacity>
 
-          {/* ***********Help & Support***************** * */}
-          <TouchableOpacity
-            style={styles.Settings_items}
-            onPress={() => navigation.navigate("SupportScreen")}
-          >
-            <View style={styles.box_text}>
-              <TouchableOpacity style={styles.box}>
-                <AntDesign name="questioncircleo" size={30} color="white" />
-              </TouchableOpacity>
-              <Text style={styles.text}>Help & Support</Text>
-            </View>
-            <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
+            {/* *********** Rate Us ***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              onPress={() => navigation.navigate("RateUsScreen")}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity style={styles.box}>
+                  <Feather name="star" size={30} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.text}>Rate Us</Text>
+              </View>
+              <Ionicons name="ios-chevron-forward" size={24} color="black" />
+            </TouchableOpacity>
 
-          {/* *********** About Us ***************** * */}
-          <TouchableOpacity
-            style={styles.Settings_items}
-            onPress={() => navigation.navigate("AboutUsScreen")}
-            // onPress={() => handlePress()}
-          >
-            <View style={styles.box_text}>
-              <TouchableOpacity style={styles.box}>
-                <MaterialIcons
-                  name="supervised-user-circle"
-                  size={30}
-                  color="white"
-                />
-              </TouchableOpacity>
-              <Text style={styles.text}>About Us</Text>
-            </View>
-            <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
+            {/* ***********Help & Support***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              onPress={() => navigation.navigate("SupportScreen")}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity style={styles.box}>
+                  <AntDesign name="questioncircleo" size={30} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.text}>Help & Support</Text>
+              </View>
+              <Ionicons name="ios-chevron-forward" size={24} color="black" />
+            </TouchableOpacity>
 
-          {/* *********** log out ***************** * */}
-          <TouchableOpacity
-            style={styles.Settings_items}
-            // onPress={() => navigation.navigate("Accounts")}
-            onPress={() => Logout()}
-          >
-            <View style={styles.box_text}>
-              <TouchableOpacity
-                style={[styles.box, { backgroundColor: "#F3002E" }]}
-              >
-                <Feather name="log-out" size={30} color="white" />
-              </TouchableOpacity>
-              <Text style={styles.text}>Log out</Text>
-            </View>
-            <Ionicons name="ios-chevron-forward" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            {/* *********** About Us ***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              onPress={() => navigation.navigate("AboutUsScreen")}
+              // onPress={() => handlePress()}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity style={styles.box}>
+                  <MaterialIcons
+                    name="supervised-user-circle"
+                    size={30}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <Text style={styles.text}>About Us</Text>
+              </View>
+              <Ionicons name="ios-chevron-forward" size={24} color="black" />
+            </TouchableOpacity>
+
+            {/* *********** log out ***************** * */}
+            <TouchableOpacity
+              style={styles.Settings_items}
+              // onPress={() => navigation.navigate("Accounts")}
+              onPress={() => Logout()}
+            >
+              <View style={styles.box_text}>
+                <TouchableOpacity
+                  style={[styles.box, { backgroundColor: "#F3002E" }]}
+                >
+                  <Feather name="log-out" size={30} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.text}>Log out</Text>
+              </View>
+              <Ionicons name="ios-chevron-forward" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+
+      {/* *********response modal************************** */}
+      {openModal && <ModalCom />}
+    </>
   );
 };
 

@@ -110,7 +110,7 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
             {/* ******************Error detail************************ */}
             {datas?.failure ? (
               <View style={styles.img_title}>
-                <Text style={styles.title}> Error detail</Text>
+                <Text style={styles.title}>Error detail</Text>
                 <Text style={styles.sub_title}>{datas.failure}</Text>
               </View>
             ) : null}

@@ -14,6 +14,7 @@ import errorPics from "../images/sad-memoji.png";
 
 import { useNavigation } from "@react-navigation/native";
 import { Context } from "../context";
+import { colors } from "./Colors";
 
 const ModalCom = ({ navigate, transaction }) => {
   const { message, openModal, setOpenModal, setModalMessage } =
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     margin: 5,
     elevation: 2,
     alignSelf: "flex-end",
-    backgroundColor: "#2196F3",
+    backgroundColor: colors.primaryColor,
     borderRadius: 5,
   },
 

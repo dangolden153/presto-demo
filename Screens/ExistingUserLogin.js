@@ -1,8 +1,7 @@
-import React, { useState, useLayoutEffect, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
-  Text,
   View,
   TextInput,
   TouchableOpacity,
@@ -10,7 +9,6 @@ import {
   Keyboard,
   ActivityIndicator,
   Dimensions,
-  Image,
   Alert,
 } from "react-native";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -18,14 +16,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from "../context";
 import { useDispatch } from "react-redux";
-import { ModalComponent } from "../components/Modal";
 import Log_in from "../images/Login.svg";
 import { useToast } from "react-native-toast-notifications";
 import { SvgUri } from "react-native-svg";
 import { BigText, MediumText, RegularText } from "../components/Text";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useNavigation } from "@react-navigation/native";
-import { bankData } from "../utils/selectBankData";
 import ModalCom from "../components/ModalCom";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -40,6 +36,7 @@ const ExistingUserLogin = () => {
   const [storedPassword, setStoredPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [isBiometricSupported, setIsBiometricSupported] = useState(false);
+
   const dispatch = useDispatch();
   const toast = useToast();
   const {
@@ -51,21 +48,41 @@ const ExistingUserLogin = () => {
     setIsAuthenticated,
     setToken,
     setAccessToken,
+    fingerprint,
+    setFingerprint,
+    refresh,
   } = useContext(Context);
   const navigation = useNavigation();
   let trimPassword = password.trim();
   const bgHeight = windowHeight * 0.28;
 
   // **************set password to the local storage*****************
-  const EmailToStorage = async (password) => {
-    console.log("password", password);
-    console.log("EmailToStorage :>> ");
-    try {
-      await AsyncStorage.setItem("@password", password);
-    } catch (error) {
-      console.log("username cant be updated", error);
-    }
-  };
+  useEffect(() => {
+    if (trimPassword === "") return;
+    const passwordToStorage = async () => {
+      // console.log("trimPassword", trimPassword);
+      try {
+        await AsyncStorage.setItem("@password", trimPassword);
+      } catch (error) {
+        console.log("password cant be updated", error);
+      }
+    };
+    passwordToStorage();
+  }, [trimPassword]);
+
+  // **************get password from the local storage*****************
+  useEffect(() => {
+    const getStoredPassword = async () => {
+      try {
+        const value = await AsyncStorage.getItem("@password");
+        // console.log("value :>> ", value);
+        setStoredPassword(value);
+      } catch (error) {
+        console.log("username cant be updated", error);
+      }
+    };
+    getStoredPassword();
+  }, [trimPassword, refresh]);
 
   // To check whether biometrics are saved on the user’s device
   useEffect(() => {
@@ -93,7 +110,6 @@ const ExistingUserLogin = () => {
 
   // ************handle BiometricAuth function ***********
   const handleBiometricAuth = async () => {
-    console.log("object :>> ");
     await LocalAuthentication.authenticateAsync({
       promptMessage: "Login with Biometrics",
       disableDeviceFallback: true,
@@ -105,7 +121,10 @@ const ExistingUserLogin = () => {
           handleLogin(response?.success);
         } else {
           setOpenModal(true);
-          setModalMessage({ status: "fail", text: "please your passcode!" });
+          setModalMessage({
+            status: "fail",
+            text: "please use your passcode!",
+          });
         }
         //
       })
@@ -150,7 +169,7 @@ const ExistingUserLogin = () => {
     setLoading(true);
     var formdata = new FormData();
     formdata.append("email", email);
-    formdata.append("password", storedPassword || trimPassword);
+    formdata.append("password", trimPassword || storedPassword);
 
     let myHeaders = new Headers();
     myHeaders.append();
@@ -174,7 +193,6 @@ const ExistingUserLogin = () => {
             setAccessToken(result?.access_token);
             // setToken(result?.access_token)
             navigation.navigate("VerifiedScreen");
-            EmailToStorage(trimPassword);
             return;
           }
           console.log("result?.access_token && result?.user?.pin");
@@ -182,7 +200,6 @@ const ExistingUserLogin = () => {
           setIsAuthenticated(true);
           setLoading(false);
           handleToast();
-          EmailToStorage(trimPassword);
         } else {
           setOpenModal(true);
           console.log("login error", result?.error);
@@ -213,7 +230,7 @@ const ExistingUserLogin = () => {
       try {
         const value = await AsyncStorage.getItem("@username");
         setName(value);
-        console.log("username fetched");
+        // console.log("username fetched");
       } catch (error) {
         console.log("username cant be updated", error);
       }
@@ -248,23 +265,30 @@ const ExistingUserLogin = () => {
     setUserEmail();
   }, [email]);
 
-  // **************get password from the local storage*****************
+  // *************get finger print boolean value  value from storage*************
   useEffect(() => {
-    const getStoredPassword = async () => {
+    const getData = async () => {
       try {
-        const value = await AsyncStorage.getItem("@password");
-        // console.log("value :>> ", value);
-        setStoredPassword(value);
-      } catch (error) {
-        console.log("username cant be updated", error);
+        const value = await AsyncStorage.getItem("@fingerprint");
+        // console.log("@fingerprint AsyncStorage login", value);
+        if (value === "true") {
+          setFingerprint(true);
+        } else {
+          setFingerprint(false);
+        }
+      } catch (e) {
+        console.log(e);
       }
     };
-    getStoredPassword();
-  }, []);
+
+    getData();
+  }, [fingerprint]);
 
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
+  // console.log("fingerprint :>> ", fingerprint);
+  // console.log("storedPassword :>> ", storedPassword);
   return (
     <>
       <View style={styles.container}>
@@ -380,16 +404,18 @@ const ExistingUserLogin = () => {
             {/* //CheckVerification */}
 
             {/* ***********fingerprint*********** */}
-            {/* <TouchableOpacity
-              onPress={() => handleBiometricAuth()}
-              style={styles.fingerprint}
-            >
-              <Ionicons
-                name="finger-print-outline"
-                size={70}
-                color={colors.primaryColor}
-              />
-            </TouchableOpacity> */}
+            {fingerprint ? (
+              <TouchableOpacity
+                onPress={() => handleBiometricAuth()}
+                style={styles.fingerprint}
+              >
+                <Ionicons
+                  name="finger-print-outline"
+                  size={50}
+                  color={colors.primaryColor}
+                />
+              </TouchableOpacity>
+            ) : null}
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -460,9 +486,9 @@ const styles = StyleSheet.create({
   },
 
   fingerprint: {
-    borderWidth: 1,
-    height: RFValue(70, 580),
-    width: RFValue(70, 580),
+    borderWidth: 2,
+    height: RFValue(60, 580),
+    width: RFValue(60, 580),
     borderRadius: 200,
     marginTop: RFValue(50, 580),
     borderColor: colors.primaryColor,

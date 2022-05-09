@@ -1,25 +1,21 @@
-import React, { useState, useLayoutEffect, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
-  ImageBackground,
-  Image,
   Dimensions,
 } from "react-native";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from "../context";
 import { useSelector, useDispatch } from "react-redux";
-import { ModalComponent } from "../components/Modal";
 import Log_in from "../images/Login.svg";
 import { useToast } from "react-native-toast-notifications";
 import { useFonts } from "expo-font";
@@ -45,6 +41,7 @@ const LoginScreen = ({ navigation }) => {
     setIsAuthenticated,
     setToken,
     setAccessToken,
+    handleRefresh,
   } = useContext(Context);
 
   let trimEmail = email.trim();
@@ -79,15 +76,19 @@ const LoginScreen = ({ navigation }) => {
   };
 
   // **************set password to the local storage*****************
-  const EmailToStorage = async (password) => {
-    console.log("password", password);
-    console.log("EmailToStorage :>> ", password);
-    try {
-      await AsyncStorage.setItem("@password", password);
-    } catch (error) {
-      console.log("username cant be updated", error);
-    }
-  };
+  useEffect(() => {
+    if (trimPassword === "") return;
+    const passwordToStorage = async () => {
+      // console.log("trimPassword", trimPassword);
+      try {
+        await AsyncStorage.setItem("@password", trimPassword);
+        handleRefresh();
+      } catch (error) {
+        console.log("password cant be updated", error);
+      }
+    };
+    passwordToStorage();
+  }, [trimPassword]);
 
   //  ************login function ***********
   const handleLogin = () => {
@@ -121,7 +122,6 @@ const LoginScreen = ({ navigation }) => {
             console.log("null pin");
             setAccessToken(result?.access_token);
             navigation.navigate("VerifiedScreen");
-            EmailToStorage(trimPassword);
             return;
           }
           console.log("result?.access_token && result?.user?.pin");
@@ -129,7 +129,6 @@ const LoginScreen = ({ navigation }) => {
           setIsAuthenticated(true);
           setLoading(false);
           handleToast();
-          EmailToStorage(trimPassword);
         } else {
           setOpenModal(true);
           console.log("login error", result);

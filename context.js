@@ -15,6 +15,7 @@ export const ContextProvider = ({ children }) => {
   const [existinguser, setExistinguser] = useState(null);
   const [cardPictures, setCardPictures] = useState([]);
   const [onboarding, setOnboarding] = useState(null);
+  const [fingerprint, setFingerprint] = useState(false);
 
   const handleRefresh = () => {
     setRefresh(!refresh);
@@ -49,6 +50,8 @@ export const ContextProvider = ({ children }) => {
         setIsViewed,
         onboarding,
         setOnboarding,
+        fingerprint,
+        setFingerprint,
       }}
     >
       {children}
