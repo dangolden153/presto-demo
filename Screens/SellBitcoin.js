@@ -87,7 +87,8 @@ const SellBitcoin = ({ navigation }) => {
         setOpenModal,
         setLoading,
         setImage,
-        handleRefresh
+        handleRefresh,
+        UsdToNaira
       )
     );
   };
@@ -125,12 +126,42 @@ const SellBitcoin = ({ navigation }) => {
           contentContainerStyle={styles.body}
           scroll
         >
-          <TouchableOpacity style={{ alignItems: "center" }}>
+          {/* *******btc table*************** */}
+          <View style={styles.btc_table}>
+            <Text style={styles.rate_header}>Sell Bitcoin</Text>
+
+            <View style={styles.value_table}>
+              <View style={styles.value_rates}>
+                <Text style={styles.value_header}>Value</Text>
+                <Text style={styles.value_header}>Rate </Text>
+              </View>
+
+              <View style={styles.value_rates}>
+                <Text style={styles.value}>less that 100</Text>
+                <Text style={styles.value}>{btcRate[0]}</Text>
+              </View>
+
+              <View style={styles.value_rates}>
+                <Text style={styles.value}>100+ to 1,000</Text>
+                <Text style={styles.value}>{btcRate[1]}</Text>
+              </View>
+
+              <View style={styles.value_rates}>
+                <Text style={styles.value}>Above 1,000</Text>
+                <Text style={styles.value}>{btcRate[2]}</Text>
+              </View>
+            </View>
+          </View>
+          {/* ---------------------------- */}
+
+          {/* <TouchableOpacity style={{ alignItems: "center" }}>
             <CustomQRCode
               innerEyeStyle="diamond"
               content={getBTCAddress[0]?.barcode}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
+          {/* ***********  BTC Wallet Address****************** */}
           <View style={{ alignItems: "center" }}>
             {/* <TouchableOpacity>
               <AntDesign
@@ -141,7 +172,7 @@ const SellBitcoin = ({ navigation }) => {
               />
             </TouchableOpacity> */}
             <Text style={[styles.btc_address, { fontWeight: "bold" }]}>
-              BTC Wallet Details
+              BTC Wallet Address
             </Text>
             {getBTCAddress?.map((address, i) => (
               <Text style={styles.btc_address} numberOfLines={1}>
@@ -149,15 +180,17 @@ const SellBitcoin = ({ navigation }) => {
               </Text>
             ))}
           </View>
-
-          <LinearButton title="Click to copy" onPress={copyToClipboard} />
+          <LinearButton
+            title="Click to copy Address"
+            onPress={copyToClipboard}
+          />
+          {/* ---------------------------- */}
 
           <Text>{copiedText}</Text>
           <Text style={styles.btc_text}>
-            the address and the barcode are yours you can recieve bitcoin and
-            please provide proof
+            the address is yours, you can recieve bitcoin and please provide
+            proof
           </Text>
-
           {/* ***************upload container************************** */}
           {!image && (
             <View style={styles.upload_container}>
@@ -171,7 +204,6 @@ const SellBitcoin = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           )}
-
           {image ? (
             <View
               style={{ position: "relative", width: "100%", marginBottom: 20 }}
@@ -195,33 +227,7 @@ const SellBitcoin = ({ navigation }) => {
                 onPress={handleSubmit}
               />
             </View>
-          ) : (
-            <View style={styles.btc_table}>
-              <Text style={styles.rate_header}>Sell Bitcoin</Text>
-
-              <View style={styles.value_table}>
-                <View style={styles.value_rates}>
-                  <Text style={styles.value_header}>Value</Text>
-                  <Text style={styles.value_header}>Rate </Text>
-                </View>
-
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>less that 100</Text>
-                  <Text style={styles.value}>{btcRate[0]}</Text>
-                </View>
-
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>100+ to 1,000</Text>
-                  <Text style={styles.value}>{btcRate[1]}</Text>
-                </View>
-
-                <View style={styles.value_rates}>
-                  <Text style={styles.value}>Above 1,000</Text>
-                  <Text style={styles.value}>{btcRate[2]}</Text>
-                </View>
-              </View>
-            </View>
-          )}
+          ) : null}
         </ScrollView>
       </SafeAreaView>
 
@@ -273,6 +279,7 @@ const styles = StyleSheet.create({
   },
 
   body: {
+    flex: 1,
     backgroundColor: "#f4fafe",
     marginTop: 10,
     borderRadius: 20,

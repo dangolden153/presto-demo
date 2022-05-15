@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add react-native-share
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add expo-store-review@~4.0.2 expo-linking@~2.2.3
 
 PATH: 
-  C:\Program Files (x86)\Python37-32\Scripts\;C:\Program Files (x86)\Python37-32\;C:\Program Files\Python37\Scripts\;C:\Program Files\Python37\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\HP\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\Java\jdk1.8.0_45\bin;C:\Users\HP\AppData\Local\Android\Sdk\tools;C:\Users\HP\AppData\Local\Android\Sdk\build-tools;C:\Program Files\Java\jdk1.8.0_45\bin;C:\Users\HP\AppData\Local\Android\Sdk\tools\;C:\Users\HP\AppData\Local\Android\Sdk\platform-tools;C:\Users\HP\.android\avd;C:\Users\HP\.android;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Yarn\bin\;C:\Users\HP\Anaconda3\Scripts;C:\Program Files\dotnet\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\nodejs\;C:\Users\HP\AppData\Local\Microsoft\WindowsApps;C:\Users\HP\AppData\Local\Android\Sdk;C:\Users\HP\AppData\Local\Yarn\bin;C:\Users\HP\Anaconda3;C:\Program Files\JetBrains\PyCharm Edu 2018.3\bin;C:\Program Files\heroku\bin;C:\Program Files\Docker Toolbox;C:\Users\HP\.dotnet\tools;C:\Users\HP\AppData\Roaming\npm;C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin
+  C:\Program Files (x86)\Python37-32\Scripts\;C:\Program Files (x86)\Python37-32\;C:\Program Files\Python37\Scripts\;C:\Program Files\Python37\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\HP\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\Java\jdk1.8.0_45\bin;C:\Users\HP\AppData\Local\Android\Sdk\tools;C:\Users\HP\AppData\Local\Android\Sdk\build-tools;C:\Program Files\Java\jdk1.8.0_45\bin;C:\Users\HP\AppData\Local\Android\Sdk\tools\;C:\Users\HP\AppData\Local\Android\Sdk\platform-tools;C:\Users\HP\.android\avd;C:\Users\HP\.android;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Yarn\bin\;C:\Users\HP\Anaconda3\Scripts;C:\Program Files\dotnet\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\nodejs\;C:\Users\HP\AppData\Local\Microsoft\WindowsApps;C:\Users\HP\AppData\Local\Android\Sdk;C:\Users\HP\AppData\Local\Android\Sdk\tools;C:\Users\HP\AppData\Local\Android\Sdk\build-tools;C:\Users\HP\.android\avd;C:\Users\HP\.android;C:\Users\HP\AppData\Local\Yarn\bin;C:\Users\HP\Anaconda3;;C:\Program Files\JetBrains\PyCharm Edu 2018.3\bin;;C:\Program Files\heroku\bin;C:\Program Files\Docker Toolbox;C:\Users\HP\.dotnet\tools;C:\Program Files\Azure Data Studio\bin;C:\Users\HP\AppData\Roaming\npm;C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin
 
 Yarn version: 
   1.13.0
@@ -47,6 +47,7 @@ npm manifest:
       "expo-image-picker-multiple": "^1.4.1",
       "expo-images-picker": "^2.2.5",
       "expo-linear-gradient": "~9.1.0",
+      "expo-local-authentication": "^12.2.0",
       "expo-notifications": "~0.11.6",
       "expo-sharing": "~9.1.2",
       "expo-splash-screen": "^0.14.2",
@@ -78,6 +79,7 @@ npm manifest:
       "react-native-responsive-fontsize": "^0.5.1",
       "react-native-safe-area-context": "^3.2.0",
       "react-native-screens": "^3.2.0",
+      "react-native-share": "^7.3.9",
       "react-native-smooth-pincode-input": "^1.0.9",
       "react-native-svg": "12.1.0",
       "react-native-svg-transformer": "^1.0.0",
@@ -85,6 +87,7 @@ npm manifest:
       "react-native-tab-view": "^3.1.1",
       "react-native-tailwind-classnames": "^0.1.2",
       "react-native-toast-notifications": "^3.2.3",
+      "react-native-typewriter": "^0.7.0",
       "react-native-video": "^5.1.1",
       "react-native-web": "~0.13.12",
       "react-redux": "^7.2.4",
@@ -1563,6 +1566,27 @@ Lockfile:
       xcode "^3.0.1"
       xml2js "0.4.23"
   
+  "@expo/config-plugins@^4.0.14":
+    version "4.1.4"
+    resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-4.1.4.tgz#08e1a6314dc0f96cd165a748b5997b5ec75a84d0"
+    integrity sha512-fkOjXnSieQfVSWVLKhst0DnCAyeHksvWky1CldFCQllhDB1HHBiP09Z8pamVB783n3qr/1HNZiSp6k2iUcaSoA==
+    dependencies:
+      "@expo/config-types" "^45.0.0"
+      "@expo/json-file" "8.2.36"
+      "@expo/plist" "0.0.18"
+      "@expo/sdk-runtime-versions" "^1.0.0"
+      "@react-native/normalize-color" "^2.0.0"
+      chalk "^4.1.2"
+      debug "^4.3.1"
+      find-up "~5.0.0"
+      getenv "^1.0.0"
+      glob "7.1.6"
+      resolve-from "^5.0.0"
+      semver "^7.3.5"
+      slash "^3.0.0"
+      xcode "^3.0.1"
+      xml2js "0.4.23"
+  
   "@expo/config-plugins@^4.0.2":
     version "4.0.15"
     resolved "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-4.0.15.tgz"
@@ -1623,6 +1647,11 @@ Lockfile:
     version "44.0.0"
     resolved "https://registry.npmjs.org/@expo/config-types/-/config-types-44.0.0.tgz"
     integrity sha512-d+gpdKOAhqaD5RmcMzGgKzNtvE1w+GCqpFQNSXLliYlXjj+Tv0eL8EPeAdPtvke0vowpPFwd5McXLA90dgY6Jg==
+  
+  "@expo/config-types@^45.0.0":
+    version "45.0.0"
+    resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-45.0.0.tgz#963c2fdce8fbcbd003758b92ed8a25375f437ef6"
+    integrity sha512-/QGhhLWyaGautgEyU50UJr5YqKJix5t77ePTwreOVAhmZH+ff3nrrtYTTnccx+qF08ZNQmfAyYMCD3rQfzpiJA==
   
   "@expo/config@3.3.40", "@expo/config@^3.3.35":
     version "3.3.40"
@@ -1828,6 +1857,15 @@ Lockfile:
       json5 "^1.0.1"
       write-file-atomic "^2.3.0"
   
+  "@expo/json-file@8.2.36":
+    version "8.2.36"
+    resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.2.36.tgz#62a505cb7f30a34d097386476794680a3f7385ff"
+    integrity sha512-tOZfTiIFA5KmMpdW9KF7bc6CFiGjb0xnbieJhTGlHrLL+ps2G0OkqmuZ3pFEXBOMnJYUVpnSy++52LFxvpa5ZQ==
+    dependencies:
+      "@babel/code-frame" "~7.10.4"
+      json5 "^1.0.1"
+      write-file-atomic "^2.3.0"
+  
   "@expo/metro-config@^0.1.59":
     version "0.1.84"
     resolved "https://registry.npmjs.org/@expo/metro-config/-/metro-config-0.1.84.tgz"
@@ -1888,6 +1926,15 @@ Lockfile:
     version "0.0.17"
     resolved "https://registry.npmjs.org/@expo/plist/-/plist-0.0.17.tgz"
     integrity sha512-5Ul3d/YOYE6mfum0jCE25XUnkKHZ5vGlU/X2275ZmCtGrpRn1Fl8Nq+jQKSaks3NqTfxdyXROi/TgH8Zxeg2wg==
+    dependencies:
+      "@xmldom/xmldom" "~0.7.0"
+      base64-js "^1.2.3"
+      xmlbuilder "^14.0.0"
+  
+  "@expo/plist@0.0.18":
+    version "0.0.18"
+    resolved "https://registry.yarnpkg.com/@expo/plist/-/plist-0.0.18.tgz#9abcde78df703a88f6d9fa1a557ee2f045d178b0"
+    integrity sha512-+48gRqUiz65R21CZ/IXa7RNBXgAI/uPSdvJqoN9x1hfL44DNbUoWHgHiEXTx7XelcATpDwNTz6sHLfy0iNqf+w==
     dependencies:
       "@xmldom/xmldom" "~0.7.0"
       base64-js "^1.2.3"
@@ -5607,6 +5654,14 @@ Lockfile:
     resolved "https://registry.npmjs.org/expo-linear-gradient/-/expo-linear-gradient-9.1.0.tgz"
     integrity sha512-9W4TxaDrZUzmLzd18+Eo2Ef7ONnuLrHKX0PRyHEGY2/rJCtGiPJtJuR6AS5dkX7WB/Pxlx0zK/p/qDHHw09Uxg==
   
+  expo-local-authentication@^12.2.0:
+    version "12.2.0"
+    resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-12.2.0.tgz#a1534d2f1a3e63483d20a1cff303b1a312b8e1ef"
+    integrity sha512-JY8aqucTl2SEsC2qnxLD6Dhrxke/Pm10zEMFQVVUO6OsiwqdSO6r/xLE5zzUgLogjOHfKIqGH4rXZLEi8x4Dvw==
+    dependencies:
+      "@expo/config-plugins" "^4.0.14"
+      invariant "^2.2.4"
+  
   expo-media-library@^11.0.0:
     version "11.0.0"
     resolved "https://registry.npmjs.org/expo-media-library/-/expo-media-library-11.0.0.tgz"
@@ -8394,6 +8449,15 @@ Lockfile:
       object-assign "^4.1.1"
       react-is "^16.8.1"
   
+  prop-types@^15.5.7:
+    version "15.8.1"
+    resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+    integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+    dependencies:
+      loose-envify "^1.4.0"
+      object-assign "^4.1.1"
+      react-is "^16.13.1"
+  
   property-expr@^2.0.4:
     version "2.0.5"
     resolved "https://registry.npmjs.org/property-expr/-/property-expr-2.0.5.tgz"
@@ -8678,6 +8742,11 @@ Lockfile:
     resolved "https://registry.npmjs.org/react-native-screens/-/react-native-screens-3.2.0.tgz"
     integrity sha512-pV4a32neQA69xhVsL9k1J/rM/SiP5zgGHjJsnNVEcuhBu+dlsutT2YFszQN4MgpP2dhHHu1O7DyRSHti+wh7Wg==
   
+  react-native-share@^7.3.9:
+    version "7.3.9"
+    resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.9.tgz#e745421027b96e78ade9794bddaf441ff4c19718"
+    integrity sha512-doPOUSQAkiIOZarFZvwrxVmfK3789CWsuZ6SNGzNCEGt7dA349vv2uSKDFUP5M7p+GIY+YqFaD3RSIt1Oct+PQ==
+  
   react-native-size-matters@^0.3.1:
     version "0.3.1"
     resolved "https://registry.npmjs.org/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz"
@@ -8729,6 +8798,13 @@ Lockfile:
     version "3.2.3"
     resolved "https://registry.npmjs.org/react-native-toast-notifications/-/react-native-toast-notifications-3.2.3.tgz"
     integrity sha512-fxIQNAp6xN7inGRb/apE71EyqrW9pPIxnzZ7Cacv1XwLtz0bP1zkC4WvPfpxijZg73fhGi0vHMR/7WJez7PYyw==
+  
+  react-native-typewriter@^0.7.0:
+    version "0.7.0"
+    resolved "https://registry.yarnpkg.com/react-native-typewriter/-/react-native-typewriter-0.7.0.tgz#b370794f45366a9e9a47bdd40666198ebdce3bf2"
+    integrity sha512-lwlo8TemtZHgYH/EctYaCT5xMkgIk9ZQVyFm7qaY5b3MxveOd1v5g58oHNAkC9+vRJfdef+3dZoTJ9bM/+75/w==
+    dependencies:
+      prop-types "^15.5.7"
   
   react-native-video@^5.1.1:
     version "5.1.1"

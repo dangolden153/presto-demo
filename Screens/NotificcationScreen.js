@@ -22,7 +22,7 @@ const NotificcationScreen = ({ route }) => {
   const { notifications } = useSelector((state) => state.notificationReducer);
   const { setNotification, notifyMessage, setIsViewed, token, notification } =
     useContext(Context);
-  console.log("notifications", notifications.sort());
+  console.log("notifications", notification);
   console.log("notifyMessage", notifyMessage);
   //   *********set notification to false on screeen is mounted and pass the message************
   useEffect(() => {

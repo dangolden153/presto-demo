@@ -1,24 +1,8 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import AppLoading from "expo-app-loading";
 import { Asset } from "expo-asset";
-import Constants from "expo-constants";
 import * as SplashScreen from "expo-splash-screen";
-import * as Updates from "expo-updates";
-import {
-  Animated,
-  Button,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import AppNavigator from "./AppNavigator";
 import { Provider } from "react-redux";
@@ -156,7 +140,7 @@ function AnimatedSplashScreen({ children, image }) {
 
 // ecode check...✅
 // navigating to dashboard after transactions ✅
-// fingerprint ..
+// fingerprint ..✅
 // review
 // upload button on navbar
 // n b

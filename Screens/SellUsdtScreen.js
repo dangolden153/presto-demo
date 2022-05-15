@@ -70,6 +70,7 @@ const SellUsdtScreen = ({ navigation }) => {
     }
   };
 
+  // console.log("UsdToNaira :>> ", UsdToNaira);
   ///***************submit usdt *********************
   const handleSubmit = () => {
     dispatch(
@@ -81,7 +82,8 @@ const SellUsdtScreen = ({ navigation }) => {
         setOpenModal,
         setLoading,
         setImage,
-        handleRefresh
+        handleRefresh,
+        UsdToNaira
       )
     );
   };

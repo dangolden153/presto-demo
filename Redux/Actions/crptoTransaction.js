@@ -20,7 +20,8 @@ export const handleSellBtc =
     setOpenResModal,
     setLoading,
     setImage,
-    handleRefresh
+    handleRefresh,
+    UsdToNaira
   ) =>
   (dispatch) => {
     setLoading(true);
@@ -39,6 +40,7 @@ export const handleSellBtc =
 
     formdata.append("proof", { uri: image, name: filename, type });
     formdata.append("amount", amount);
+    formdata.append("total_amount", UsdToNaira);
 
     // formdata.append("receipt", receipt);
 
@@ -91,13 +93,14 @@ export const handleSellUsdt =
     setOpenResModal,
     setLoading,
     setImage,
-    handleRefresh
+    handleRefresh,
+    UsdToNaira
   ) =>
   (dispatch) => {
     setLoading(true);
 
     let myHeaders = new Headers();
-    console.log("sell btc token", token);
+    // console.log("sell btc token", token);
 
     myHeaders.append("Authorization", "Bearer " + token);
     let formdata = new FormData();
@@ -108,6 +111,7 @@ export const handleSellUsdt =
       uri: image,
     });
     formdata.append("amount", amount);
+    formdata.append("total_amount", UsdToNaira);
 
     // formdata.append("receipt", receipt);
 

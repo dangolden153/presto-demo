@@ -7,21 +7,73 @@ import {
   TouchableOpacity,
   Clipboard,
   Share,
+  Linking,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../components/NavBar";
 import Refer from "../images/refer.svg";
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { RFValue } from "react-native-responsive-fontsize";
 import Copy from "../images/copy_icon.svg";
 import LinearButton from "../components/LinearButton";
 import { useToast } from "react-native-toast-notifications";
 import { useSelector } from "react-redux";
+import * as StoreReview from "expo-store-review";
+import Constants from "expo-constants";
 
 const ReferScreen = ({}) => {
   const { width } = useWindowDimensions();
   const { user } = useSelector((state) => state.UserReducer);
-
   const toast = useToast();
+
+  // useEffect(() => {
+  //   const storeReview = async () => {
+  //     try {
+  //       if (await StoreReview.hasAction()) {
+  //         // await StoreReview.requestReview();
+  //         console.log(await StoreReview.requestReview());
+  //         console.log("review hasAction", await StoreReview.hasAction());
+  //       } else {
+  //         console.log("review false");
+  //       }
+  //     } catch (error) {
+  //       console.log("error :>> ", error);
+  //     }
+  //   };
+  //   storeReview();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (InAppReview.isAvailable()) {
+  //     InAppReview.RequestInAppReview()
+  //       .then((response) => {
+  //         console.log(response);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   } else {
+  //     console.log("object :>> ");
+  //   }
+  // }, []);
+
+  // const handleReview = async () => {
+  //   if (StoreReview.isAvailableAsync()) {
+  //     await StoreReview.requestReview()
+  //       .then(function (response) {
+  //         console.log("response is", response);
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //       });
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   // Open the Android Play Store directly
+  //   Linking.openURL(
+  //     `market://details?id=${Constants.manifest.android.package}&showAllReviews=true`
+  //   );
+  // }, []);
 
   // ************notification ***********
   const handleToast = () => {
