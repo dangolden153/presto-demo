@@ -317,7 +317,7 @@ export const sellGiftcard =
         setValue("");
         setAmount("");
         setLoading(false);
-        console.log("card result", result);
+        // console.log("card result", result);
         if (result?.result === "Transaction Sent") {
           setModalMessage({ status: "ok", text: result?.result });
           setOpenModal(true);

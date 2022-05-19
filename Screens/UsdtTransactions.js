@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,6 +13,7 @@ import TransactionItems from "../components/TransactionItems";
 import { Context } from "../context";
 import { fetchUSDTTransactions } from "../Redux/Actions/crptoTransaction";
 import NavBar from "../components/NavBar";
+import * as StoreReview from "expo-store-review";
 
 const UsdtTransactions = ({ navigation, route }) => {
   const { usdtTransaction } = useSelector((state) => state.TransactionReducer);
@@ -25,6 +26,25 @@ const UsdtTransactions = ({ navigation, route }) => {
   const handleTrans = () => {
     dispatch(fetchUSDTTransactions(token, setModalMessage));
   };
+
+  // ********app review***************
+  useEffect(() => {
+    if (!transactionIsTrue) return;
+    const storeReview = async () => {
+      try {
+        if (await StoreReview.hasAction()) {
+          // await StoreReview.requestReview();
+          console.log(await StoreReview.requestReview());
+          console.log("review hasAction", await StoreReview.hasAction());
+        } else {
+          console.log("review false");
+        }
+      } catch (error) {
+        console.log("error :>> ", error);
+      }
+    };
+    storeReview();
+  }, []);
 
   return (
     <>

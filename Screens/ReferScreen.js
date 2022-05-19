@@ -7,9 +7,8 @@ import {
   TouchableOpacity,
   Clipboard,
   Share,
-  Linking,
 } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import NavBar from "../components/NavBar";
 import Refer from "../images/refer.svg";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -17,30 +16,11 @@ import Copy from "../images/copy_icon.svg";
 import LinearButton from "../components/LinearButton";
 import { useToast } from "react-native-toast-notifications";
 import { useSelector } from "react-redux";
-import * as StoreReview from "expo-store-review";
-import Constants from "expo-constants";
 
 const ReferScreen = ({}) => {
   const { width } = useWindowDimensions();
   const { user } = useSelector((state) => state.UserReducer);
   const toast = useToast();
-
-  // useEffect(() => {
-  //   const storeReview = async () => {
-  //     try {
-  //       if (await StoreReview.hasAction()) {
-  //         // await StoreReview.requestReview();
-  //         console.log(await StoreReview.requestReview());
-  //         console.log("review hasAction", await StoreReview.hasAction());
-  //       } else {
-  //         console.log("review false");
-  //       }
-  //     } catch (error) {
-  //       console.log("error :>> ", error);
-  //     }
-  //   };
-  //   storeReview();
-  // }, []);
 
   // useEffect(() => {
   //   if (InAppReview.isAvailable()) {
@@ -54,25 +34,6 @@ const ReferScreen = ({}) => {
   //   } else {
   //     console.log("object :>> ");
   //   }
-  // }, []);
-
-  // const handleReview = async () => {
-  //   if (StoreReview.isAvailableAsync()) {
-  //     await StoreReview.requestReview()
-  //       .then(function (response) {
-  //         console.log("response is", response);
-  //       })
-  //       .catch((e) => {
-  //         console.log(e);
-  //       });
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Open the Android Play Store directly
-  //   Linking.openURL(
-  //     `market://details?id=${Constants.manifest.android.package}&showAllReviews=true`
-  //   );
   // }, []);
 
   // ************notification ***********
@@ -95,7 +56,7 @@ const ReferScreen = ({}) => {
   const onShare = async () => {
     try {
       await Share.share({
-        message: `You can use this code *${user?.referralcode}* to Register on Presto `,
+        message: `https://play.google.com/store/apps/details?id=com.presto.presto \n \nYou can use this code *${user?.referralcode}* to Register on Presto `,
       });
     } catch (error) {
       alert(error.message);

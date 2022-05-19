@@ -1,18 +1,12 @@
-import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TextInput,
-  FlatList,
-} from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import TransactionItems from "../components/TransactionItems";
 import { Context } from "../context";
 import { fetchCardTransactions } from "../Redux/Actions/crptoTransaction";
 import NavBar from "../components/NavBar";
+import * as StoreReview from "expo-store-review";
 
 const TransactionHistory = ({ navigation, route }) => {
   const { transaction } = useSelector((state) => state.TransactionReducer);
@@ -29,6 +23,25 @@ const TransactionHistory = ({ navigation, route }) => {
   if (!transaction) {
     return <Loading />;
   }
+
+  // ********app review***************
+  useEffect(() => {
+    if (!transactionIsTrue) return;
+    const storeReview = async () => {
+      try {
+        if (await StoreReview.hasAction()) {
+          // await StoreReview.requestReview();
+          console.log(await StoreReview.requestReview());
+          console.log("review hasAction", await StoreReview.hasAction());
+        } else {
+          console.log("review false");
+        }
+      } catch (error) {
+        console.log("error :>> ", error);
+      }
+    };
+    storeReview();
+  }, []);
 
   return (
     <>

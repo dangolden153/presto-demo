@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Linking,
 } from "react-native";
 import {
   AntDesign,
@@ -24,6 +25,7 @@ import { SvgUri } from "react-native-svg";
 import { RFValue } from "react-native-responsive-fontsize";
 import SwitchButton from "./SwitchButton";
 import ModalCom from "./ModalCom";
+import Constants from "expo-constants";
 
 const Settings = ({ navigation }) => {
   const [fingerprintVal, setFingerprintVal] = useState(null);
@@ -115,6 +117,13 @@ const Settings = ({ navigation }) => {
   }, [fingerprint]);
 
   // console.log("fingerprint :>> ", fingerprint);
+
+  const handleReview = async () => {
+    // Open the Android Play Store directly
+    Linking.openURL(
+      `market://details?id=${Constants.manifest.android.package}&showAllReviews=true`
+    );
+  };
 
   return (
     <>
@@ -248,7 +257,8 @@ const Settings = ({ navigation }) => {
             {/* *********** Rate Us ***************** * */}
             <TouchableOpacity
               style={styles.Settings_items}
-              onPress={() => navigation.navigate("RateUsScreen")}
+              // onPress={() => navigation.navigate("RateUsScreen")}
+              onPress={() => handleReview()}
             >
               <View style={styles.box_text}>
                 <TouchableOpacity style={styles.box}>

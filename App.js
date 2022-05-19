@@ -141,6 +141,10 @@ function AnimatedSplashScreen({ children, image }) {
 // ecode check...✅
 // navigating to dashboard after transactions ✅
 // fingerprint ..✅
-// review
+
+// number selection dropdown
+// transaction total should be in Naira ✅
+// review ..
+
 // upload button on navbar
 // n b
