@@ -10,24 +10,49 @@ import {
 } from "react-native";
 
 import pics from "../images/Memoji.png";
+import Memoji from "../images/memoji3.jpg";
 import errorPics from "../images/sad-memoji.png";
 
 import { useNavigation } from "@react-navigation/native";
 import { Context } from "../context";
 import { colors } from "./Colors";
 
-const ModalCom = ({ navigate, transaction }) => {
+const ModalCom = ({
+  navigate,
+  transaction,
+  isAcctNumber,
+  setDeleteAcctNumber,
+}) => {
   const { message, openModal, setOpenModal, setModalMessage } =
     useContext(Context);
+
   const navigation = useNavigation();
   // **********handle navigation*********
   const handleModal = () => {
-    if (!navigate) {
+    if (navigate) {
+      setDeleteAcctNumber(true);
+      navigation.navigate(navigate || "ButtomTab", { transaction });
       setOpenModal(false);
-      return;
+    } else if (isAcctNumber) {
+      setDeleteAcctNumber(true);
+      setOpenModal(false);
+    } else {
+      setOpenModal(false);
     }
-    navigation.navigate(navigate || "ButtomTab", { transaction });
-    setOpenModal(false);
+  };
+
+  // **********modal image*********
+  const image = (value) => {
+    switch (value) {
+      case "ok":
+        return pics;
+
+      case "del":
+        return Memoji;
+
+      default:
+        return errorPics;
+    }
   };
 
   return (
@@ -55,7 +80,7 @@ const ModalCom = ({ navigate, transaction }) => {
             }}
           >
             <Image
-              source={message.status == "ok" ? pics : errorPics}
+              source={image(message.status)}
               style={{
                 height: 100,
                 width: 100,
@@ -76,12 +101,23 @@ const ModalCom = ({ navigate, transaction }) => {
               {message.text}
             </Text>
           </ScrollView>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => handleModal()}
-          >
-            <Text style={styles.textStyle}>ok</Text>
-          </Pressable>
+          <View style={styles.btnContainer}>
+            {isAcctNumber && (
+              <Pressable
+                style={styles.buttonClose}
+                onPress={() => setOpenModal(false)}
+              >
+                <Text
+                  style={[styles.textStyle, { color: colors.primaryColor }]}
+                >
+                  close
+                </Text>
+              </Pressable>
+            )}
+            <Pressable style={styles.button} onPress={() => handleModal()}>
+              <Text style={styles.textStyle}>ok</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Modal>
@@ -113,12 +149,27 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  btnContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    margin: 5,
+    marginTop: 10,
+  },
+  buttonClose: {
+    padding: 5,
+    paddingHorizontal: 15,
+    borderColor: colors.primaryColor,
+    borderRadius: 5,
+    borderWidth: 1,
+    marginHorizontal: 2,
+  },
   button: {
     padding: 5,
     paddingHorizontal: 15,
-    margin: 5,
+
     elevation: 2,
-    alignSelf: "flex-end",
+    marginHorizontal: 2,
     backgroundColor: colors.primaryColor,
     borderRadius: 5,
   },

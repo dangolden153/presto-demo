@@ -1,18 +1,17 @@
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { useSelector } from "react-redux";
 import { colors } from "./Colors";
 import { RFValue } from "react-native-responsive-fontsize";
 import { RegularText, SmallText } from "./Text";
 
-const BankData = ({ handleDetails, details }) => {
+const BankData = ({
+  handleDetails,
+  details,
+  handleDeleteAcct,
+  withdraw,
+  acctNumber,
+}) => {
   const { bankDetails } = useSelector((state) => state.BankTransactionReducer);
   const pics =
     "https://i0.wp.com/techeconomy.ng/wp-content/uploads/2021/03/Banks-credit.jpg";
@@ -35,9 +34,12 @@ const BankData = ({ handleDetails, details }) => {
                   ? colors?.primaryColor
                   : null,
               borderRadius: RFValue(10, 580),
+              backgroundColor:
+                item.accountno === acctNumber ? colors.transPrimaryColor : null,
             },
           ]}
-          onPress={() => handleDetails(item)}
+          onPress={() => withdraw && handleDetails(item)}
+          onLongPress={() => handleDeleteAcct(item)}
         >
           <Image
             source={{

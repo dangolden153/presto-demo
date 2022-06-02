@@ -13,15 +13,29 @@ import registerNNPushToken, { getPushDataObject } from "native-notify";
 // import pics from "./assets/presto.png";
 import pics from "./images/presto.png";
 import { StatusBar } from "expo-status-bar";
-
+import * as Sentry from "sentry-expo";
+import env from "./config";
 // // general padding for all container is 20 pixels
 
 SplashScreen.preventAutoHideAsync().catch(() => {
   /* reloading the app might trigger some race conditions, ignore them */
 });
 
+Sentry.init({
+  dsn: env.SENTRY_DSN,
+  enableInExpoDevelopment: true,
+  debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+
+  // To set a uniform sample rate
+  tracesSampleRate: 0.1,
+});
+
+// Access any @sentry/react-native exports via:
+// Sentry.Native.*
+
 export default function App() {
   registerNNPushToken(2428, "XWwJ73vel8wZTUd9jHRdMz");
+  console.log("env.SENTRY_DSN :>> ", env.SENTRY_DSN);
   return (
     <AnimatedAppLoader>
       <View style={{ flex: 1, bbackground: "white" }}>
@@ -144,7 +158,9 @@ function AnimatedSplashScreen({ children, image }) {
 
 // number selection dropdown
 // transaction total should be in Naira ✅
-// review ..
+// review ..✅
+
+//login error undefined
 
 // upload button on navbar
 // n b

@@ -8,7 +8,7 @@ import {
   Clipboard,
   Share,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../components/NavBar";
 import Refer from "../images/refer.svg";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -21,20 +21,6 @@ const ReferScreen = ({}) => {
   const { width } = useWindowDimensions();
   const { user } = useSelector((state) => state.UserReducer);
   const toast = useToast();
-
-  // useEffect(() => {
-  //   if (InAppReview.isAvailable()) {
-  //     InAppReview.RequestInAppReview()
-  //       .then((response) => {
-  //         console.log(response);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   } else {
-  //     console.log("object :>> ");
-  //   }
-  // }, []);
 
   // ************notification ***********
   const handleToast = () => {
@@ -62,6 +48,27 @@ const ReferScreen = ({}) => {
       alert(error.message);
     }
   };
+
+  // var countDownDate = new Date("Jul 25, 2021 16:37:52").getTime();
+
+  // useEffect(() => {
+  //   let timeValue = 6;
+  //   timeValue - 1;
+  //   console.log("timeValue", timeValue);
+  // }, []);
+
+  // var myfunc = setInterval(function () {
+  //   var now = new Date().getTime();
+  //   var timeleft = countDownDate - now;
+
+  //   var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+  //   // console.log("seconds :>> ", seconds + 60);
+
+  //   for (let i = 0; i < seconds; i++) {
+  //     // const element = array[index];
+  //     console.log("element :>> ", i);
+  //   }
+  // }, 1000);
 
   return (
     <SafeAreaView style={styles.container}>

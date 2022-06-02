@@ -77,7 +77,11 @@ const Withdrawal = ({ navigation }) => {
           <View style={styles.body}>
             <Text style={styles.title}>Bank Account</Text>
             {/* *************Bank list******************* */}
-            <BankData handleDetails={handleDetails} details={details} />
+            <BankData
+              handleDetails={handleDetails}
+              details={details}
+              withdraw
+            />
             {/* *************form container******************* */}
             <ScrollView
               contentContainerStyle={styles.form}

@@ -4,36 +4,37 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TouchableOpacity,
   SafeAreaView,
   TextInput,
   ScrollView,
-  Pressable,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import NavBar from "../components/NavBar";
 import LinearButton from "../components/LinearButton";
-import { ModalComponent } from "../components/Modal";
-import { Dimensions } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Context } from "../context";
-import NoAccountDetails from "../components/NoAccountDetails";
 import DropdownCardType from "../components/Dropdown/DropdownCardType";
 import { useNavigation } from "@react-navigation/native";
-import { AddBankAccountDetails } from "../Redux/Actions/bankTransactions";
+import {
+  AddBankAccountDetails,
+  DeleteBankAccountDetails,
+} from "../Redux/Actions/bankTransactions";
 import { bankData } from "../utils/selectBankData";
 import BankData from "../components/BankData";
 import ModalCom from "../components/ModalCom";
+import Loading from "../components/Loading";
 
 const Accounts = ({}) => {
   const [bank, setBank] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [validate, setValidate] = useState("");
   const { user, allBanks } = useSelector((state) => state.UserReducer);
-  const [modalVisible, setModalVisible] = useState(false);
   const { bankDetails } = useSelector((state) => state.BankTransactionReducer);
+  const [isAcctNumber, setIsAcctNumber] = useState(false);
+  const [acctNumber, setAcctNumber] = useState("");
+  const [deleteAcctNumber, setDeleteAcctNumber] = useState(false);
+  const [deleteAcctLoading, setDeleteLoading] = useState(false);
 
   const {
     token,
@@ -49,7 +50,7 @@ const Accounts = ({}) => {
 
   const dispatch = useDispatch();
 
-  // ***********Add Bank Account Details***************
+  // *********Validate acct input*****************
   useEffect(() => {
     if (accountNumber.length > 1 && accountNumber.length < 10) {
       setValidate("account number must be at least 10 digits");
@@ -85,6 +86,22 @@ const Accounts = ({}) => {
     );
   };
 
+  // ***********delete Bank Account number************
+  useEffect(() => {
+    if (!deleteAcctNumber) return;
+    dispatch(
+      DeleteBankAccountDetails(
+        acctNumber,
+        setDeleteLoading,
+        handleRefresh,
+        setOpenModal,
+        setModalMessage,
+        setIsAcctNumber,
+        setAcctNumber
+      )
+    );
+  }, [deleteAcctNumber]);
+
   let [firstLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     semiBold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
@@ -94,19 +111,25 @@ const Accounts = ({}) => {
     return <AppLoading />;
   }
 
-  // console.log(" bank", bank);
-  // console.log("bankDetails :>> ", bankDetails);
-
-  const handleDetails = () => {
-    console.log("handleDetails :>> ");
+  const handleDeleteAcct = (details) => {
+    // console.log("handleDeleteAcct :>> ", details);
+    setIsAcctNumber(true);
+    setAcctNumber(details?.accountno);
   };
 
-  let details = null;
+  // console.log("deleteAcctNumber", deleteAcctNumber);
+  // console.log("acctNumber :>> ", acctNumber);
+
   return (
     <>
       <SafeAreaView style={styles.container}>
         {/****************** NavBar*******************/}
-        <NavBar title="Account" navigation={navigation} />
+        <NavBar
+          title="Account"
+          navigation={navigation}
+          isAcctNumber={isAcctNumber}
+          setOpenModal={setOpenModal}
+        />
 
         {bankDetails.length === 0 && (
           <Text style={styles.noAcctText}>
@@ -119,7 +142,12 @@ const Accounts = ({}) => {
         <ScrollView style={styles.body}>
           <Text style={styles.input_text}>Add Account</Text>
 
-          <BankData handleDetails={handleDetails} details={details} />
+          {/****************** bank list*******************/}
+          <BankData
+            handleDeleteAcct={handleDeleteAcct}
+            acctNumber={acctNumber}
+          />
+          {/* <------------------------> */}
 
           <DropdownCardType
             placeholder={bank?.name || "Select bank"}
@@ -165,7 +193,15 @@ const Accounts = ({}) => {
           </View>
         </ScrollView>
       </SafeAreaView>
-      {openModal && <ModalCom />}
+      {openModal && (
+        <ModalCom
+          setDeleteAcctNumber={setDeleteAcctNumber}
+          deleteAcctNumber={deleteAcctNumber}
+          isAcctNumber={isAcctNumber}
+        />
+      )}
+
+      {deleteAcctLoading && <Loading />}
     </>
   );
 };

@@ -17,15 +17,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "appStoreUrl": ""
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#20283F"
       },
-      "versionCode":1, 
+      "versionCode": 1,
       "package": "com.presto.presto",
       "googleServicesFile": "./google-services.json",
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.presto.presto"
@@ -47,6 +46,21 @@
         "json",
         "wasm",
         "svg"
+      ]
+    },
+    "plugins": [
+      "sentry-expo"
+    ],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "topline-visory",
+            "project": "presto",
+            "authToken": "cb0c93b0880d44e7b083aa1714ce3684c0bffbc775f64cb18ba116fac98e20c5"
+          }
+        }
       ]
     }
   }

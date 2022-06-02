@@ -1,5 +1,6 @@
 import { GET_Back_DETAILS, GET_WITHDRAWALS } from "../Types/type";
 import env from "../../config";
+
 // **************Add Bank Account Details**************************
 export const AddBankAccountDetails =
   (
@@ -54,6 +55,58 @@ export const AddBankAccountDetails =
       })
       .catch((error) => {
         setLoading(false);
+        setOpenModal(true);
+        setModalMessage({
+          status: "fail",
+          text: "invalid credentials, try again",
+        });
+        console.log("transaction error ", error);
+      });
+  };
+
+// **************delete Bank Account number**************************
+export const DeleteBankAccountDetails =
+  (
+    acctNumber,
+    setDeleteLoading,
+    handleRefresh,
+    setOpenModal,
+    setModalMessage,
+    setIsAcctNumber,
+    setAcctNumber
+  ) =>
+  (dispatch) => {
+    setDeleteLoading(true);
+
+    let myHeaders = new Headers();
+
+    // myHeaders.append("Authorization", "Bearer " + token);
+    let formdata = new FormData();
+    formdata.append("accountno", acctNumber);
+
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(`${env.PRESTO_API}/api/auth/deleteaccount`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("delete acct Number", result);
+        handleRefresh();
+        setDeleteLoading(false);
+        setIsAcctNumber(false);
+        setAcctNumber("");
+        setOpenModal(true);
+        setModalMessage({
+          status: "ok",
+          text: result.result,
+        });
+      })
+      .catch((error) => {
+        setDeleteLoading(false);
         setOpenModal(true);
         setModalMessage({
           status: "fail",

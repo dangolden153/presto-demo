@@ -39,7 +39,6 @@ const SellBitcoin = ({ navigation }) => {
     return rate?.btcrate;
   });
 
-  // console.log("image :>> ", image);
   const USD =
     amount < 100 ? btcRate[0] : amount < 1000 ? btcRate[1] : btcRate[2];
   const UsdToNaira = amount * USD;
@@ -56,8 +55,9 @@ const SellBitcoin = ({ navigation }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      // aspect: [6, 10],
-      aspect: [4, 4],
+      presentationStyle:
+        ImagePicker.UIImagePickerPresentationStyle.OverCurrentContext,
+
       quality: 1,
     });
 
@@ -93,6 +93,8 @@ const SellBitcoin = ({ navigation }) => {
     );
   };
 
+  // console.log("UsdToNaira :>> ", UsdToNaira);
+  // console.log("amount :>> ", amount);
   // ************notification ***********
   const handleToast = () => {
     toast.show("address copied!", {

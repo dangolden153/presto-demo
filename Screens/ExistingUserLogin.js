@@ -184,7 +184,7 @@ const ExistingUserLogin = () => {
       .then((response) => response.json())
 
       .then((result) => {
-        // console.log("login result", result);
+        console.log("login result", result);
         setLoading(false);
 
         if (result?.status == "200") {
@@ -202,9 +202,13 @@ const ExistingUserLogin = () => {
           handleToast();
         } else {
           setOpenModal(true);
-          console.log("login error", result?.error);
+          // console.log("login error 1", result?.password[0]);
+          // console.log("login error 2", result);
           setLoading(false);
-          setModalMessage({ status: "fail", text: result?.error });
+          setModalMessage({
+            status: "fail",
+            text: result?.error || "Invalid credentials",
+          });
         }
       })
       .catch((error) => {
