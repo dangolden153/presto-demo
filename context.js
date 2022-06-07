@@ -8,15 +8,13 @@ export const ContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setModalMessage] = useState("");
-  const [notifyMessage, setNotifyMessage] = useState("");
   const [refresh, setRefresh] = useState(false);
-  const [notification, setNotification] = useState(false);
-  const [isViewed, setIsViewed] = useState("pending");
   const [existinguser, setExistinguser] = useState(null);
   const [cardPictures, setCardPictures] = useState([]);
   const [onboarding, setOnboarding] = useState(null);
   const [fingerprint, setFingerprint] = useState(false);
-
+  const [notificationData, setNotificationData] = useState([]);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
   const handleRefresh = () => {
     setRefresh(!refresh);
   };
@@ -42,16 +40,14 @@ export const ContextProvider = ({ children }) => {
         setExistinguser,
         cardPictures,
         setCardPictures,
-        notification,
-        setNotification,
-        notifyMessage,
-        setNotifyMessage,
-        isViewed,
-        setIsViewed,
         onboarding,
         setOnboarding,
         fingerprint,
         setFingerprint,
+        notificationData,
+        setNotificationData,
+        unreadNotificationCount,
+        setUnreadNotificationCount,
       }}
     >
       {children}

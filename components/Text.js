@@ -292,6 +292,6 @@ const styles = StyleSheet.create({
 
   SmallText: {
     fontFamily: "regular",
-    fontSize: RFValue(9, 580),
+    fontSize: RFValue(8, 580),
   },
 });

@@ -17,7 +17,6 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Refer from "../images/refer.svg";
 import { MediumText, RegularText, SmallText } from "./Text";
 import { SvgUri } from "react-native-svg";
-import { useRoute } from "@react-navigation/native";
 import TypeWriter from "react-native-typewriter";
 
 const Dashboard = ({ navigation }) => {
@@ -44,8 +43,13 @@ const Dashboard = ({ navigation }) => {
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const alphaMonth = months[getMonth];
   const alphaDay = days[getDay];
-  const { setIsAuthenticated, isAuthenticated, setExistinguser, notification } =
-    useContext(Context);
+  const {
+    setIsAuthenticated,
+    isAuthenticated,
+    setExistinguser,
+    unreadNotificationCount,
+    setUnreadNotificationCount,
+  } = useContext(Context);
   const nullAvatar =
     "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
@@ -108,12 +112,6 @@ const Dashboard = ({ navigation }) => {
     getItems();
   }, [isAuthenticated]);
 
-  // console.log("user");
-  // useEffect(() => {
-  //   console.log("dashboard :>>");
-  // });
-  // const route = useRoute();
-  // console.log("route", route);
   return (
     <SafeAreaView style={styles.container}>
       {/* up section container */}
@@ -150,7 +148,7 @@ const Dashboard = ({ navigation }) => {
             onPress={() => navigation.navigate("NotificcationScreen")}
             style={{ position: "relative" }}
           >
-            {notification && (
+            {unreadNotificationCount > 0 ? (
               <View
                 style={{
                   backgroundColor: "red",
@@ -173,10 +171,10 @@ const Dashboard = ({ navigation }) => {
                     fontSize: RFValue(7, 580),
                   }}
                 >
-                  1
+                  {unreadNotificationCount}
                 </Text>
               </View>
-            )}
+            ) : null}
             <Ionicons name="notifications-outline" size={30} color="black" />
           </TouchableOpacity>
         </View>

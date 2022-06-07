@@ -1,60 +1,37 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-  FlatList,
-  View,
-  ScrollView,
-} from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import { StyleSheet, FlatList, View, ScrollView } from "react-native";
+import React, { useContext, useEffect } from "react";
 import NavBar from "../components/NavBar";
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-import { AntDesign } from "@expo/vector-icons";
+import { RFValue } from "react-native-responsive-fontsize";
 import NotificationItem from "../components/NotificationItem";
 import { Context } from "../context";
-import { handleNotification } from "../Redux/Actions/notification";
-import { useDispatch, useSelector } from "react-redux";
-import { MediumText, RegularText } from "../components/Text";
+import { RegularText } from "../components/Text";
+import { getIndieNotificationInbox } from "native-notify";
+import env from "../config";
+import { useSelector } from "react-redux";
 
-const NotificcationScreen = ({ route }) => {
-  const dispatch = useDispatch();
-  const { notifications } = useSelector((state) => state.notificationReducer);
-  const { setNotification, notifyMessage, setIsViewed, token, notification } =
+const NotificcationScreen = () => {
+  const { notificationData, setNotificationData, handleRefresh } =
     useContext(Context);
-  console.log("notifications", notification);
-  console.log("notifyMessage", notifyMessage);
-  //   *********set notification to false on screeen is mounted and pass the message************
+  const { user } = useSelector((state) => state.UserReducer);
+
+  // *****set notification data array to state on mount******
   useEffect(() => {
-    setNotification(false);
-    setIsViewed("seen");
-    // console.log("isViewd useEffect notification", isViewed);
+    const getNotification = async () => {
+      // let notifications = await getNotificationInbox(
+      let notifications = await getIndieNotificationInbox(
+        `${user?.email}`,
+        env.NATIVE_NOTIFY_ID,
+        `${env.NATIVE_NOTIFY_TOKEN}`
+      );
+      // console.log("notifications: ");
+      handleRefresh();
+      setNotificationData(notifications);
+    };
+
+    getNotification();
   }, []);
 
-  useEffect(() => {
-    if (notification) {
-      const title = "";
-      dispatch(handleNotification(token, notifyMessage, title));
-      return;
-    }
-  }, []);
-
-  const notif = [
-    {
-      time: "1:00pm",
-      message:
-        "we are one stop shop to sell your giftcards and bitcoin. fast, secured & swift payment.",
-    },
-    {
-      time: "1:00am",
-      message: "Sell Your Gift Cards for Instant Cash and Naira!.",
-    },
-  ];
-
-  const body = " ipsum dolor sit amet, consectetur adipiscing elit. ";
-  const time = "now";
-
-  if (notifications.length === 0 && !notifyMessage) {
+  if (notificationData.length === 0) {
     return (
       <View style={styles.container}>
         <NavBar title="Notification" />
@@ -74,17 +51,12 @@ const NotificcationScreen = ({ route }) => {
     <View style={styles.container}>
       <NavBar title="Notification" />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {notifyMessage !== "" ? (
-          <NotificationItem body={notifyMessage} time={time} />
-        ) : null}
-        <FlatList
-          data={notifications}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item, index) => item + index.toString()}
-          renderItem={({ item }) => <NotificationItem item={item} />}
-        />
-      </ScrollView>
+      <FlatList
+        data={notificationData}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item, index) => item + index.toString()}
+        renderItem={({ item }) => <NotificationItem item={item} />}
+      />
     </View>
   );
 };

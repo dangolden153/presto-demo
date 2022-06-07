@@ -41,7 +41,6 @@ import AccountVerScreen from "./Screens/AccountVerScreen";
 import GiftCardScreen from "./Screens/GiftCardScreen";
 import NotificcationScreen from "./Screens/NotificcationScreen";
 import ReferScreen from "./Screens/ReferScreen";
-import { getPushDataObject } from "native-notify";
 import ReceiptScreen from "./Screens/ReceiptScreen";
 import ConfirmWithdrawal from "./Screens/ConfirmWithdrawal";
 import EmailUsScreen from "./Screens/EmailUsScreen";
@@ -55,30 +54,7 @@ import ViewImage from "./Screens/ViewImage";
 import AboutUsScreen from "./Screens/AboutUsScreen";
 
 const AppNavigator = () => {
-  const { token, setNotification, setNotifyMessage, isViewed, setIsViewed } =
-    useContext(Context);
-  // console.log("isViewed App:>> ", isViewed);
-
-  let pushDataObject = getPushDataObject();
-  // ***************checking for notification*********************
-  useEffect(() => {
-    setIsViewed("pending");
-  }, [pushDataObject?.message]);
-
-  // ***************checking for notification*********************
-  useEffect(() => {
-    // console.log("Appnavigator pushDataObject message", pushDataObject?.message);
-    if (isViewed === "pending" && pushDataObject?.message) {
-      setNotification(true);
-      setNotifyMessage(pushDataObject?.message);
-      console.log(
-        "Appnavigator pushDataObject message",
-        pushDataObject?.message
-      );
-
-      return;
-    }
-  });
+  const { token } = useContext(Context);
 
   const Stack = createStackNavigator();
 

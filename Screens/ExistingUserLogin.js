@@ -27,6 +27,8 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 import * as LocalAuthentication from "expo-local-authentication";
 import { colors } from "../components/Colors";
+import { registerIndieID } from "native-notify";
+import env from "../config";
 
 const ExistingUserLogin = () => {
   const [email, setEmail] = useState("");
@@ -184,7 +186,7 @@ const ExistingUserLogin = () => {
       .then((response) => response.json())
 
       .then((result) => {
-        console.log("login result", result);
+        // console.log("login result", result?.user?.email);
         setLoading(false);
 
         if (result?.status == "200") {
@@ -193,17 +195,25 @@ const ExistingUserLogin = () => {
             setAccessToken(result?.access_token);
             // setToken(result?.access_token)
             navigation.navigate("VerifiedScreen");
+            registerIndieID(
+              `${result?.user?.email}`,
+              env.NATIVE_NOTIFY_ID,
+              `${env.NATIVE_NOTIFY_TOKEN}`
+            );
             return;
           }
-          console.log("result?.access_token && result?.user?.pin");
+          registerIndieID(
+            `${result?.user?.email}`,
+            env.NATIVE_NOTIFY_ID,
+            `${env.NATIVE_NOTIFY_TOKEN}`
+          );
+          // console.log("result?.access_token && result?.user?.pin");
           storeData(result?.access_token);
           setIsAuthenticated(true);
           setLoading(false);
           handleToast();
         } else {
           setOpenModal(true);
-          // console.log("login error 1", result?.password[0]);
-          // console.log("login error 2", result);
           setLoading(false);
           setModalMessage({
             status: "fail",
@@ -212,6 +222,7 @@ const ExistingUserLogin = () => {
         }
       })
       .catch((error) => {
+        alert(error);
         console.log("catching login error", error);
         setLoading(false);
       });

@@ -112,6 +112,7 @@ const RegistrationScreen = ({ navigation }) => {
         });
       })
       .catch((error) => {
+        alert(error);
         console.log("error", error);
         setModalMessage({ status: "fail", text: error });
         setLoading(false);

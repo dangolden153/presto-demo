@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
 
 import Dashboard from "../components/Dashboard";
 import Settings from "../components/Settings";
-import { AntDesign } from "@expo/vector-icons";
 import Wallet from "../components/Wallet";
 import { Context } from "../context";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,13 +32,32 @@ import {
   fetchBankDetails,
   fetchWithdrawals,
 } from "../Redux/Actions/bankTransactions";
+import { getUnreadIndieNotificationInboxCount } from "native-notify";
+import env from "../config";
 
 const Tab = createBottomTabNavigator();
 
 const ButtomTab = () => {
+  const { user } = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
-  const { token, setModalMessage, refresh } = useContext(Context);
+  const { token, setModalMessage, refresh, setUnreadNotificationCount } =
+    useContext(Context);
 
+  // *****get Unread Notification Inbox Count******
+  useEffect(() => {
+    const getNotificationCount = async () => {
+      // let unreadCount = await getUnreadNotificationInboxCount(
+      let unreadCount = await getUnreadIndieNotificationInboxCount(
+        `${user?.email}`,
+        env.NATIVE_NOTIFY_ID,
+        `${env.NATIVE_NOTIFY_TOKEN}`
+      );
+      // console.log("unreadCount: ", unreadCount);
+      setUnreadNotificationCount(unreadCount);
+    };
+
+    getNotificationCount();
+  }, [refresh]);
   // *************get user's details  **************************
   useEffect(() => {
     dispatch(fetchUserDetails(token));

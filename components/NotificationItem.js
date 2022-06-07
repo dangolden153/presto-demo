@@ -11,14 +11,13 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
 import Presto from "../images/presto_logo.svg";
 import { useSelector } from "react-redux";
-import moment from "moment";
-import { MediumText } from "./Text";
+import { SmallText, RegularText } from "./Text";
 
-const NotificationItem = ({ item, body, time }) => {
+const NotificationItem = ({ item }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { height } = useWindowDimensions();
   const { user } = useSelector((state) => state.UserReducer);
-  const { notifications } = useSelector((state) => state.notificationReducer);
+  // console.log("item :>> ", item);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -44,9 +43,8 @@ const NotificationItem = ({ item, body, time }) => {
               marginTop: RFValue(2, 580),
             }}
           />
-          <Text style={styles.text}>
-            {time || moment(item?.created_at).fromNow()}
-          </Text>
+          {/* <Text style={styles.text}>{moment(item?.date).fromNow()}</Text> */}
+          <SmallText>{item?.date}</SmallText>
           <TouchableOpacity
             style={{
               marginLeft: RFValue(5, 580),
@@ -61,18 +59,27 @@ const NotificationItem = ({ item, body, time }) => {
             )}
           </TouchableOpacity>
         </View>
-        <Text style={styles.header_text}>Hi {user?.firstname}!</Text>
+        <View
+          style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}
+        >
+          <RegularText>Hi {user?.firstname}! </RegularText>
+          <RegularText bold blackTextColor>
+            {" "}
+            {item?.title}
+          </RegularText>
+        </View>
+
         <Text
           style={[
             styles.text,
             {
               height: isExpanded ? height * 0.024 : "auto",
-              color: body ? "black" : "#686868",
-              fontWeight: body && "bold",
+              color: "#686868",
+              // fontWeight: body && "bold",
             },
           ]}
         >
-          {body || item.message}
+          {item.message}
         </Text>
       </TouchableOpacity>
     </ScrollView>
@@ -103,7 +110,7 @@ const styles = StyleSheet.create({
     color: "#686868",
   },
   header_text: {
-    fontSize: RFValue(12, 580),
+    fontSize: RFValue(11, 580),
     marginVertical: RFValue(3, 580),
   },
 });

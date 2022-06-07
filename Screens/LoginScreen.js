@@ -10,6 +10,7 @@ import {
   Keyboard,
   ActivityIndicator,
   Dimensions,
+  Alert,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -21,6 +22,8 @@ import { useToast } from "react-native-toast-notifications";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import ModalCom from "../components/ModalCom";
+import { registerIndieID } from "native-notify";
+import env from "../config";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -31,7 +34,6 @@ const LoginScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(true);
   const dispatch = useDispatch();
   const toast = useToast();
-  const { user, userToken } = useSelector((state) => state.UserReducer);
   const {
     openModal,
     setOpenModal,
@@ -114,17 +116,27 @@ const LoginScreen = ({ navigation }) => {
       .then((response) => response.json())
 
       .then((result) => {
-        // console.log("login result", result);
+        // console.log("login result", result.email);
         setLoading(false);
 
         if (result?.status == "200") {
           if (!result?.user?.pin) {
-            console.log("null pin");
+            // console.log("null pin");
             setAccessToken(result?.access_token);
             navigation.navigate("VerifiedScreen");
+            registerIndieID(
+              `${result?.user?.email}`,
+              env.NATIVE_NOTIFY_ID,
+              `${env.NATIVE_NOTIFY_TOKEN}`
+            );
             return;
           }
-          console.log("result?.access_token && result?.user?.pin");
+          registerIndieID(
+            `${result?.user?.email}`,
+            env.NATIVE_NOTIFY_ID,
+            `${env.NATIVE_NOTIFY_TOKEN}`
+          );
+          // console.log("result?.access_token && result?.user?.pin");
           storeData(result?.access_token);
           setIsAuthenticated(true);
           setLoading(false);
@@ -132,8 +144,8 @@ const LoginScreen = ({ navigation }) => {
         } else {
           setOpenModal(true);
           console.log("login error", result);
-          // console.log("login error", result?.email[0]);
           setLoading(false);
+          // console.log("login error", result?.email[0]);
           setModalMessage({
             status: "fail",
             text: result?.error || "Invalid credentials",
@@ -143,6 +155,7 @@ const LoginScreen = ({ navigation }) => {
       .catch((error) => {
         console.log("catching login error", error);
         setLoading(false);
+        alert(error);
       });
   };
 
