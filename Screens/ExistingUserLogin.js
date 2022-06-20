@@ -29,6 +29,7 @@ import * as LocalAuthentication from "expo-local-authentication";
 import { colors } from "../components/Colors";
 import { registerIndieID } from "native-notify";
 import env from "../config";
+import axios from "axios";
 
 const ExistingUserLogin = () => {
   const [email, setEmail] = useState("");
@@ -58,7 +59,7 @@ const ExistingUserLogin = () => {
   let trimPassword = password.trim();
   const bgHeight = windowHeight * 0.28;
 
-  // **************set password to the local storage*****************
+  // *****set password to the local storage******
   useEffect(() => {
     if (trimPassword === "") return;
     const passwordToStorage = async () => {
@@ -72,7 +73,7 @@ const ExistingUserLogin = () => {
     passwordToStorage();
   }, [trimPassword]);
 
-  // **************get password from the local storage*****************
+  // *****get password from the local storage******
   useEffect(() => {
     const getStoredPassword = async () => {
       try {
@@ -110,7 +111,7 @@ const ExistingUserLogin = () => {
     })();
   }, []);
 
-  // ************handle BiometricAuth function ***********
+  // *****handle BiometricAuth function ****
   const handleBiometricAuth = async () => {
     await LocalAuthentication.authenticateAsync({
       promptMessage: "Login with Biometrics",
@@ -120,7 +121,7 @@ const ExistingUserLogin = () => {
       .then((response) => {
         console.log("response", response);
         if (response?.success) {
-          handleLogin(response?.success);
+          handleLoginSubmit(response?.success);
         } else {
           setOpenModal(true);
           setModalMessage({
@@ -140,7 +141,7 @@ const ExistingUserLogin = () => {
   };
   // console.log("user", user);
 
-  // ************notification ***********
+  // *****notification ****
   const handleToast = () => {
     toast.show("Login successfully", {
       type: "custom",
@@ -160,8 +161,8 @@ const ExistingUserLogin = () => {
     }
   };
 
-  //  ************login function ***********
-  const handleLogin = (BiometricAuth) => {
+  //  *****login function ****
+  const handleLoginSubmit = (BiometricAuth) => {
     if (!BiometricAuth) {
       if (!handleValidation()) {
         return null;
@@ -169,46 +170,45 @@ const ExistingUserLogin = () => {
     }
 
     setLoading(true);
-    var formdata = new FormData();
-    formdata.append("email", email);
-    formdata.append("password", trimPassword || storedPassword);
+    var data = new FormData();
+    data.append("email", email);
+    data.append("password", trimPassword || storedPassword);
 
-    let myHeaders = new Headers();
-    myHeaders.append();
-
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
+    var config = {
+      method: "post",
+      url: "https://api.prestohq.io/api/auth/login",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: data,
     };
 
-    fetch("https://api.prestohq.io/api/auth/login", requestOptions)
-      .then((response) => response.json())
-
-      .then((result) => {
-        // console.log("login result", result?.user?.email);
+    axios(config)
+      .then(function (result) {
         setLoading(false);
-
-        if (result?.status == "200") {
-          if (!result?.user?.pin) {
+        // console.log("result :>> ", result.data);
+        // console.log("result :>> ", result.data.status);
+        if (result?.data?.status == "200") {
+          if (!result?.data?.user?.pin) {
             console.log("null pin");
-            setAccessToken(result?.access_token);
-            // setToken(result?.access_token)
+            setAccessToken(result?.data?.access_token);
             navigation.navigate("VerifiedScreen");
             registerIndieID(
-              `${result?.user?.email}`,
+              `${result?.data?.user?.email}`,
               env.NATIVE_NOTIFY_ID,
               `${env.NATIVE_NOTIFY_TOKEN}`
             );
             return;
           }
+          console.log("pin pin");
           registerIndieID(
-            `${result?.user?.email}`,
+            `${result?.data?.user?.email}`,
             env.NATIVE_NOTIFY_ID,
             `${env.NATIVE_NOTIFY_TOKEN}`
           );
-          // console.log("result?.access_token && result?.user?.pin");
-          storeData(result?.access_token);
+          console.log("result?.access_token && result?.user?.pin");
+          storeData(result?.data?.access_token);
           setIsAuthenticated(true);
           setLoading(false);
           handleToast();
@@ -217,7 +217,7 @@ const ExistingUserLogin = () => {
           setLoading(false);
           setModalMessage({
             status: "fail",
-            text: result?.error || "Invalid credentials",
+            text: result?.data?.error || "Invalid credentials",
           });
         }
       })
@@ -228,7 +228,7 @@ const ExistingUserLogin = () => {
       });
   };
 
-  //  ****************store user's token ***********
+  //  *****store user's token ****
   const storeData = async (value) => {
     try {
       const jsonValue = value;
@@ -239,7 +239,7 @@ const ExistingUserLogin = () => {
     }
   };
 
-  // **************get username to the local storage*****************
+  // *****get username to the local storage******
   useEffect(() => {
     const setUsername = async () => {
       try {
@@ -253,7 +253,7 @@ const ExistingUserLogin = () => {
     setUsername();
   }, [name]);
 
-  // **************get picture to the local storage*****************
+  // *****get picture to the local storage******
   useEffect(() => {
     const setUsername = async () => {
       try {
@@ -267,7 +267,7 @@ const ExistingUserLogin = () => {
     setUsername();
   }, [imgUrl]);
 
-  // **************get email from the local storage*****************
+  // *****get email from the local storage******
   useEffect(() => {
     const setUserEmail = async () => {
       try {
@@ -280,7 +280,7 @@ const ExistingUserLogin = () => {
     setUserEmail();
   }, [email]);
 
-  // *************get finger print boolean value  value from storage*************
+  // ****get finger print boolean value  value from storage****
   useEffect(() => {
     const getData = async () => {
       try {
@@ -308,7 +308,7 @@ const ExistingUserLogin = () => {
     <>
       <View style={styles.container}>
         <StatusBar style="light" />
-        {/* ***************top backgroundColor*************** */}
+        {/* ******top backgroundColor****** */}
         <View
           style={{
             backgroundColor: "#0B365B", //#0B365B
@@ -364,7 +364,7 @@ const ExistingUserLogin = () => {
                 </View>
               </View>
 
-              {/* ************* Password ***************************** */}
+              {/* ***** Password *********** */}
               <View style={styles.inputTextContainer}>
                 <RegularText>Password</RegularText>
                 <View style={styles.icon_input}>
@@ -387,7 +387,7 @@ const ExistingUserLogin = () => {
                 </View>
               </View>
 
-              {/* *************Forgot Password link***************************** */}
+              {/* ****Forgot Password link********** */}
               <TouchableOpacity
                 onPress={() => navigation.navigate("ForgotPassword")}
                 activeOpacity={0.5}
@@ -401,7 +401,11 @@ const ExistingUserLogin = () => {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity activeOpacity={0.7} onPress={() => handleLogin()}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => handleLoginSubmit()}
+            >
+              {/* //handleLoginSubmit handleLogin */}
               <LinearGradient
                 // Button Linear Gradient
                 colors={["#0B365B", "#0B365B", "#124672"]}
@@ -418,7 +422,7 @@ const ExistingUserLogin = () => {
             </TouchableOpacity>
             {/* //CheckVerification */}
 
-            {/* ***********fingerprint*********** */}
+            {/* ****fingerprint**** */}
             {fingerprint ? (
               <TouchableOpacity
                 onPress={() => handleBiometricAuth()}
@@ -435,7 +439,7 @@ const ExistingUserLogin = () => {
         </TouchableWithoutFeedback>
       </View>
 
-      {/* *********response modal************************** */}
+      {/* ****response modal********* */}
       {openModal && <ModalCom />}
     </>
   );

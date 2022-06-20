@@ -10,7 +10,6 @@ import {
   Keyboard,
   ActivityIndicator,
   Dimensions,
-  Alert,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -24,11 +23,12 @@ import AppLoading from "expo-app-loading";
 import ModalCom from "../components/ModalCom";
 import { registerIndieID } from "native-notify";
 import env from "../config";
+import axios from "axios";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation }) => { 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
@@ -53,7 +53,7 @@ const LoginScreen = ({ navigation }) => {
   };
   // console.log("user", user);
 
-  // ************notification ***********
+  // *****notification ****
   const handleToast = () => {
     toast.show("Login successfully", {
       type: "custom",
@@ -64,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
     });
   };
 
-  //  ***********set Validation***********
+  //  ****set Validation****
   const handleValidation = () => {
     if (!email) {
       alert("please use a valid email address!");
@@ -77,7 +77,7 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  // **************set password to the local storage*****************
+  // *****set password to the local storage******
   useEffect(() => {
     if (trimPassword === "") return;
     const passwordToStorage = async () => {
@@ -92,8 +92,8 @@ const LoginScreen = ({ navigation }) => {
     passwordToStorage();
   }, [trimPassword]);
 
-  //  ************login function ***********
-  const handleLogin = () => {
+  //  *****login function ****
+  const handleLoginSubmit = () => {
     if (!handleValidation()) {
       return null;
     }
@@ -102,64 +102,61 @@ const LoginScreen = ({ navigation }) => {
     var formdata = new FormData();
     formdata.append("email", trimEmail);
     formdata.append("password", trimPassword);
-
-    let myHeaders = new Headers();
-    myHeaders.append();
-
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
+    var config = {
+      method: "post",
+      url: "https://api.prestohq.io/api/auth/login",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: formdata,
     };
 
-    fetch("https://api.prestohq.io/api/auth/login", requestOptions)
-      .then((response) => response.json())
-
-      .then((result) => {
-        // console.log("login result", result.email);
+    axios(config)
+      .then(function (result) {
         setLoading(false);
-
-        if (result?.status == "200") {
-          if (!result?.user?.pin) {
+        // console.log("result :>> ", result.data);
+        // console.log("result :>> ", result.data.status);
+        if (result?.data?.status == "200") {
+          if (!result?.data?.user?.pin) {
             // console.log("null pin");
-            setAccessToken(result?.access_token);
+            setAccessToken(result?.data?.access_token);
             navigation.navigate("VerifiedScreen");
             registerIndieID(
-              `${result?.user?.email}`,
+              `${result?.data?.user?.email}`,
               env.NATIVE_NOTIFY_ID,
               `${env.NATIVE_NOTIFY_TOKEN}`
             );
             return;
           }
+          // console.log("pin pin");
           registerIndieID(
-            `${result?.user?.email}`,
+            `${result?.data?.user?.email}`,
             env.NATIVE_NOTIFY_ID,
             `${env.NATIVE_NOTIFY_TOKEN}`
           );
           // console.log("result?.access_token && result?.user?.pin");
-          storeData(result?.access_token);
+          storeData(result?.data?.access_token);
           setIsAuthenticated(true);
           setLoading(false);
           handleToast();
         } else {
           setOpenModal(true);
-          console.log("login error", result);
           setLoading(false);
-          // console.log("login error", result?.email[0]);
           setModalMessage({
             status: "fail",
-            text: result?.error || "Invalid credentials",
+            text: result?.data?.error || "Invalid credentials",
           });
         }
       })
       .catch((error) => {
+        alert(error);
         console.log("catching login error", error);
         setLoading(false);
-        alert(error);
       });
   };
 
-  //  ****************store user's token ***********
+  //  *****store user's token ****
   const storeData = async (value) => {
     try {
       const jsonValue = value;
@@ -188,7 +185,7 @@ const LoginScreen = ({ navigation }) => {
         <StatusBar style="light" />
 
         <Text style={styles.header}>Welcome</Text>
-        {/* ***************top backgroundColor*************** */}
+        {/* ******top backgroundColor****** */}
         <View
           style={{
             backgroundColor: "#0B365B",
@@ -202,13 +199,11 @@ const LoginScreen = ({ navigation }) => {
         <Log_in
           width={windowWidth}
           height={bgHeight}
-          // style={{ backgroundColor: "pink" }}
         />
-        {/* </View> */}
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner_container}>
-            {/* ************* Email ***************************** */}
+            {/* ***** Email *********** */}
             <View style={styles.input_container}>
               <View style={styles.inputTextContainer}>
                 <Text style={styles.input_text}>Email</Text>
@@ -222,7 +217,7 @@ const LoginScreen = ({ navigation }) => {
                 />
               </View>
 
-              {/* ************* Password ***************************** */}
+              {/* ***** Password *********** */}
               <View style={styles.inputTextContainer}>
                 <Text style={styles.input_text}>Password</Text>
                 <View style={styles.icon_input}>
@@ -244,7 +239,7 @@ const LoginScreen = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               </View>
-              {/* *************Forgot Password link***************************** */}
+              {/* ****Forgot Password link********** */}
               <TouchableOpacity
                 onPress={() => navigation.navigate("ForgotPassword")}
                 activeOpacity={0.5}
@@ -264,7 +259,11 @@ const LoginScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity activeOpacity={0.7} onPress={() => handleLogin()}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => handleLoginSubmit()}
+            >
+              {/* // handleLoginSubmit handleLogin */}
               <LinearGradient
                 // Button Linear Gradient
                 colors={["#0B365B", "#0B365B", "#124672"]}
@@ -294,7 +293,7 @@ const LoginScreen = ({ navigation }) => {
         </TouchableWithoutFeedback>
       </View>
 
-      {/* *********response modal************************** */}
+      {/* ****response modal********* */}
       {openModal && <ModalCom />}
     </>
   );

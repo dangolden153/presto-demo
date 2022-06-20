@@ -15,10 +15,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import Log_in from "../images/Login.svg";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
-import { ModalComponent } from "../components/Modal";
 import { Context } from "../context";
 import ModalCom from "../components/ModalCom";
-
+import env from "../config";
+import axios from "axios";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -72,11 +72,14 @@ const RegistrationScreen = ({ navigation }) => {
     }
   };
 
+  //  *****handleSignup function ****
   const handleSignup = () => {
     if (!handleValidation()) {
       return null;
     }
+
     setLoading(true);
+
     let formdata = new FormData();
     formdata.append("firstname", firstName);
     formdata.append("email", email);
@@ -86,41 +89,42 @@ const RegistrationScreen = ({ navigation }) => {
     formdata.append("phoneno", phoneno);
     formdata.append("reference", referralCode);
 
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
+    var config = {
+      method: "post",
+      url: `${env.PRESTO_API}/api/auth/register`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: formdata,
     };
 
-    fetch("https://api.prestohq.io/api/auth/register", requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
+    axios(config)
+      .then(function (res) {
         setLoading(false);
-        if (res?.status === "201") {
+        console.log("res?.data", res?.data);
+        if (res?.data?.status === "201") {
           return navigation.navigate("CheckVerification");
         }
-        // console.log("res", JSON.parse(res).password);
-        console.log("response", res);
-        setOpenModal(true);
-        setModalMessage({
-          status: "fail",
-          text: JSON.parse(res).email
-            ? JSON.parse(res).email[0]
-            : JSON.parse(res).password
-            ? JSON.parse(res).password[0]
-            : "invalid credentials given.",
-        });
       })
       .catch((error) => {
-        alert(error);
-        console.log("error", error);
-        setModalMessage({ status: "fail", text: error });
+        // alert(error);
+        setOpenModal(true);
+        console.log("catching login error", JSON.parse(error?.response?.data));
+        setModalMessage({
+          status: "fail",
+          text: JSON.parse(error?.response?.data).email
+            ? JSON.parse(error?.response?.data).email[0]
+            : JSON.parse(error?.response?.data).password
+            ? JSON.parse(error?.response?.data).password[0]
+            : "invalid credentials given.",
+        });
+
         setLoading(false);
       });
   };
 
   const bgHeight = windowHeight * 0.28;
-
   const [fontLoaded, error] = useFonts({
     regular: require("../assets/fonts/raleway/Raleway-Regular.ttf"),
     medium: require("../assets/fonts/raleway/Raleway-Medium.ttf"),

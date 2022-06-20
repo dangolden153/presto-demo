@@ -6,10 +6,10 @@ import { StatusBar } from "expo-status-bar";
 import { BigText, RegularText } from "../components/Text";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useNavigation } from "@react-navigation/native";
-
+ 
 const OnboardingScreen = () => {
   const navigation = useNavigation();
-  return (
+  return ( 
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.img_bg}>
@@ -114,3 +114,8 @@ const styles = StyleSheet.create({
 });
 
 export default OnboardingScreen;
+
+
+// expo-font expo-image-picker-multiple expo-images-picker expo-linking expo-local-authentication expo-notifications
+
+// @sentry/react-native @react-navigation/stack @react-navigation/native @react-navigation/bottom-tabs @react-native-community/masked-view @react-native-async-storage/async-storage

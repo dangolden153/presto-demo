@@ -142,25 +142,16 @@ function AnimatedSplashScreen({ children, image }) {
   );
 }
 
-// check withdraw 30m ..✅
-// referal 20mi ✅
-// about us 20m .. ✅
-// modal on card - usdt ..✅
-// playstore pushing on or before 9 ..✅
-// remove card image✅
-// bottom tab
 
-// check the logic of checkOnboarding ✅
 
-// ecode check...✅
-// navigating to dashboard after transactions ✅
-// fingerprint ..✅
 
-// number selection dropdown
-// transaction total should be in Naira ✅
-// review ..✅
 
 //login error undefined
 
 // upload button on navbar
 // n b
+
+
+// btc transaction value in naira 
+// showing toast twice 
+// register
