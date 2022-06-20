@@ -58,9 +58,9 @@ const SellUsdtScreen = ({ navigation }) => {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      presentationStyle:
-        ImagePicker.UIImagePickerPresentationStyle.OverCurrentContext,
+      // allowsEditing: true,
+      // presentationStyle: 6,
+        // ImagePicker.UIImagePickerPresentationStyle.OverCurrentContext,
       quality: 1,
     });
 

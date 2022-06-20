@@ -28,7 +28,7 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  console.log("datas :>> ", datas);
+  // console.log("datas :>> ", datas);
   const status =
     datas?.status === 0
       ? "pending"
@@ -41,7 +41,7 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
     datas?.status === 0 ? "#ff9d3a" : datas?.status === 1 ? "green" : "#f9886c";
   const amount = card ? datas?.amount : datas?.amount;
   const Img = btc ? Bitcoin : USDT;
-  const prefix = btc ? "BTC" : usdt ? "USDT" : "";
+  
   const [fontLoaded, error] = useFonts({
     Italic: require("../assets/fonts/raleway/Raleway-Italic.ttf"),
     semibold: require("../assets/fonts/raleway/Raleway-SemiBold.ttf"),
@@ -132,13 +132,12 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
             <View style={styles.img_title}>
               <Text style={styles.title}>Amount</Text>
               <Text style={styles.upload_text}>
-                {card && "$"}
-                {amount && numberWithCommas(amount)}
-                {prefix}
+                {/* {card && "$"} */}
+                ${amount && numberWithCommas(amount)}
+                {/* {prefix} */}
               </Text>
             </View>
             {/* ******************total Amount************************ */}
-            {card && (
               <View style={styles.img_title}>
                 <Text style={styles.title}>Total amount</Text>
                 <Text style={styles.upload_text}>
@@ -146,7 +145,6 @@ const Transaction = ({ lastTransaction, card, datas, btc, usdt }) => {
                   {datas?.total_amount && numberWithCommas(datas?.total_amount)}
                 </Text>
               </View>
-            )}
             {datas?.failure_pic && (
               <View style={[styles.img_title, { alignItems: "flex-start" }]}>
                 <Text style={styles.title}>Description image </Text>

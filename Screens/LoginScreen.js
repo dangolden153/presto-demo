@@ -57,7 +57,7 @@ const LoginScreen = ({ navigation }) => {
   const handleToast = () => {
     toast.show("Login successfully", {
       type: "custom",
-      placement: "top",
+      placement: "bottom",
       duration: 4000,
       offset: 30,
       animationType: "slide-in",
@@ -104,7 +104,7 @@ const LoginScreen = ({ navigation }) => {
     formdata.append("password", trimPassword);
     var config = {
       method: "post",
-      url: "https://api.prestohq.io/api/auth/login",
+      url: `${env.PRESTO_API}/api/auth/login`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

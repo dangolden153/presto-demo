@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Alert,
+  Platform,
 } from "react-native";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -111,6 +112,7 @@ const ExistingUserLogin = () => {
     })();
   }, []);
 
+
   // *****handle BiometricAuth function ****
   const handleBiometricAuth = async () => {
     await LocalAuthentication.authenticateAsync({
@@ -145,13 +147,14 @@ const ExistingUserLogin = () => {
   const handleToast = () => {
     toast.show("Login successfully", {
       type: "custom",
-      placement: "top",
+      placement: "bottom",
       duration: 4000,
-      offset: 30,
+      // offset: 50,
       animationType: "slide-in",
     });
   };
 
+ 
   const handleValidation = () => {
     if (!password && password.length < 6) {
       alert("password too short!");
@@ -176,7 +179,7 @@ const ExistingUserLogin = () => {
 
     var config = {
       method: "post",
-      url: "https://api.prestohq.io/api/auth/login",
+      url: `${env.PRESTO_API}/api/auth/login`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -350,6 +353,7 @@ const ExistingUserLogin = () => {
                   marginBottom: 30,
                 }}
               >
+                {Platform?.OS === "ios" ? null :
                 <TouchableOpacity
                   style={{
                     marginRight: 10,
@@ -357,7 +361,7 @@ const ExistingUserLogin = () => {
                   // onPress={() => removeToken()}
                 >
                   <SvgUri uri={imgUrl || nullAvatar} />
-                </TouchableOpacity>
+                </TouchableOpacity>}
                 <View>
                   <MediumText blackTextColor>Welcome back,</MediumText>
                   <RegularText capitalize>{name}</RegularText>

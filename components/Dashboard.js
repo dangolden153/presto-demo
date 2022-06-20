@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import PaymentCard from "../images/card.svg";
@@ -121,12 +122,14 @@ const Dashboard = ({ navigation }) => {
           <TouchableOpacity
             style={{ flexDirection: "row", alignItems: "center" }}
           >
-            <SvgUri
-              width="40"
-              height="40"
-              uri={user?.profile_pic || nullAvatar}
-              style={{ marginRight: RFValue(5, 580) }}
-            />
+            {Platform.OS === "ios" ? null : (
+              <SvgUri
+                width="40"
+                height="40"
+                uri={user?.profile_pic || nullAvatar}
+                style={{ marginRight: RFValue(5, 580) }}
+              />
+            )}
             <View>
               {/* <RegularText bold blackTextColor capitalize>
                 Hello {user?.username || user?.firstname},

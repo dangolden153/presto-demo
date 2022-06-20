@@ -19,7 +19,6 @@ import LinearButton from "../components/LinearButton";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSellBtc } from "../Redux/Actions/crptoTransaction";
 import { useToast } from "react-native-toast-notifications";
-import { QRCode as CustomQRCode } from "react-native-custom-qr-codes-expo";
 import ModalCom from "../components/ModalCom";
 
 const SellBitcoin = ({ navigation }) => {
@@ -54,9 +53,9 @@ const SellBitcoin = ({ navigation }) => {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      presentationStyle:
-        ImagePicker.UIImagePickerPresentationStyle.OverCurrentContext,
+      // allowsEditing: true,
+      // presentationStyle:
+      //   ImagePicker.UIImagePickerPresentationStyle.OverCurrentContext,
 
       quality: 1,
     });

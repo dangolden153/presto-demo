@@ -152,6 +152,6 @@ function AnimatedSplashScreen({ children, image }) {
 // n b
 
 
-// btc transaction value in naira 
-// showing toast twice 
-// register
+// btc transaction value in naira ../
+// showing toast twice  
+// register ../

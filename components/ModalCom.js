@@ -30,7 +30,6 @@ const ModalCom = ({
   // **********handle navigation*********
   const handleModal = () => {
     if (navigate) {
-      setDeleteAcctNumber(true);
       navigation.navigate(navigate || "ButtomTab", { transaction });
       setOpenModal(false);
     } else if (isAcctNumber) {
