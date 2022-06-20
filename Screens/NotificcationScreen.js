@@ -10,26 +10,26 @@ import env from "../config";
 import { useSelector } from "react-redux";
 
 const NotificcationScreen = () => {
-  const { notificationData, setNotificationData, handleRefresh } =
+  const { notificationData, setNotificationData, handleRefresh,unreadNotificationCount } =
     useContext(Context);
   const { user } = useSelector((state) => state.UserReducer);
 
   // *****set notification data array to state on mount******
-  useEffect(() => {
-    const getNotification = async () => {
-      // let notifications = await getNotificationInbox(
-      let notifications = await getIndieNotificationInbox(
-        `${user?.email}`,
-        env.NATIVE_NOTIFY_ID,
-        `${env.NATIVE_NOTIFY_TOKEN}`
-      );
-      // console.log("notifications: ");
-      handleRefresh();
-      setNotificationData(notifications);
-    };
+  // useEffect(() => {
+  //   const getNotification = async () => {
+  //     // let notifications = await getNotificationInbox(
+  //     let notifications = await getIndieNotificationInbox(
+  //       `${user?.email}`,
+  //       env.NATIVE_NOTIFY_ID,
+  //       `${env.NATIVE_NOTIFY_TOKEN}`
+  //     );
+  //     // console.log("notifications: ");
+  //     handleRefresh();
+  //     setNotificationData(notifications);
+  //   };
 
-    getNotification();
-  }, []);
+  //   getNotification();
+  // }, [unreadNotificationCount]);
 
   if (notificationData.length === 0) {
     return (

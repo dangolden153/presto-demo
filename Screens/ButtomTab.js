@@ -32,7 +32,7 @@ import {
   fetchBankDetails,
   fetchWithdrawals,
 } from "../Redux/Actions/bankTransactions";
-import { getUnreadIndieNotificationInboxCount } from "native-notify";
+import { getIndieNotificationInbox, getUnreadIndieNotificationInboxCount } from "native-notify";
 import env from "../config";
 
 const Tab = createBottomTabNavigator();
@@ -40,8 +40,25 @@ const Tab = createBottomTabNavigator();
 const ButtomTab = () => {
   const { user } = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
-  const { token, setModalMessage, refresh, setUnreadNotificationCount } =
+  const { token, setModalMessage, refresh, setUnreadNotificationCount,setNotificationData,handleRefresh } =
     useContext(Context);
+
+  // *****set notification data array to state on mount******
+    useEffect(() => {
+      const getNotification = async () => {
+        // let notifications = await getNotificationInbox(
+        let notifications = await getIndieNotificationInbox(
+          `${user?.email}`,
+          env.NATIVE_NOTIFY_ID,
+          `${env.NATIVE_NOTIFY_TOKEN}`
+        );
+        // console.log("notifications:notifications ",notifications);
+        handleRefresh();
+        setNotificationData(notifications);
+      };
+  
+      getNotification();
+    }, []);
 
   // *****get Unread Notification Inbox Count******
   useEffect(() => {
@@ -58,6 +75,7 @@ const ButtomTab = () => {
 
     getNotificationCount();
   }, [refresh]);
+  
   // *************get user's details  **************************
   useEffect(() => {
     dispatch(fetchUserDetails(token));
